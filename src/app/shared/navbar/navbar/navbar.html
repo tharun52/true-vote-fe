@@ -1,0 +1,18 @@
+<nav class="navbar">
+  <a routerLink="/">Home</a>
+  @if (authService.isLoggedIn()) {
+    <div>
+      @if(isModerator){
+        <span>👤 Moderator: {{ moderatorName }}</span>
+      }
+        Welcome, {{ authService.getCurrentUser()?.username }} |
+        <a (click)="logout()" style="cursor:pointer">Logout</a>
+    </div>
+  }
+  @else {
+      <div>
+        <a routerLink="/login">Login</a>
+      </div>  
+  }
+</nav>
+
