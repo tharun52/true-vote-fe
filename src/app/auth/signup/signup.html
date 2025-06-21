@@ -1,0 +1,53 @@
+<div class="container mt-4">
+  <h3 class="mb-3">Voter Signup</h3>
+
+  <form [formGroup]="signupForm" (ngSubmit)="handleSignup()" class="needs-validation" novalidate>
+
+    <div class="mb-3">
+      <label class="form-label">Name</label>
+      <input type="text" formControlName="name" class="form-control" placeholder="Enter name">
+      @if(name?.touched && name?.errors) {
+        <div class="mt-1 text-danger small">Name is required</div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" formControlName="email" class="form-control" placeholder="Enter email">
+      @if(email?.touched && email?.errors) {
+        <div class="mt-1 text-danger small">Valid email is required</div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Age</label>
+      <input type="number" formControlName="age" class="form-control" placeholder="Enter age">
+      @if(age?.touched && age?.errors) {
+        <div class="mt-1 text-danger small">Age must be at least 1</div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input type="password" formControlName="password" class="form-control" placeholder="Enter password">
+      @if(password?.touched && password?.errors) {
+        <div class="mt-1 text-danger small">Password must be at least 8 characters</div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Confirm Password</label>
+      <input type="password" formControlName="confirmPassword" class="form-control" placeholder="Confirm password">
+      @if(confirmPassword?.touched && signupForm.errors?.['passwordMismatch']) {
+        <div class="mt-1 text-danger small">Passwords do not match</div>
+      }
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="signupForm.invalid">Sign Up</button>
+
+    @if(error) {
+      <div class="mt-2 text-danger">{{ error }}</div>
+    }
+
+  </form>
+</div>
