@@ -1,0 +1,10 @@
+table {
+  background-color: white;
+}
+a {
+  color: #2196F3;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}

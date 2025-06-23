@@ -7,47 +7,97 @@ import { UserModel } from '../models/UserModel';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private userSubject = new BehaviorSubject<UserModel | null>(null);
-  user$ = this.userSubject.asObservable();
-  private API = environment.apiBaseUrl + 'api/v1/Authentication';
+  private tokenSubject = new BehaviorSubject<string | null>(null);
+  token$ = this.tokenSubject.asObservable();
+  private API = environment.apiBaseUrl + 'Authentication';
 
   constructor(private http: HttpClient, private router: Router) {
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      this.userSubject.next(JSON.parse(savedUser));
+    const savedToken = localStorage.getItem('token');
+    if (savedToken) {
+      this.tokenSubject.next(savedToken);
     }
   }
 
   login(username: string, password: string): Observable<UserModel> {
     return this.http.post<UserModel>(this.API, { username, password }).pipe(
       tap((user) => {
-        localStorage.setItem('user', JSON.stringify(user));
-        this.userSubject.next(user);
+        // Store only the token (and refreshToken if needed)
+        localStorage.setItem('token', user.token);
+        localStorage.setItem('refreshToken', user.refreshToken);
+        this.tokenSubject.next(user.token);
+
         // Redirect based on role
         if (user.role === 'Moderator') {
           this.router.navigate(['/moderator']);
+        } else if (user.role === 'Voter') {
+          this.router.navigate(['/voter']);
         } else {
-          this.router.navigate(['/']); 
+          this.router.navigate(['/']);
         }
       })
     );
   }
 
   logout(): void {
-    const refreshToken = this.userSubject.value?.refreshToken;
+    const refreshToken = localStorage.getItem('refreshToken');
     if (refreshToken) {
       this.http.post(`${this.API}/logout`, { refreshToken }).subscribe();
     }
-    localStorage.removeItem('user');
-    this.userSubject.next(null);
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    this.tokenSubject.next(null);
     this.router.navigate(['/login']);
   }
 
-  getCurrentUser(): UserModel | null {
-    return this.userSubject.value;
+  getToken(): string | null {
+    return this.tokenSubject.value || localStorage.getItem('token');
   }
 
   isLoggedIn(): boolean {
-    return !!this.userSubject.value;
+    return !!this.tokenSubject.value;
   }
+
+
+  private decodeToken(token: string): any {
+    try {
+      const payload = token.split('.')[1];
+      const decoded = atob(payload);
+      return JSON.parse(decoded);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  getRole(): string | null {
+    const token = this.getToken();
+    const decoded = token ? this.decodeToken(token) : null;
+    return decoded?.role || null;
+  }
+
+  getUsername(): string | null {
+    const token = this.getToken();
+    const decoded = token ? this.decodeToken(token) : null;
+    return decoded?.nameid || null;
+  }
+
+  getCurrentUser(): UserModel | null {
+    const token = localStorage.getItem('token');
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+
+      const userId = payload?.UserId || '';
+      const username = payload?.nameid || '';
+      const role = payload?.role || '';
+
+      return new UserModel(userId, username, role, token, refreshToken || '');
+    }
+    catch (err) {
+      return null;
+    }
+  }
+
 }

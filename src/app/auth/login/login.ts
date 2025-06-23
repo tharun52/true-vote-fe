@@ -1,22 +1,21 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../../auth.service';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgIf } from '@angular/common';
+import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
-  selector: 'app-login.component.ts',
-  imports: [FormsModule, NgIf, ReactiveFormsModule],
-  templateUrl: './login.component.ts.html',
-  styleUrl: './login.component.ts.css'
+  selector: 'app-login',
+  imports: [FormsModule, ReactiveFormsModule, RouterLink],
+  templateUrl: './login.html',
+  styleUrl: './login.css'
 })
-export class LoginComponent {
+export class Login {
   loginForm: FormGroup;
   error: string | null = null;
 
   constructor(private authService: AuthService, private router: Router) {
     this.loginForm = new FormGroup({
-      un: new FormControl('', Validators.required),
+      un: new FormControl('', [Validators.required, Validators.email]),
       pass: new FormControl('', Validators.required),
     });
   }
@@ -36,7 +35,7 @@ export class LoginComponent {
     const password = this.pass?.value;
 
     this.authService.login(username, password).subscribe({
-      next: () => this.router.navigate(['/']),
+      next: () => {},
       error: (err) => {
         if (typeof err.error === 'string') {
           this.error = err.error;
@@ -49,3 +48,4 @@ export class LoginComponent {
     });
   }
 }
+

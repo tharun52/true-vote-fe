@@ -3,14 +3,25 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { AuthService } from './auth/auth.service';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { VoterService } from './voter/voter.service';
+import { ModeratorService } from './moderator/moderator.service';
+import { AuthInterceptor } from './auth/auth-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    provideHttpClient(),
     AuthService,
-    provideHttpClient()
+    provideHttpClient(withInterceptorsFromDi()),  
+        {
+            provide:HTTP_INTERCEPTORS,
+            useClass:AuthInterceptor,
+            multi:true
+        },
+    VoterService,
+    ModeratorService
   ]
 };

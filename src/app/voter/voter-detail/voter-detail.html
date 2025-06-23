@@ -1,0 +1,26 @@
+<!-- Modal Overlay -->
+<div class="modal-backdrop"></div>
+
+<!-- Modal Box -->
+<div class="modal-box container p-4 rounded shadow bg-white border">
+  <button class="btn-close float-end" (click)="closePopup()"></button>
+  <h3 class="text-primary mb-3">Voter Details</h3>
+
+  @if (voter) {
+    <div>
+      <p><strong>Name:</strong> {{ voter.name }}</p>
+      <p><strong>Email:</strong> {{ voter.email }}</p>
+      <p><strong>Age:</strong> {{ voter.age }}</p>
+      <p><strong>Deleted:</strong> {{ voter.isDeleted ? 'Yes' : 'No' }}</p>
+
+      @if (isModerator) {
+        <div class="mt-3 d-flex gap-2">
+          <button class="btn btn-warning" (click)="editVoter()">Edit</button>
+          <button class="btn btn-danger" (click)="deleteVoter()">Delete</button>
+        </div>
+      }
+    </div>
+  } @else {
+    <div>Loading...</div>
+  }
+</div>

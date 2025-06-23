@@ -5,10 +5,11 @@ import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../auth.service';
 import { passwordMatchValidator } from '../validators/password-match.validator';
+import { ModeratorsList } from "../../moderator/moderators-list/moderators-list";
 
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule, ModeratorsList],
   templateUrl: './signup.html',
   styleUrl: './signup.css'
 })
@@ -43,7 +44,7 @@ export class Signup {
       next: () => {
         // auto login after signup
         this.authService.login(email, password).subscribe({
-          next: () => this.router.navigate(['/']),
+          next: () => {},
           error: err => this.error = 'Auto-login failed.'
         });
       },

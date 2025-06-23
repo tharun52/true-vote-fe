@@ -46,7 +46,18 @@
     <button type="submit" class="btn btn-primary" [disabled]="signupForm.invalid">Sign Up</button>
 
     @if(error) {
-      <div class="mt-2 text-danger">{{ error }}</div>
+      @if(error === 'An unexpected error occurred : You are not authorized to sign up. Please contact your moderator.') {
+        <div class="moderators-section">
+          <div class="alert alert-warning mt-3" role="alert">
+             You are not authorized to sign up. Please contact Any of these moderators.
+          </div>
+          <app-moderators-list></app-moderators-list>
+        </div>
+
+      }
+      @else {
+        <div class="mt-2 text-danger">{{ error }}</div>
+      }
     }
 
   </form>

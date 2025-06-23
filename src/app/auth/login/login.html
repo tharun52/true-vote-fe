@@ -3,11 +3,15 @@
   <form [formGroup]="loginForm" (ngSubmit)="handleLogin()" class="needs-validation" novalidate>
 
     <div class="mb-3">
-      <label class="form-label">Username</label>
+      <label class="form-label">Username (Email)</label>
       <input type="text" formControlName="un" class="form-control" placeholder="Enter username">
-      @if(un?.touched && un?.errors)
-      {
-        <div class="mt-1 text-danger small">Username cannot be empty</div>
+      @if(un?.touched && un?.errors) {
+        @if(un?.errors?.['required']) {
+          <div class="mt-1 text-danger small">Username cannot be empty</div>
+        }
+        @else {
+          <div class="mt-1 text-danger small">Invalid email</div>
+        }
       }
     </div>
 
@@ -25,7 +29,7 @@
     @if(error === 'No such user')
     {
       <div class="alert alert-danger mt-3" role="alert">
-        No account found. <a routerLink="/voter-signup" class="alert-link">Click here to sign up as a voter.</a>
+        No account found. <a routerLink="/signup" class="alert-link">Click here to sign up as a voter.</a>
       </div>
     }
     @if(error && error !== 'No such user')
@@ -36,6 +40,6 @@
   </form>
 
   <div class="mt-3">
-    <p>Don't have an account? <a routerLink="/voter-signup">Sign up as voter</a></p>
+    <p>Don't have an account? <a routerLink="/signup">Sign up as voter</a></p>
   </div>
 </div>

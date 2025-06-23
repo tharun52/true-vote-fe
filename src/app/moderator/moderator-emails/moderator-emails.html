@@ -1,0 +1,38 @@
+<div class="container my-4 p-4 rounded shadow bg-white border">
+  <h3 class="mb-3 text-primary">Whitelisted Emails</h3>
+  <table class="table table-bordered table-hover">
+    <thead class="table-primary" style="background-color: #2196F3; color: white;">
+      <tr>
+        <th>S.No</th>
+        <th>Email</th>
+        <th>Is Used?</th>
+        <th>Created At</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (email of emails; track $index; let i = $index) {
+        <tr>
+          <td>{{ i + 1 }}</td>
+          <td>
+            @if (email.isUsed) {
+              <a href="#" (click)="openVoterDetail(email.email, $event)">
+                {{ email.email }}
+              </a>
+            } @else {
+              <span>{{ email.email }}</span>
+            }
+          </td>
+          <td>{{ email.isUsed ? 'Yes' : 'No' }}</td>
+          <td>{{ email.createdAt | date: 'medium' }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Voter Detail Popup -->
+@if (showPopup && selectedEmail) {
+    <app-voter-detail [email]="selectedEmail" 
+  [isModerator]="true" 
+  (close)="showPopup = false"></app-voter-detail>
+}

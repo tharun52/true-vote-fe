@@ -15,12 +15,15 @@ export class Navbar {
     this.authService.logout();
   }
 
-
   get isModerator(): boolean {
-    return this.authService.getCurrentUser()?.role === 'Moderator';
+    return this.authService.getRole()?.toLowerCase() === 'moderator';
   }
 
-  get moderatorName(): string | null {
-    return this.authService.getCurrentUser()?.username || null;
+  get isVoter(): boolean {
+    return this.authService.getRole()?.toLowerCase() === 'voter';
+  }
+
+  get userName(): string {
+    return this.authService.getUsername() || '';
   }
 }
