@@ -29,7 +29,7 @@ export class AuthInterceptor implements HttpInterceptor {
         if (error.status === 401) {
           // Automatically log out on 401 Unauthorized
           // this.authService.logout();
-          alert('Session expired. Please log in again.');
+          // alert('Session expired. Please log in again.');
         }
 
         // Could extend to handle 403, 500, etc. globally if desired

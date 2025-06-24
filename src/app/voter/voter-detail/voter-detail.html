@@ -4,23 +4,46 @@
 <!-- Modal Box -->
 <div class="modal-box container p-4 rounded shadow bg-white border">
   <button class="btn-close float-end" (click)="closePopup()"></button>
+
   <h3 class="text-primary mb-3">Voter Details</h3>
 
-  @if (voter) {
+  @if (voter && !editMode) {
     <div>
       <p><strong>Name:</strong> {{ voter.name }}</p>
       <p><strong>Email:</strong> {{ voter.email }}</p>
       <p><strong>Age:</strong> {{ voter.age }}</p>
-      <p><strong>Deleted:</strong> {{ voter.isDeleted ? 'Yes' : 'No' }}</p>
+      <p>
+        @if(isModerator){
+          <strong>Deleted:</strong>
+          <span [ngClass]="voter.isDeleted ? 'text-danger' : 'text-success'">
+            {{ voter.isDeleted ? '🗑️ Deleted' : '✅ Active' }}
+          </span>
+        }
+      </p>
 
-      @if (isModerator) {
-        <div class="mt-3 d-flex gap-2">
-          <button class="btn btn-warning" (click)="editVoter()">Edit</button>
-          <button class="btn btn-danger" (click)="deleteVoter()">Delete</button>
-        </div>
-      }
+      <div class="mt-3 d-flex gap-2">
+        @if (isModerator || isVoter) {
+          <button class="btn btn-warning" (click)="editMode = true">Edit</button>
+        }
+        @if (isModerator && !voter.isDeleted) {
+          <button class="btn btn-danger" (click)="deleteAccount()">Delete</button>
+        }
+        @if(isModerator && voter.isDeleted){
+          <button class="btn btn-success" (click)="reAddVoter()">Re Add Voter</button>
+        }
+      </div>
     </div>
-  } @else {
+  } 
+   @else if (editMode && voter) {
+    <app-voter-edit-form
+    [voter]="voter"
+    [isVoter]="isVoter"
+    [isModerator]="isModerator"
+    (update)="submitEdit($event)"
+    (updateWithPassword)="submitEditWithPassword($event)"
+    (cancel)="editMode = false">
+  </app-voter-edit-form>
+} @else {
     <div>Loading...</div>
   }
 </div>

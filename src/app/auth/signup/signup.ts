@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment';
 import { AuthService } from '../auth.service';
 import { passwordMatchValidator } from '../validators/password-match.validator';
 import { ModeratorsList } from "../../moderator/moderators-list/moderators-list";
+import { passwordValidator } from '../validators/password-validator';
 
 @Component({
   selector: 'app-signup',
@@ -22,7 +23,7 @@ export class Signup {
       name: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
       age: new FormControl(null, [Validators.required, Validators.min(1)]),
-      password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+      password: new FormControl('', [Validators.required, passwordValidator]),
       confirmPassword: new FormControl('', Validators.required),
       }, 
       { validators: passwordMatchValidator }

@@ -15,4 +15,16 @@ export class VoterService {
         return this.http.get<any>(`${this.baseUrl}Voter/${email}`)
         .pipe(map(res => res.data));
     }
+
+    updateAsAdmin(voterId: string, body: any) {
+        return this.http.put(`${this.baseUrl}Voter/updateasadmin/${voterId}`, body);
+    }
+
+    updateAsVoter(body: any) {
+        return this.http.put(`${this.baseUrl}Voter/update`, body);
+    }
+
+    deleteVoter(voterId:string){
+        return this.http.delete(`${this.baseUrl}Voter/delete/${voterId}`);
+    }
 }

@@ -20,7 +20,7 @@ export class ModeratorsList {
   sortBy: string = '';
   sortDesc: boolean = false;
   page: number = 1;
-  pageSize: number = 1;
+  pageSize: number = 10;
   totalPages: number = 1; 
 
   private searchSubject = new Subject<void>();

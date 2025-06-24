@@ -32,7 +32,6 @@
 
 <!-- Voter Detail Popup -->
 @if (showPopup && selectedEmail) {
-    <app-voter-detail [email]="selectedEmail" 
-  [isModerator]="true" 
-  (close)="showPopup = false"></app-voter-detail>
+    <app-voter-detail [email]="selectedEmail" [isModerator]="true" (close)="showPopup = false">
+    </app-voter-detail>
 }

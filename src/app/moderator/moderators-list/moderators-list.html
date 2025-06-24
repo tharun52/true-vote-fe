@@ -1,19 +1,9 @@
 <div class="moderator-container mt-4">
 
   <div class="mb-3 d-flex flex-wrap gap-2 align-items-center">
-    <input
-      type="text"
-      [(ngModel)]="searchTerm"
-      (ngModelChange)="onSearchChange()"
-      class="form-control search-input"
-      placeholder="Search moderators..."
-    />
+    <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" class="form-control search-input" placeholder="Search moderators..."/>
 
-    <select
-      class="form-select sort-select"
-      [(ngModel)]="sortBy"
-      (change)="fetchModerators()"
-    >
+    <select class="form-select sort-select" [(ngModel)]="sortBy" (change)="fetchModerators()">
       <option value="">Sort By</option>
       <option value="name">Name</option>
       <option value="email">Email</option>

@@ -12,11 +12,12 @@
           <li class="nav-item">
             <a class="nav-link text-white" routerLink="/moderator/emails">Voter Emails</a>
           </li>
-          <li class="nav-item">
-            <span class="badge bg-light text-primary">
-              👤 Moderator: {{ userName }}
-            </span>
+         <li class="nav-item">
+            <a href="#" class="nav-link text-white">
+              👤 moderator: <strong>{{ userName }}</strong>
+            </a>
           </li>
+
         } @else if (isVoter) {
           <li class="nav-item">
             <a class="nav-link text-white" routerLink="/voter/moderators">Moderators</a>
@@ -24,9 +25,12 @@
           <li class="nav-item">
             <a class="nav-link text-white" routerLink="/voter/polls">Polls</a>
           </li>
-          <li class="nav-item text-white">
-            👤 Voter: <strong>{{ userName }}</strong>
+          <li class="nav-item">
+            <a href="#" class="nav-link text-white" (click)="openVoterDetail(userName, $event)">
+              👤 Voter: <strong>{{ userName }}</strong>
+            </a>
           </li>
+
         }
 
         <li class="nav-item">
@@ -40,3 +44,11 @@
     </ul>
   </div>
 </nav>
+
+@if (showPopup && selectedEmail) {
+  <app-voter-detail
+    [email]="selectedEmail"
+    [isModerator]="false"
+    (close)="showPopup = false">
+  </app-voter-detail>
+}

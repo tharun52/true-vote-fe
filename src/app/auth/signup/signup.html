@@ -31,7 +31,7 @@
       <label class="form-label">Password</label>
       <input type="password" formControlName="password" class="form-control" placeholder="Enter password">
       @if(password?.touched && password?.errors) {
-        <div class="mt-1 text-danger small">Password must be at least 8 characters</div>
+        <div class="mt-1 text-danger small">Password must be at least 8 characters and include a number</div>
       }
     </div>
 
