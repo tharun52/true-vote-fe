@@ -6,14 +6,17 @@ import { VoterHome } from './voter/voter-home/voter-home.js';
 import { Component } from '@angular/core';
 import { VoterModerators } from './voter/voter-moderators/voter-moderators.js';
 import { ModeratorEmails } from './moderator/moderator-emails/moderator-emails.js';
-import { VoterDetail } from './voter/voter-detail/voter-detail.js';
+import { AddVoterEmails } from './moderator/add-voter-emails/add-voter-emails.js';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
   //   { path: '', component: },
   { path: 'signup', component: Signup },
+  
   { path: 'moderator', component: ModeratorDashboard },
+  { path: 'moderator/emails', component: ModeratorEmails },
+  { path: 'moderator/add-emails', component: AddVoterEmails },
+
   { path: 'voter', component: VoterHome },
   { path: 'voter/moderators', component: VoterModerators },
-  { path: 'moderator/emails', component: ModeratorEmails },
 ];

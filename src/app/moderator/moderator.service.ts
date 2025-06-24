@@ -14,4 +14,10 @@ export class ModeratorService {
     return this.http.get<any>(`${this.baseUrl}Voter/moderator/emails`)
         .pipe(map(res => res.data?.$values || []));
     }
+
+    addToWhitelist(emails: string[]): Observable<any> {
+        return this.http.post(`${this.baseUrl}Voter/whitelist`, {
+            emails
+        });
+    }
 }

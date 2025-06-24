@@ -1,5 +1,12 @@
 <div class="container my-4 p-4 rounded shadow bg-white border">
-  <h3 class="mb-3 text-primary">Whitelisted Emails</h3>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="text-primary m-0">Whitelisted Emails</h3>
+    <button class="btn btn-outline-primary" [routerLink]="['/moderator/add-emails']">
+      <i class="bi bi-plus-circle-fill me-2 fs-6"></i>Add Emails
+    </button>
+
+  </div>
+
   <table class="table table-bordered table-hover">
     <thead class="table-primary" style="background-color: #2196F3; color: white;">
       <tr>
@@ -32,6 +39,6 @@
 
 <!-- Voter Detail Popup -->
 @if (showPopup && selectedEmail) {
-    <app-voter-detail [email]="selectedEmail" [isModerator]="true" (close)="showPopup = false">
-    </app-voter-detail>
+  <app-voter-detail [email]="selectedEmail" [isModerator]="true" (close)="showPopup = false">
+  </app-voter-detail>
 }
