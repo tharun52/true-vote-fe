@@ -14,24 +14,22 @@
         </li>
       }
     </ul>
-    <div class="card-footer bg-light">
-      @if (poll?.poleFileId) {
-        @if (isImage()) {
-          <div class="text-center">
-            <a [href]="getFileUrl()" download>
-              <img [src]="getFileUrl()" alt="Poll image" class="img-fluid rounded border" style="max-height: 200px;" />
-              <div class="mt-1 small text-primary">📥 Click to download image</div>
-            </a>
-          </div>
-        } @else {
-          <div class="text-center">
-            <a [href]="getFileUrl()" class="btn btn-outline-secondary btn-sm" download>
-              📎 Download Attached File
-            </a>
-          </div>
-        }
-      }
+    @if (poll?.poleFileId && hasFileType) {
+  @if (isImageFile) {
+    <div class="text-center">
+      <a [href]="getFileUrl()" download>
+        <img [src]="getFileUrl()" alt="Poll image" class="img-fluid rounded border" style="max-height: 200px;" />
+        <div class="mt-1 small text-primary">📥 Click to download image</div>
+      </a>
     </div>
+  } @else {
+    <div class="text-center">
+      <a [href]="getFileUrl()" class="btn btn-outline-secondary btn-sm" download>
+        📎 Download Attached File
+      </a>
+    </div>
+  }
+}
 
     <p class="text-muted small mb-0">
       🗓 <strong>Start:</strong> {{ poll?.startDate }} &nbsp; 

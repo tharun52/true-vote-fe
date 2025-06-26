@@ -45,4 +45,15 @@ export class PollService {
   getPollFileUrl(fileId: string): string {
     return `${this.baseUrl}File/${fileId}`;
   }
+
+  getFileMetadata(fileId: string): Observable<string> {
+    return this.http
+      .get(`${this.baseUrl}File/${fileId}`, {
+        observe: 'response',
+        responseType: 'blob' as 'json' 
+      })
+      .pipe(
+        map(response => response.headers.get('Content-Type') || '')
+      );
+  }
 }

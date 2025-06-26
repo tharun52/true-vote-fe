@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { PollService } from '../poll.service';
 
 @Component({
@@ -7,16 +7,31 @@ import { PollService } from '../poll.service';
   templateUrl: './poll-card.html',
   styleUrl: './poll-card.css'
 })
-export class PollCard {
+export class PollCard implements OnInit {
   @Input() poll: any;
-  constructor(private pollService:PollService){
+
+  isImageFile: boolean = false;
+  hasFileType: boolean = false; // controls when to render at all
+
+  constructor(private pollService: PollService) {}
+
+  ngOnInit(): void {
+    if (this.poll?.poleFileId) {
+      this.pollService.getFileMetadata(this.poll.poleFileId).subscribe({
+        next: (type: string) => {
+          this.hasFileType = true;
+          this.isImageFile = type.startsWith('image/');
+        },
+        error: (err) => {
+          console.error('Error fetching content type:', err);
+          this.hasFileType = true;
+          this.isImageFile = false;
+        }
+      });
+    }
   }
+
   getFileUrl(): string {
     return this.pollService.getPollFileUrl(this.poll?.poleFileId);
-  }
-  isImage(): boolean {
-    const fileId = this.poll.poleFileId.toLowerCase();
-    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
-    return imageExtensions.some(ext => fileId.endsWith(ext));
   }
 }
