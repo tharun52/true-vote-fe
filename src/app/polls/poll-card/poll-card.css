@@ -1,0 +1,13 @@
+.card-header {
+  background-color: #2196F3 !important;
+  color: white !important;
+  border-bottom: none;
+}
+
+.card {
+  border-radius: 0.75rem;
+}
+
+.card-body {
+  padding: 1rem 1.25rem;
+}

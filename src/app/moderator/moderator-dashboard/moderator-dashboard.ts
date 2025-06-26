@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ModeratorModel } from '../../models/ModeratorModel';
 import { AuthService } from '../../auth/auth.service';
+import { PollsList } from "../../polls/polls-list/polls-list";
 
 @Component({
   selector: 'app-moderator-dashboard',
-  imports: [],
+  imports: [PollsList],
   templateUrl: './moderator-dashboard.html',
   styleUrl: './moderator-dashboard.css'
 })

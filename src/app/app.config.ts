@@ -7,6 +7,7 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@a
 import { VoterService } from './voter/voter.service';
 import { ModeratorService } from './moderator/moderator.service';
 import { AuthInterceptor } from './auth/auth-interceptor';
+import { PollService } from './polls/poll.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,6 +23,7 @@ export const appConfig: ApplicationConfig = {
             multi:true
         },
     VoterService,
-    ModeratorService
+    ModeratorService,
+    PollService
   ]
 };
