@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { ModeratorModel } from '../../models/ModeratorModel';
+import { ModeratorModel, ModeratorQueryDto } from '../../models/ModeratorModel';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Subject, debounceTime } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { NgClass } from '@angular/common';
+import { ModeratorService } from '../moderator.service';
 
 @Component({
   selector: 'app-moderators-list',
@@ -13,7 +14,7 @@ import { NgClass } from '@angular/common';
   styleUrl: './moderators-list.css'
 })
 export class ModeratorsList {
-  moderators: ModeratorModel[] = [];
+   moderators: ModeratorModel[] = [];
   error: string | null = null;
 
   searchTerm: string = '';
@@ -21,11 +22,11 @@ export class ModeratorsList {
   sortDesc: boolean = false;
   page: number = 1;
   pageSize: number = 10;
-  totalPages: number = 1; 
+  totalPages: number = 1;
 
   private searchSubject = new Subject<void>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private moderatorService: ModeratorService) {}
 
   ngOnInit() {
     this.searchSubject.pipe(debounceTime(400)).subscribe(() => {
@@ -46,25 +47,25 @@ export class ModeratorsList {
   }
 
   fetchModerators() {
-    const params = new HttpParams()
-      .set('SearchTerm', this.searchTerm)
-      .set('SortBy', this.sortBy)
-      .set('SortDesc', this.sortDesc)
-      .set('Page', this.page)
-      .set('PageSize', this.pageSize)
-      .set('IsDeleted', 'false');
+    const query = new ModeratorQueryDto(
+      this.searchTerm,
+      this.sortBy,
+      this.sortDesc,
+      this.page,
+      this.pageSize,
+      false
+    );
 
-    this.http.get<any>(`${environment.apiBaseUrl}Moderator/query`, { params }).subscribe({
+    this.moderatorService.getModerators(query).subscribe({
       next: (response) => {
-        const rawList = response?.data?.data?.$values || [];
-        this.moderators = rawList;
-        this.totalPages = response?.data?.pagination?.totalPages || 1;
+        this.moderators = response.data;
+        this.totalPages = response.pagination.totalPages;
         this.error = null;
       },
       error: () => {
         this.error = 'Failed to load moderators.';
         this.moderators = [];
-      },
+      }
     });
   }
 

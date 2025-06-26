@@ -12,10 +12,9 @@ import { PollCard } from "../poll-card/poll-card";
   styleUrl: './polls-list.css'
 })
 export class PollsList implements OnInit {
-  @Input() createdByEmail:string|null = '';
+  @Input() createdByEmail: string | null = '';
 
   polls: PollResponseItemModel[] = [];
-
   searchControl = new FormControl('');
   sortBy = '';
   sortDesc = false;
@@ -23,8 +22,8 @@ export class PollsList implements OnInit {
   startDateTo = '';
   page = 1;
   pageSize = 10;
-  totalPages: number = 1; 
-  
+  totalPages: number = 1;
+
   loading: boolean = true;
   errorMessage: string | null = null;
 
@@ -33,17 +32,11 @@ export class PollsList implements OnInit {
   ngOnInit(): void {
     this.searchControl.valueChanges
       .pipe(debounceTime(400), delay(5000))
-      .subscribe({
-        next:()=> {
+      .subscribe(() => {
         this.page = 1;
-        this.loading= false;
         this.loadPolls();
-       },
-       error:()=>{
-
-       }
       });
-    this.loading = true; 
+
     this.loadPolls();
   }
 
@@ -61,15 +54,16 @@ export class PollsList implements OnInit {
 
     this.errorMessage = null;
     this.loading = true;
-    
+
     this.pollService.getPolls(query).subscribe({
-      next:(data:any) => {
-        this.polls = data;
+      next: response => {
+        this.polls = response.data;
+        this.totalPages = response.pagination.totalPages;
         this.loading = false;
       },
-      error: (err) => {
-         console.error("Error loading polls:", err);
-        this.errorMessage = "Failed to load polls. Please try again.";
+      error: err => {
+        console.error('Error loading polls:', err);
+        this.errorMessage = 'Failed to load polls. Please try again.';
         this.loading = false;
       }
     });
@@ -87,7 +81,6 @@ export class PollsList implements OnInit {
     this.startDateTo = '';
     this.page = 1;
     this.searchControl.setValue('');
-    this.loading = true;
     this.loadPolls();
   }
 }
