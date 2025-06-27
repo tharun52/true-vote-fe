@@ -8,6 +8,7 @@ import { VoterService } from './voter/voter.service';
 import { ModeratorService } from './moderator/moderator.service';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { PollService } from './polls/poll.service';
+import { ToastService } from './shared/ToastService';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,6 +25,7 @@ export const appConfig: ApplicationConfig = {
         },
     VoterService,
     ModeratorService,
-    PollService
+    PollService,
+    ToastService
   ]
 };

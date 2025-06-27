@@ -1,1 +1,12 @@
+<div class="polls-wrapper mx-auto">
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <h5 class="mb-0">
+      <i class="bi bi-bar-chart-steps me-2"></i>Polls Created by You
+    </h5>
+    @if (isModerator) {
+        <button class="btn btn-accent" routerLink="/moderator/addpoll">
+            <i class="bi bi-plus-circle me-1"></i> Add Poll
+        </button>
+    }
+</div>
 <app-polls-list [createdByEmail]="username"></app-polls-list>

@@ -7,22 +7,21 @@ import { ModeratorModel, ModeratorQueryDto } from "../models/ModeratorModel";
 import { ApiResponse, PagedResponse } from "../models/ResponseModes";
 
 @Injectable()
-export class ModeratorService { 
-    private baseUrl = environment.apiBaseUrl;
-    
-    constructor(private http:HttpClient)
-    {}
-    getModeratorEmails(): Observable<VoterEmailModel[]> {
-    return this.http.get<any>(`${this.baseUrl}Voter/moderator/emails`)
-        .pipe(map(res => res.data?.$values || []));
-    }
+export class ModeratorService {
+  private baseUrl = environment.apiBaseUrl;
 
-    addToWhitelist(emails: string[]): Observable<any> {
-        return this.http.post(`${this.baseUrl}Voter/whitelist`, {
-            emails
-        });
-    }
- getModerators(query: ModeratorQueryDto): Observable<PagedResponse<ModeratorModel>> {
+  constructor(private http: HttpClient) { }
+  getModeratorEmails(): Observable<VoterEmailModel[]> {
+    return this.http.get<any>(`${this.baseUrl}Voter/moderator/emails`)
+      .pipe(map(res => res.data?.$values || []));
+  }
+
+  addToWhitelist(emails: string[]): Observable<any> {
+    return this.http.post(`${this.baseUrl}Voter/whitelist`, {
+      emails
+    });
+  }
+  getModerators(query: ModeratorQueryDto): Observable<PagedResponse<ModeratorModel>> {
     let params = new HttpParams();
 
     if (query.searchTerm) params = params.set('SearchTerm', query.searchTerm);

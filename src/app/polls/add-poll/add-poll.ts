@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormArray, FormsModule, ReactiveFor
 import { PollService } from '../poll.service';
 import { start } from '@popperjs/core';
 import { Router } from '@angular/router';
+import { ToastService } from '../../shared/ToastService';
 
 @Component({
   selector: 'app-add-poll',
@@ -15,7 +16,7 @@ export class AddPoll {
   pollFile: File | null = null;
   responseMessage = '';
 
-  constructor(private fb: FormBuilder, private pollService: PollService, private router:Router) {
+  constructor(private fb: FormBuilder, private pollService: PollService, private router:Router, private toastService:ToastService) {
     this.pollForm = new FormGroup({
       title: new FormControl('', Validators.required),
       description: new FormControl(),
@@ -80,6 +81,7 @@ export class AddPoll {
         this.optionTexts.clear();
         this.addOption();
         this.addOption();
+        this.toastService.show('Poll Created', 'Poll created successfully!', false);
         this.router.navigateByUrl('moderator/polls');
       },
       error: (err) => {

@@ -3,6 +3,8 @@ import { VoterModel } from '../../models/VoterModel';
 import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { passwordMatchValidator } from '../../auth/validators/password-match.validator';
 import { passwordValidator } from '../../auth/validators/password-validator';
+import { ToastService } from '../../shared/ToastService';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-voter-edit-form',
@@ -11,7 +13,7 @@ import { passwordValidator } from '../../auth/validators/password-validator';
   styleUrl: './voter-edit-form.css'
 })
 export class VoterEditForm {
-    @Input() voter!: VoterModel;
+  @Input() voter!: VoterModel;
   @Input() isVoter: boolean = false;
   @Input() isModerator: boolean = false;
 
@@ -22,6 +24,8 @@ export class VoterEditForm {
   form!: FormGroup;
   changePasswordMode = false;
 
+  constructor(private toastService:ToastService, private authService:AuthService)
+  {}
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl(this.voter.name, Validators.required),
@@ -46,6 +50,7 @@ export class VoterEditForm {
 
     const { name, age } = this.form.value;
     this.update.emit({ name, age });
+    this.toastService.show('Voter Update', 'Voter details have been updated successfully!', false);
   }
 
   onUpdateWithPassword(): void {
@@ -53,6 +58,8 @@ export class VoterEditForm {
 
     const { name, age, newPassword } = this.form.value;
     this.updateWithPassword.emit({ name, age, newPassword });
+    this.toastService.show('Password Change', 'Password has been changed successfully!', false);
+    this.authService.logout();
   }
 
   get name() { return this.form.get('name'); }

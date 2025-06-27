@@ -1,0 +1,23 @@
+.polls-wrapper {
+  width: 80%;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-accent {
+  background-color: var(--content-accent);
+  color: white;
+  border: none;
+  padding: 0.45rem 1rem;
+  border-radius: 0.4rem;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-accent:hover {
+  background-color: var(--nav-btn-hover);
+  transform: scale(1.03);
+  color: var(--content-text);
+}

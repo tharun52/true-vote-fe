@@ -118,7 +118,7 @@ export class VoterDetail {
       next: () => {
         alert('Voter account deleted successfully.');
         // this.closePopup();
-        this.refreshData
+        this.refreshData();
       },
       error: (err) => {
         console.error('Delete failed', err);
@@ -148,5 +148,4 @@ export class VoterDetail {
       }
     });
   }
-
 }

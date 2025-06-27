@@ -4,6 +4,8 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime} from 'rxjs';
 import { PollService } from '../poll.service';
 import { PollCard } from "../poll-card/poll-card";
+import { AuthService } from '../../auth/auth.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-polls-list',
@@ -27,7 +29,7 @@ export class PollsList implements OnInit {
   loading: boolean = true;
   errorMessage: string | null = null;
 
-  constructor(private pollService: PollService) {}
+  constructor(private pollService: PollService, private authService:AuthService) {}
 
   ngOnInit(): void {
     this.searchControl.valueChanges
@@ -73,7 +75,19 @@ export class PollsList implements OnInit {
     this.page += offset;
     this.loadPolls();
   }
+  previousPage() {
+    if (this.page > 1) {
+      this.page--;
+      this.loadPolls();
+    }
+  }
 
+  nextPage() {
+    if (this.page < this.totalPages) {
+      this.page++;
+      this.loadPolls();
+    }
+  }
   resetFilters(): void {
     this.sortBy = '';
     this.sortDesc = false;
@@ -94,5 +108,7 @@ export class PollsList implements OnInit {
     link.click();
     document.body.removeChild(link);
   }
-
+  get isModerator(): boolean {
+    return this.authService.getRole()?.toLowerCase() === 'moderator';
+  }
 }
