@@ -10,6 +10,7 @@ import { AdimHome } from './admin/adim-home/adim-home.js';
 import { HomePage } from './shared/home-page/home-page.js';
 import { authGuard } from './auth-guard.js';
 import { ModeratorPolls } from './moderator/moderator-polls/moderator-polls.js';
+import { AddPoll } from './polls/add-poll/add-poll.js';
 
 export const routes: Routes = [
   { path: '', component: HomePage },
@@ -21,7 +22,7 @@ export const routes: Routes = [
   { path: 'moderator/emails', component: ModeratorEmails, canActivate: [authGuard], data: { expectedRole: 'Moderator' } },
   { path: 'moderator/add-emails', component: AddVoterEmails, canActivate: [authGuard], data: { expectedRole: 'Moderator' } },
   { path: 'moderator/polls', component: ModeratorPolls, canActivate: [authGuard], data: { expectedRole: 'Moderator' } },
-
+  { path: 'moderator/addpoll', component: AddPoll, canActivate: [authGuard], data: { expectedRole: 'Moderator' } },
 
   { path: 'voter', component: VoterHome, canActivate: [authGuard], data: { expectedRole: 'Voter' } },
   { path: 'voter/moderators', component: VoterModerators, canActivate: [authGuard], data: { expectedRole: 'Voter' } },

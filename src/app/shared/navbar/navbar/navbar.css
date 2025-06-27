@@ -1,36 +1,122 @@
-/* navbar.component.css */
-.truevote-navbar {
-  background: linear-gradient(to right, #2196F3, #64B5F6);
-  padding: 1rem 2rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+.navbar {
+  background-color: var(--nav-bg) !important;
+  color: var(--nav-text);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.truevote-navbar .navbar-brand {
-  font-size: 1.6rem;
-  color: #ffffff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.truevote-navbar .navbar-nav .nav-link {
-  color: #ffffff;
-  font-weight: 500;
+/* Typography */
+.navbar .navbar-brand,
+.navbar .nav-link {
+  color: var(--nav-text) !important;
   transition: color 0.3s ease;
 }
 
-.truevote-navbar .navbar-nav .nav-link:hover {
-  color: #BBDEFB;
+.navbar .navbar-brand:hover,
+.navbar .nav-link:hover {
+  color: var(--nav-accent) !important;
+  text-decoration: none;
 }
 
-.truevote-navbar .btn-outline-light:hover {
-  background-color: #ffffff;
-  color: #2196F3;
+/* === Button Styling to Look Like Nav Items === */
+.navbar .nav-btn {
+  background-color: var(--nav-accent);
+  color: black;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.3rem 0;
+  width: 100%;
 }
 
-.truevote-navbar .btn-light:hover {
-  background-color: #e3f2fd;
+@media (min-width: 992px) {
+  .navbar .nav-btn {
+    width: auto;
+    margin: 0;
+  }
 }
 
-.truevote-navbar .badge {
-  font-size: 0.85rem;
-  padding: 0.5em 0.75em;
+.navbar .nav-btn:hover {
+  background-color:var(--nav-btn-hover);
+  opacity: 0.9;
+}
+
+/* Toggler */
+.custom-toggler {
+  border: none !important;
+  outline: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  padding: 0.25rem 0.5rem;
+}
+.custom-toggler i {
+  font-size: 1.6rem;
+  color: var(--nav-text);
+}
+
+/* Slide menu for mobile */
+.slide-menu {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  height: 100%;
+  width: 300px;
+  background-color: var(--nav-bg);
+  color: var(--nav-text);
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.3);
+  z-index: 1050;
+  transition: right 0.3s ease-in-out;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.slide-menu.open {
+  right: 0;
+}
+@media (min-width: 992px) {
+  .slide-menu {
+    position: static;
+    width: auto;
+    height: auto;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+    flex-direction: row;
+    right: 0 !important;
+  }
+}
+
+/* Close button */
+.btn-close-menu {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--nav-text);
+  cursor: pointer;
+}
+.btn-close-menu:hover {
+  color: var(--nav-accent);
+}
+
+/* Nav link padding */
+.slide-menu .nav-item {
+  width: 100%;
+}
+.slide-menu .nav-link {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  color: var(--nav-text);
+  border-left: 3px solid transparent;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.slide-menu .nav-link:hover {
+  border-left: 3px solid var(--nav-accent);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--nav-text);
 }

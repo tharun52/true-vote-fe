@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { ModeratorModel } from '../../models/ModeratorModel';
 import { AuthService } from '../../auth/auth.service';
 import { PollsList } from "../../polls/polls-list/polls-list";
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-moderator-dashboard',
-  imports: [PollsList],
+  imports: [PollsList, RouterLink],
   templateUrl: './moderator-dashboard.html',
   styleUrl: './moderator-dashboard.css'
 })

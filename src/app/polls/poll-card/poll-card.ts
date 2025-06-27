@@ -34,4 +34,14 @@ export class PollCard implements OnInit {
   getFileUrl(): string {
     return this.pollService.getPollFileUrl(this.poll?.poleFileId);
   }
+  downloadFile(event: Event) {
+    event.preventDefault();
+    const link = document.createElement('a');
+    link.href = this.getFileUrl();
+    link.download = '';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
 }

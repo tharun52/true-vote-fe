@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PollQueryDto, PollResponseItemModel} from '../../models/PollModels';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, delay } from 'rxjs';
+import { debounceTime} from 'rxjs';
 import { PollService } from '../poll.service';
 import { PollCard } from "../poll-card/poll-card";
 
@@ -31,7 +31,7 @@ export class PollsList implements OnInit {
 
   ngOnInit(): void {
     this.searchControl.valueChanges
-      .pipe(debounceTime(400), delay(5000))
+      .pipe(debounceTime(400))
       .subscribe(() => {
         this.page = 1;
         this.loadPolls();
@@ -83,4 +83,16 @@ export class PollsList implements OnInit {
     this.searchControl.setValue('');
     this.loadPolls();
   }
+  
+  downloadFile(event: Event, fileId:string): void {
+    event.preventDefault();
+
+    const link = document.createElement('a');
+    link.href = this.pollService.getPollFileUrl(fileId);
+    link.download = '';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
 }

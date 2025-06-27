@@ -1,38 +1,45 @@
-<div class="card shadow-sm border border-light mb-3">
-  <div class="card-header bg-primary text-white">
-    <h5 class="mb-0">{{ poll?.title }}</h5>
+<div class="poll-card card shadow-sm mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="mb-0 fw-semibold">
+      <i class="bi bi-bar-chart-fill me-1"></i> {{ poll?.title }}
+    </h5>
   </div>
 
+  
   <div class="card-body">
-    <p class="card-text text-muted mb-2">{{ poll?.description }}</p>
+    <p class="card-text text-muted mb-3 fs-6">{{ poll?.description }}</p>
 
     <ul class="list-group list-group-flush mb-3">
       @for (option of poll?.pollOptions?.$values; track option.id) {
         <li class="list-group-item d-flex justify-content-between align-items-center">
-          {{ option.optionText }}
-          <span class="badge bg-info text-dark">{{ option.voteCount }} votes</span>
+          <span>{{ option.optionText }}</span>
+          <span class="vote-badge">
+            {{ option.voteCount }} votes
+          </span>
         </li>
       }
     </ul>
-    @if (poll?.poleFileId && hasFileType) {
-  @if (isImageFile) {
-    <div class="text-center">
-      <a [href]="getFileUrl()" download>
-        <img [src]="getFileUrl()" alt="Poll image" class="img-fluid rounded border" style="max-height: 200px;" />
-        <div class="mt-1 small text-primary">📥 Click to download image</div>
-      </a>
-    </div>
-  } @else {
-    <div class="text-center">
-      <a [href]="getFileUrl()" class="btn btn-outline-secondary btn-sm" download>
-        📎 Download Attached File
-      </a>
-    </div>
-  }
-}
 
-    <p class="text-muted small mb-0">
-      🗓 <strong>Start:</strong> {{ poll?.startDate }} &nbsp; 
+    @if (poll?.poleFileId && hasFileType) {
+      @if (isImageFile) {
+        <div class="poll-image-container text-center position-relative">
+          <img [src]="getFileUrl()" alt="Poll image" class="img-fluid rounded border" />
+          <button class="download-btn btn btn-primary btn-sm" (click)="downloadFile($event)">
+            <i class="bi bi-download me-1"></i>Download
+          </button>
+        </div>
+      } @else {
+        <div class="text-center">
+          <a [href]="getFileUrl()" class="btn btn-outline-secondary btn-sm" download>
+            <i class="bi bi-paperclip me-1"></i>Download Attached File
+          </a>
+        </div>
+      }
+    }
+
+    <p class="text-muted small mt-3">
+      <i class="bi bi-calendar2-week"></i>
+      <strong>Start:</strong> {{ poll?.startDate }} &nbsp;
       <strong>End:</strong> {{ poll?.endDate }}
     </p>
   </div>

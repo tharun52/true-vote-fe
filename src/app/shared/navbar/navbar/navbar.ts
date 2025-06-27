@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../../auth/auth.service';
 import { RouterLink } from '@angular/router';
 import { VoterDetail } from "../../../voter/voter-detail/voter-detail";
+import { ThemeService } from '../../ThemeService';
 
 @Component({
   selector: 'app-navbar',
@@ -9,14 +10,20 @@ import { VoterDetail } from "../../../voter/voter-detail/voter-detail";
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })
+
 export class Navbar {
   showPopup = false;
   selectedEmail: string | null = null;
+  isMenuOpen = false;
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService, private themeService:ThemeService) {}
 
   logout() {
     this.authService.logout();
+  }
+
+  get isAdmin(): boolean {
+    return this.authService.getRole()?.toLowerCase() === 'admin';
   }
 
   get isModerator(): boolean {
@@ -35,5 +42,13 @@ export class Navbar {
     event.preventDefault();
     this.selectedEmail = email;
     this.showPopup = true;
+  }
+
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggleTheme();
   }
 }
