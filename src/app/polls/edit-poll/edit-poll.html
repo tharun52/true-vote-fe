@@ -1,7 +1,10 @@
 <form [formGroup]="pollForm" (ngSubmit)="submit()" enctype="multipart/form-data" class="card p-3 shadow-sm border mt-3">
   <div class="mb-2">
-    <label class="form-label">Title</label>
+    <label class="form-label">Title *</label>
     <input type="text" formControlName="title" class="form-control" />
+    @if (title?.touched && title?.errors) {
+      <div class="text-danger small mt-1">Title is required</div>
+    }
   </div>
 
   <div class="mb-2">
@@ -12,11 +15,22 @@
   <div class="mb-2">
     <label class="form-label">Start Date</label>
     <input type="date" formControlName="startDate" class="form-control" />
+    @if (startDate?.touched && startDate?.errors) {
+      <div class="text-danger small mt-1">Start Date is required</div>
+    }
   </div>
 
   <div class="mb-2">
     <label class="form-label">End Date</label>
     <input type="date" formControlName="endDate" class="form-control" />
+    @if (endDate?.touched && endDate?.errors) {
+      @if (endDate?.errors?.['endDatePastError']) {
+        <div class="text-danger small mt-1">End Date Cannot be before today</div>
+      }
+      @if (endDate?.errors?.['required']) {
+        <div class="text-danger small mt-1">End Date is required</div>
+      }
+    }
   </div>
 
   <div class="mb-2" formArrayName="optionTexts">
@@ -26,11 +40,15 @@
             <input [formControlName]="i" class="form-control" />
             @if (optionTexts.length > 2) {
                 <button type="button" class="btn btn-outline-danger btn-sm"  (click)="removeOption(i)">
+                  <i class="bi bi-x-lg"></i>
                 </button>
             }
+            @if (option.invalid && (option.touched || option.dirty)) {
+              <div class="invalid-feedback d-block">Option text is required.</div>
+            }
         </div>
-        <button type="button" class="btn btn-outline-primary btn-sm" (click)="addOption()">+ Add Option</button>
-    }
+      }
+      <button type="button" class="btn btn-outline-primary btn-sm" (click)="addOption()">+ Add Option</button>
   </div>
 
   <div class="mb-2">

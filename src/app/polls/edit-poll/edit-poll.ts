@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PollService } from '../poll.service';
+import { endDateValidator } from '../../auth/validators/end-date-validator';
 
 @Component({
   selector: 'app-edit-poll',
@@ -16,15 +17,24 @@ export class EditPoll {
   responseMessage = '';
   file: File | null = null;
 
+  
+  public get title() {return this.pollForm.get('title');}
+  public get startDate() {return this.pollForm.get('startDate');}
+  public get endDate() {return this.pollForm.get('endDate');}
+  
   constructor(private fb: FormBuilder, private pollService: PollService) {}
-
+  
   ngOnInit(): void {
-    this.pollForm = this.fb.group({
-      title: [this.poll?.title, Validators.required],
-      description: [this.poll?.description],
-      startDate: [this.poll?.startDate, Validators.required],
-      endDate: [this.poll?.endDate, Validators.required],
-      optionTexts: this.fb.array([]),
+    const startDate = this.formatDate(this.poll.startDate);
+    const endDate = this.formatDate(this.poll.endDate);
+    console.log(this.poll.startDate);
+    console.log(this.poll.endDate);
+    this.pollForm = new FormGroup({
+      title: new FormControl(this.poll.title, Validators.required),
+      description: new FormControl(this.poll.description),
+      startDate: new FormControl(startDate, Validators.required),
+      endDate: new FormControl(endDate, [Validators.required, endDateValidator]),
+      optionTexts: new FormArray([])
     });
 
     const optionsArray = this.pollForm.get('optionTexts') as FormArray;
@@ -38,7 +48,7 @@ export class EditPoll {
   }
 
   addOption() {
-    this.optionTexts.push(new FormControl('', Validators.required));
+    this.optionTexts.push(this.fb.control('', Validators.required));
   }
 
   removeOption(index: number) {
@@ -77,11 +87,20 @@ export class EditPoll {
       next: (res: any) => {
         this.responseMessage = '✅ Poll updated successfully!';
         this.updated.emit(res.data);
+
       },
       error: (err) => {
         this.responseMessage =
           err?.error?.message || '❌ Failed to update poll.';
       },
     });
+  }
+
+  private formatDate(date: string | Date): string {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }

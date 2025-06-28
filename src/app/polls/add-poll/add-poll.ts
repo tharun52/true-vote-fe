@@ -4,6 +4,7 @@ import { PollService } from '../poll.service';
 import { start } from '@popperjs/core';
 import { Router } from '@angular/router';
 import { ToastService } from '../../shared/ToastService';
+import { endDateValidator } from '../../auth/validators/end-date-validator';
 
 @Component({
   selector: 'app-add-poll',
@@ -21,7 +22,7 @@ export class AddPoll {
       title: new FormControl('', Validators.required),
       description: new FormControl(),
       startDate: new FormControl('', Validators.required),
-      endDate: new FormControl('', Validators.required),
+      endDate: new FormControl('', [Validators.required, endDateValidator]),
       optionTexts: new FormArray([
         new FormControl('', Validators.required),
         new FormControl('', Validators.required)
