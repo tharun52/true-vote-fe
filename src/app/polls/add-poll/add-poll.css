@@ -11,7 +11,7 @@
 
 .poll-form .form-label {
   font-weight: 600;
-  color: var(--content-accent);
+  color: var(--content-text);
 }
 
 .poll-form .form-control {

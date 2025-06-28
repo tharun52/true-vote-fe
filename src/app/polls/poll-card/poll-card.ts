@@ -1,19 +1,23 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PollService } from '../poll.service';
+import { AuthService } from '../../auth/auth.service';
+import { EditPoll } from '../edit-poll/edit-poll';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-poll-card',
-  imports: [],
+  imports: [EditPoll, DatePipe],
   templateUrl: './poll-card.html',
   styleUrl: './poll-card.css'
 })
 export class PollCard implements OnInit {
   @Input() poll: any;
+  showEdit = false;
 
   isImageFile: boolean = false;
-  hasFileType: boolean = false; // controls when to render at all
+  hasFileType: boolean = false;
 
-  constructor(private pollService: PollService) {}
+  constructor(private pollService: PollService, private authService:AuthService) {}
 
   ngOnInit(): void {
     if (this.poll?.poleFileId) {
@@ -34,6 +38,7 @@ export class PollCard implements OnInit {
   getFileUrl(): string {
     return this.pollService.getPollFileUrl(this.poll?.poleFileId);
   }
+
   downloadFile(event: Event) {
     event.preventDefault();
     const link = document.createElement('a');
@@ -44,4 +49,12 @@ export class PollCard implements OnInit {
     document.body.removeChild(link);
   }
 
+  handlePollUpdate(updatedPoll: any) {
+    this.poll = updatedPoll;
+    this.showEdit = false;
+  }
+  
+  isModerator(){
+    return this.authService.getRole() == 'Moderator';
+  }
 }

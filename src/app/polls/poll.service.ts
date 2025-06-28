@@ -14,7 +14,7 @@ export class PollService {
   addPoll(formData: FormData): Observable<any> {
     return this.http.post(`${this.baseUrl}Poll/add`, formData);
   }
-  
+
   getPolls(query: PollQueryDto): Observable<PagedResponse<PollResponseItemModel>> {
     let params = new HttpParams();
 
@@ -24,6 +24,9 @@ export class PollService {
     if (query.startDateFrom) params = params.set('StartDateFrom', query.startDateFrom);
     if (query.startDateTo) params = params.set('StartDateTo', query.startDateTo);
     if (query.createdByEmail) params = params.set('CreatedByEmail', query.createdByEmail);
+
+    if (query.VoterId) params = params.set('VoterId', query.VoterId);          // ✅ Add this
+    if (query.ForVoting !== undefined) params = params.set('ForVoting', query.ForVoting.toString()); // ✅ Add this
 
     params = params.set('Page', (query.page || 1).toString());
     params = params.set('PageSize', (query.pageSize || 10).toString());
@@ -45,6 +48,10 @@ export class PollService {
       );
   }
 
+  updatePoll(pollId: string, formData: FormData) {
+    return this.http.put(`${this.baseUrl}Poll/update/${pollId}`, formData);
+  }
+
 
   getPollFileUrl(fileId: string): string {
     return `${this.baseUrl}File/${fileId}`;
@@ -54,7 +61,7 @@ export class PollService {
     return this.http
       .get(`${this.baseUrl}File/${fileId}`, {
         observe: 'response',
-        responseType: 'blob' as 'json' 
+        responseType: 'blob' as 'json'
       })
       .pipe(
         map(response => response.headers.get('Content-Type') || '')

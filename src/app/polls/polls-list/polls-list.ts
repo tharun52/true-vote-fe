@@ -5,7 +5,6 @@ import { debounceTime} from 'rxjs';
 import { PollService } from '../poll.service';
 import { PollCard } from "../poll-card/poll-card";
 import { AuthService } from '../../auth/auth.service';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-polls-list',
@@ -15,6 +14,8 @@ import { RouterLink } from '@angular/router';
 })
 export class PollsList implements OnInit {
   @Input() createdByEmail: string | null = '';
+  @Input() VoterId: string | null = '';
+  @Input() ForVoting: boolean = false;
 
   polls: PollResponseItemModel[] = [];
   searchControl = new FormControl('');
@@ -51,7 +52,9 @@ export class PollsList implements OnInit {
       startDateTo: this.startDateTo || undefined,
       page: this.page,
       pageSize: this.pageSize,
-      createdByEmail: this.createdByEmail || undefined
+      createdByEmail: this.createdByEmail || undefined,
+      VoterId: this.VoterId || undefined,
+      ForVoting: this.ForVoting
     };
 
     this.errorMessage = null;

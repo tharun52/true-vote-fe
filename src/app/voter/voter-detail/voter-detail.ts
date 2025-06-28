@@ -7,10 +7,11 @@ import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModu
 import { passwordMatchValidator } from '../../auth/validators/password-match.validator';
 import { passwordValidator } from '../../auth/validators/password-validator';
 import { VoterEditForm } from "../voter-edit-form/voter-edit-form";
+import { PollsList } from '../../polls/polls-list/polls-list';
 
 @Component({
   selector: 'app-voter-detail',
-  imports: [NgClass, FormsModule, ReactiveFormsModule, VoterEditForm],
+  imports: [NgClass, FormsModule, ReactiveFormsModule, VoterEditForm, PollsList],
   templateUrl: './voter-detail.html',
   styleUrl: './voter-detail.css',
   standalone: true
@@ -23,9 +24,12 @@ export class VoterDetail {
   voter: VoterModel | null = null;
   isVoter = false;
   editMode = false;
+  prevPollsMode = false;
   changePasswordMode = false;
 
   editForm!: FormGroup;
+
+  voterId: string = '';
 
   constructor(
     private voterService: VoterService,
@@ -40,6 +44,7 @@ export class VoterDetail {
       this.voterService.getVoterByEmail(this.email).subscribe(data => {
         this.voter = data;
         this.initForm(data);
+        this.voterId = data.id;
       });
     }
   }
@@ -108,6 +113,7 @@ export class VoterDetail {
     this.close.emit();
   }
 
+  
   deleteAccount(): void {
     if (!this.voter) return;
 
@@ -117,7 +123,6 @@ export class VoterDetail {
     this.voterService.deleteVoter(this.voter.id).subscribe({
       next: () => {
         alert('Voter account deleted successfully.');
-        // this.closePopup();
         this.refreshData();
       },
       error: (err) => {

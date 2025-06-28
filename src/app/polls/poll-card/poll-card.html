@@ -3,11 +3,20 @@
     <h5 class="mb-0 fw-semibold">
       <i class="bi bi-bar-chart-fill me-1"></i> {{ poll?.title }}
     </h5>
+    @if (isModerator()) {
+      <div class="text-end mb-2">
+        <button class="btn btn-accent-outline btn-sm" (click)="showEdit = !showEdit">
+          <i class="bi bi-pencil-square me-1"></i> Edit
+        </button>
+      </div>
+    }
   </div>
 
   
   <div class="card-body">
-    <p class="card-text text-muted mb-3 fs-6">{{ poll?.description }}</p>
+    <p class="poll-description mb-3">
+      <i class="bi bi-info-circle-fill me-1"></i> {{ poll?.description }}
+    </p>
 
     <ul class="list-group list-group-flush mb-3">
       @for (option of poll?.pollOptions?.$values; track option.id) {
@@ -36,11 +45,21 @@
         </div>
       }
     }
-
-    <p class="text-muted small mt-3">
-      <i class="bi bi-calendar2-week"></i>
-      <strong>Start:</strong> {{ poll?.startDate }} &nbsp;
-      <strong>End:</strong> {{ poll?.endDate }}
-    </p>
+    <div class="poll-date text-muted small mt-3 d-flex align-items-center gap-3">
+      <span>
+        <i class="bi bi-calendar-check-fill me-1"></i>
+        <strong>Start:</strong> {{ poll?.startDate | date:'mediumDate' }}
+      </span>
+      <span>
+        <i class="bi bi-calendar-x-fill me-1"></i>
+        <strong>End:</strong> {{ poll?.endDate | date:'mediumDate' }}
+      </span>
+    </div>
   </div>
+  
+
+  @if(showEdit){
+    <app-edit-poll [poll]="poll" (updated)="handlePollUpdate($event)"></app-edit-poll>
+  }
+  
 </div>

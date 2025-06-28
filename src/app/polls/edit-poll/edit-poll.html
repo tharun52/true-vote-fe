@@ -1,0 +1,43 @@
+<form [formGroup]="pollForm" (ngSubmit)="submit()" enctype="multipart/form-data" class="card p-3 shadow-sm border mt-3">
+  <div class="mb-2">
+    <label class="form-label">Title</label>
+    <input type="text" formControlName="title" class="form-control" />
+  </div>
+
+  <div class="mb-2">
+    <label class="form-label">Description</label>
+    <textarea formControlName="description" class="form-control" rows="2"></textarea>
+  </div>
+
+  <div class="mb-2">
+    <label class="form-label">Start Date</label>
+    <input type="date" formControlName="startDate" class="form-control" />
+  </div>
+
+  <div class="mb-2">
+    <label class="form-label">End Date</label>
+    <input type="date" formControlName="endDate" class="form-control" />
+  </div>
+
+  <div class="mb-2" formArrayName="optionTexts">
+    <label class="form-label">Options</label>
+     @for (option of optionTexts.controls; track option; let i = $index) {
+        <div class="d-flex align-items-center gap-2 mb-1">
+            <input [formControlName]="i" class="form-control" />
+            @if (optionTexts.length > 2) {
+                <button type="button" class="btn btn-outline-danger btn-sm"  (click)="removeOption(i)">
+                </button>
+            }
+        </div>
+        <button type="button" class="btn btn-outline-primary btn-sm" (click)="addOption()">+ Add Option</button>
+    }
+  </div>
+
+  <div class="mb-2">
+    <label class="form-label">Poll File (optional)</label>
+    <input type="file" class="form-control" (change)="onFileChange($event)" />
+  </div>
+
+  <button type="submit" class="btn btn-success w-100">Update Poll</button>
+  <div class="text-danger mt-2 small">{{ responseMessage }}</div>
+</form>

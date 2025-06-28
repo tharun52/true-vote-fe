@@ -92,7 +92,7 @@ export class AuthService {
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
 
-      const userId = payload?.UserId || '';
+      const userId = payload?.UserId || null;
       const username = payload?.nameid || '';
       const role = payload?.role || '';
 

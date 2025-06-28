@@ -34,7 +34,7 @@
       </div>
     </div>
   } 
-   @else if (editMode && voter) {
+  @else if (editMode && voter) {
     <app-voter-edit-form
     [voter]="voter"
     [isVoter]="isVoter"
@@ -46,4 +46,14 @@
 } @else {
     <div>Loading...</div>
   }
+  <button class="btn btn-success" (click)="prevPollsMode = true">View Previously Voted Polls</button>
 </div>
+
+<!-- Modal for Previously Voted Polls -->
+@if (prevPollsMode) {
+  <div class="modal-box-lg bg-white p-4 rounded shadow">
+    <button class="btn-close float-end" (click)="prevPollsMode = false"></button>
+    <h4 class="text-primary mb-3">Previously Voted Polls</h4>
+    <app-polls-list [VoterId]="voterId" [ForVoting]="false"></app-polls-list>
+  </div>
+}

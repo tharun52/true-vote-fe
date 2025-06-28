@@ -38,7 +38,9 @@ export class PollQueryDto {
     public startDateTo?: string,
     public page: number = 1,
     public pageSize: number = 10,
-    public createdByEmail?: string
+    public createdByEmail?: string,
+    public VoterId?: string,
+    public ForVoting: boolean = false
   ) {}
 }
 
