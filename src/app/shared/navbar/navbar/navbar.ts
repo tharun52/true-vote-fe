@@ -3,10 +3,11 @@ import { AuthService } from '../../../auth/auth.service';
 import { RouterLink } from '@angular/router';
 import { VoterDetail } from "../../../voter/voter-detail/voter-detail";
 import { ThemeService } from '../../ThemeService';
+import { ModeratorDetail } from "../../../moderator/moderator-detail/moderator-detail";
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, VoterDetail],
+  imports: [RouterLink, VoterDetail, ModeratorDetail],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })
@@ -15,6 +16,9 @@ export class Navbar {
   showPopup = false;
   selectedEmail: string | null = null;
   isMenuOpen = false;
+
+  showModeratorPopup = false;
+  selectedModeratorEmail: string | null = null;
 
   constructor(public authService: AuthService, private themeService:ThemeService) {}
 
@@ -42,6 +46,12 @@ export class Navbar {
     event.preventDefault();
     this.selectedEmail = email;
     this.showPopup = true;
+  }
+
+  openModeratorDetail(email: string, event: Event): void {
+    event.preventDefault();
+    this.selectedModeratorEmail = email;
+    this.showModeratorPopup = true;
   }
 
   toggleMenu(): void {

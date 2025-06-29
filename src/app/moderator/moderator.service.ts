@@ -2,9 +2,9 @@ import { Injectable } from "@angular/core";
 import { environment } from "../../environments/environment";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable, map } from "rxjs";
-import { VoterEmailModel } from "../models/VoterEmailModel";
 import { ModeratorModel, ModeratorQueryDto } from "../models/ModeratorModel";
 import { ApiResponse, PagedResponse } from "../models/ResponseModes";
+import { VoterEmailModel } from "../models/VoterEmailModel";
 
 @Injectable()
 export class ModeratorService {
@@ -17,10 +17,28 @@ export class ModeratorService {
   }
 
   addToWhitelist(emails: string[]): Observable<any> {
-    return this.http.post(`${this.baseUrl}Voter/whitelist`, {
+    return this.http.post(`${this.baseUrl}Moderator/whitelist`, {
       emails
     });
   }
+
+  getModeratorByEmail(email: string): Observable<ModeratorModel> {
+    return this.http.get<any>(`${this.baseUrl}Moderator/email/${email}`)
+      .pipe(map(res => res.data));
+  }
+
+  updateAsAdmin(moderatorId: string, body: any) {
+    return this.http.put(`${this.baseUrl}Moderator/updateasadmin/${moderatorId}`, body);
+  }
+
+  updateAsModerator(body: any) {
+    return this.http.put(`${this.baseUrl}Moderator/update`, body);
+  }
+
+  deleteModerator(moderatorId:string){
+    return this.http.delete(`${this.baseUrl}Moderator/delete/${moderatorId}`);
+  }
+
   getModerators(query: ModeratorQueryDto): Observable<PagedResponse<ModeratorModel>> {
     let params = new HttpParams();
 

@@ -2,12 +2,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PollService } from '../poll.service';
 import { endDateValidator } from '../../auth/validators/end-date-validator';
+import { ToastService } from '../../shared/ToastService';
 
 @Component({
   selector: 'app-edit-poll',
   imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './edit-poll.html',
-  styleUrl: './edit-poll.css'
+  styleUrl: './edit-poll.css',
+  standalone:true
 })
 export class EditPoll {
   @Input() poll: any;
@@ -22,7 +24,7 @@ export class EditPoll {
   public get startDate() {return this.pollForm.get('startDate');}
   public get endDate() {return this.pollForm.get('endDate');}
   
-  constructor(private fb: FormBuilder, private pollService: PollService) {}
+  constructor(private fb: FormBuilder, private pollService: PollService, private toastService:ToastService) {}
   
   ngOnInit(): void {
     const startDate = this.formatDate(this.poll.startDate);
@@ -87,7 +89,7 @@ export class EditPoll {
       next: (res: any) => {
         this.responseMessage = '✅ Poll updated successfully!';
         this.updated.emit(res.data);
-
+        this.toastService.show("Update Successs", "Your details have been updated successfully", false);
       },
       error: (err) => {
         this.responseMessage =

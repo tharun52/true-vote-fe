@@ -1,0 +1,58 @@
+<!-- Modal Overlay -->
+<div class="modal-backdrop"></div>
+
+<!-- Modal Box -->
+<div class="modal-box container p-4 rounded shadow bg-white border">
+  <button class="btn-close float-end" (click)="closePopup()"></button>
+
+  <h3 class="text-primary mb-3">moderator Details</h3>
+
+  @if (moderator && !editMode) {
+    <div>
+      <p><strong>Name:</strong> {{ moderator.name }}</p>
+      <p><strong>Email:</strong> {{ moderator.email }}</p>
+      <p>
+        @if(isModerator){
+          <strong>Deleted:</strong>
+          <span [ngClass]="moderator.isdeleted ? 'text-danger' : 'text-success'">
+            {{ moderator.isdeleted ? '🗑️ Deleted' : '✅ Active' }}
+          </span>
+        }
+      </p>
+
+      <div class="mt-3 d-flex gap-2">
+        @if (isModerator || isModerator) {
+          <button class="btn btn-warning" (click)="editMode = true">Edit</button>
+        }
+        @if (isModerator && !moderator.isdeleted) {
+          <button class="btn btn-danger" (click)="deleteAccount()">Delete</button>
+        }
+        @if(isModerator && moderator.isdeleted){
+          <button class="btn btn-success" (click)="reAddModerator()">Re Add moderator</button>
+        }
+      </div>
+    </div>
+  } 
+  @else if (editMode && moderator) {
+    <!-- <app-moderator-edit-form
+    [moderator]="moderator"
+    [ismoderator]="ismoderator"
+    [isModerator]="isModerator"
+    (update)="submitEdit($event)"
+    (updateWithPassword)="submitEditWithPassword($event)"
+    (cancel)="editMode = false">
+  </app-moderator-edit-form> -->
+} @else {
+    <div>Loading...</div>
+  }
+  <button class="btn btn-success" (click)="ceratedPollsMode = true">View Previously Voted Polls</button>
+</div>
+
+<!-- Modal for Previously Voted Polls -->
+@if (ceratedPollsMode) {
+  <div class="modal-box-lg bg-white p-4 rounded shadow">
+    <button class="btn-close float-end" (click)="ceratedPollsMode = false"></button>
+    <h4 class="text-primary mb-3">Previously Voted Polls</h4>
+    <app-polls-list [createdByEmail]="moderator?.email ?? null"></app-polls-list>
+  </div>
+}

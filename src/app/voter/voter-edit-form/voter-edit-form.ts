@@ -10,7 +10,8 @@ import { AuthService } from '../../auth/auth.service';
   selector: 'app-voter-edit-form',
   imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './voter-edit-form.html',
-  styleUrl: './voter-edit-form.css'
+  styleUrl: './voter-edit-form.css',
+  standalone: true
 })
 export class VoterEditForm {
   @Input() voter!: VoterModel;

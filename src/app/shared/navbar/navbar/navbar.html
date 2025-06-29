@@ -35,11 +35,17 @@
           <li class="nav-item"><a class="nav-link" routerLink="/moderator">Home</a></li>
           <li class="nav-item"><a class="nav-link" routerLink="/moderator/emails">Emails</a></li>
           <li class="nav-item"><a class="nav-link" routerLink="/moderator/polls">Polls</a></li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <span class="nav-link d-flex align-items-center gap-1">
               <i class="bi bi-person-fill-gear"></i>
               <strong>{{ userName }}</strong>
             </span>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center gap-1" href="#" (click)="openModeratorDetail(userName, $event)">
+              <i class="bi bi-person-fill-gear"></i>
+              <strong>{{ userName }}</strong>
+            </a>
           </li>
         } @else if (isVoter) {
           <li class="nav-item"><a class="nav-link" routerLink="/voter">Home</a></li>
@@ -85,4 +91,12 @@
 
 @if (showPopup && selectedEmail) {
   <app-voter-detail [email]="selectedEmail" [isModerator]="false" (close)="showPopup = false"></app-voter-detail>
+}
+
+@if (showModeratorPopup && selectedModeratorEmail) {
+  <app-moderator-detail 
+    [email]="selectedModeratorEmail" 
+    [isAdmin]="isAdmin" 
+    (close)="showModeratorPopup = false">
+  </app-moderator-detail>
 }

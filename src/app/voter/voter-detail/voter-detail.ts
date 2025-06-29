@@ -3,7 +3,7 @@ import { VoterModel } from '../../models/VoterModel';
 import { VoterService } from '../voter.service';
 import { AuthService } from '../../auth/auth.service';
 import { NgClass } from '@angular/common';
-import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { passwordMatchValidator } from '../../auth/validators/password-match.validator';
 import { passwordValidator } from '../../auth/validators/password-validator';
 import { VoterEditForm } from "../voter-edit-form/voter-edit-form";
