@@ -1,22 +1,21 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { VoterModel } from '../../models/VoterModel';
-import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { passwordMatchValidator } from '../../auth/validators/password-match.validator';
-import { passwordValidator } from '../../auth/validators/password-validator';
+import { ModeratorModel } from '../../models/ModeratorModel';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastService } from '../../shared/ToastService';
 import { AuthService } from '../../auth/auth.service';
+import { passwordValidator } from '../../auth/validators/password-validator';
+import { passwordMatchValidator } from '../../auth/validators/password-match.validator';
 
 @Component({
-  selector: 'app-voter-edit-form',
+  selector: 'app-moderator-edit-form',
   imports: [FormsModule, ReactiveFormsModule],
-  templateUrl: './voter-edit-form.html',
-  styleUrl: './voter-edit-form.css',
-  standalone: true
+  templateUrl: './moderator-edit-form.html',
+  styleUrl: './moderator-edit-form.css'
 })
-export class VoterEditForm {
-  @Input() voter!: VoterModel;
-  @Input() isVoter: boolean = false;
+export class ModeratorEditForm {
+  @Input() moderator!: ModeratorModel;
   @Input() isModerator: boolean = false;
+  @Input() isAdmin: boolean = false;
 
   @Output() update = new EventEmitter<any>();
   @Output() updateWithPassword = new EventEmitter<any>();
@@ -29,8 +28,7 @@ export class VoterEditForm {
   {}
   ngOnInit(): void {
     this.form = new FormGroup({
-      name: new FormControl(this.voter.name, Validators.required),
-      age: new FormControl(this.voter.age, [Validators.required, Validators.min(18)]),
+      name: new FormControl(this.moderator.name, Validators.required),
       newPassword: new FormControl('', passwordValidator),
       confirmPassword: new FormControl('')
     }, passwordMatchValidator);
@@ -51,7 +49,7 @@ export class VoterEditForm {
 
     const { name, age } = this.form.value;
     this.update.emit({ name, age });
-    this.toastService.show('Voter Update', 'Voter details have been updated successfully!', false);
+    this.toastService.show('Moderator Update', 'Moderator details have been updated successfully!', false);
   }
 
   onUpdateWithPassword(): void {
@@ -59,8 +57,7 @@ export class VoterEditForm {
 
     const { name, age, newPassword } = this.form.value;
     this.updateWithPassword.emit({ name, age, newPassword });
-    this.toastService.show('Password Change', 'Password has been changed successfully!', false);
-    // this.authService.logout();
+    this.toastService.show('Password Change', 'Password has been changed successfully!', false);  
   }
 
   get name() { return this.form.get('name'); }

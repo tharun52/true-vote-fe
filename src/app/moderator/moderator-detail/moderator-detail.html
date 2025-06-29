@@ -21,27 +21,27 @@
       </p>
 
       <div class="mt-3 d-flex gap-2">
-        @if (isModerator || isModerator) {
+        @if (isModerator || isAdmin) {
           <button class="btn btn-warning" (click)="editMode = true">Edit</button>
         }
-        @if (isModerator && !moderator.isdeleted) {
+        @if (isAdmin && !moderator.isdeleted) {
           <button class="btn btn-danger" (click)="deleteAccount()">Delete</button>
         }
-        @if(isModerator && moderator.isdeleted){
+        @if(isAdmin && moderator.isdeleted){
           <button class="btn btn-success" (click)="reAddModerator()">Re Add moderator</button>
         }
       </div>
     </div>
   } 
   @else if (editMode && moderator) {
-    <!-- <app-moderator-edit-form
+    <app-moderator-edit-form
     [moderator]="moderator"
-    [ismoderator]="ismoderator"
     [isModerator]="isModerator"
+    [isAdmin]="isAdmin"
     (update)="submitEdit($event)"
     (updateWithPassword)="submitEditWithPassword($event)"
-    (cancel)="editMode = false">
-  </app-moderator-edit-form> -->
+    (cancel)="editMode = false"> 
+  </app-moderator-edit-form>
 } @else {
     <div>Loading...</div>
   }

@@ -1,0 +1,52 @@
+<form [formGroup]="form">
+  <div class="mb-3">
+    <label class="form-label">Name</label>
+    <input formControlName="name" class="form-control" />
+    @if (name?.touched && name?.invalid) {
+      <div class="text-danger small mt-1">Name is required</div>
+    }
+  </div>
+
+
+  @if (isModerator) {
+    <div class="mb-3">
+      <button type="button" class="btn btn-outline-secondary" (click)="toggleChangePassword()">
+        {{ changePasswordMode ? 'Cancel Password Change' : 'Change Password' }}
+      </button>
+    </div>
+  }
+
+  @if (changePasswordMode && isModerator) {
+    <div class="mb-3">
+      <label class="form-label">New Password</label>
+      <input formControlName="newPassword" type="password" class="form-control" />
+      @if (newPassword?.touched && newPassword?.invalid) {
+        <div class="text-danger small mt-1">Must meet complexity</div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Confirm Password</label>
+      <input formControlName="confirmPassword" type="password" class="form-control" />
+      @if (confirmPassword?.touched && form.errors?.['passwordMismatch']) {
+        <div class="text-danger small mt-1">Passwords do not match</div>
+      }
+    </div>
+  }
+
+  <div class="d-flex gap-2">
+    @if (!changePasswordMode) {
+      <button type="button" class="btn btn-primary" (click)="onUpdateOnly()" [disabled]="name?.invalid || age?.invalid">
+        Save
+      </button>
+    }
+
+    @if (changePasswordMode && isModerator) {
+      <button type="button" class="btn btn-primary" (click)="onUpdateWithPassword()" [disabled]="form.invalid">
+        Save
+      </button>
+    }
+
+    <button type="button" class="btn btn-secondary" (click)="cancel.emit()">Cancel</button>
+  </div>
+</form>

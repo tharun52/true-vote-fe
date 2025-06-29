@@ -7,10 +7,11 @@ import { passwordValidator } from '../../auth/validators/password-validator';
 import { passwordMatchValidator } from '../../auth/validators/password-match.validator';
 import { NgClass } from '@angular/common';
 import { PollsList } from '../../polls/polls-list/polls-list';
+import { ModeratorEditForm } from '../moderator-edit-form/moderator-edit-form';
 
 @Component({
   selector: 'app-moderator-detail',
-  imports: [NgClass, FormsModule, ReactiveFormsModule, PollsList],
+  imports: [NgClass, FormsModule, ReactiveFormsModule, PollsList, ModeratorEditForm],
   templateUrl: './moderator-detail.html',
   styleUrl: './moderator-detail.css'
 })
@@ -37,6 +38,7 @@ export class ModeratorDetail {
   ngOnInit(): void {
     const role = this.authService.getCurrentUser()?.role;
     this.isAdmin = role === 'Admin';
+    this.isModerator = role === 'Moderator'; 
 
     if (this.email) {
       this.moderatorService.getModeratorByEmail(this.email).subscribe(data => {
