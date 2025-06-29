@@ -62,6 +62,7 @@ export class PollsList implements OnInit {
 
     this.pollService.getPolls(query).subscribe({
       next: response => {
+        console.log(response.data); 
         this.polls = response.data;
         this.totalPages = response.pagination.totalPages;
         this.loading = false;

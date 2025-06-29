@@ -25,7 +25,8 @@ export class PollModel {
 export class PollResponseItemModel {
   constructor(
     public poll: PollModel = new PollModel(),
-    public pollOptions: PollOption[] = []
+    public pollOptions: PollOption[] = [],
+    public voteTime?: string | null
   ) {}
 }
 

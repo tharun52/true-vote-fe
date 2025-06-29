@@ -67,4 +67,8 @@ export class PollService {
         map(response => response.headers.get('Content-Type') || '')
       );
   }
+
+  vote(pollOptionId: string) {
+    return this.http.post(`${this.baseUrl}Vote`, { pollOptionId });
+  }
 }

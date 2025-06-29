@@ -56,7 +56,11 @@
     @else if (!loading && polls.length > 0) {
       @for (pollItem of polls; track pollItem.poll.id) {
         <div class="col-md-6 mb-4">
-          <app-poll-card [poll]="pollItem.poll"></app-poll-card>
+          <app-poll-card
+            [poll]="pollItem.poll"
+            [voteTime]="pollItem.voteTime"
+            [ForVoting]="ForVoting">
+          </app-poll-card>
         </div>
       }
     }
