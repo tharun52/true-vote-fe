@@ -23,8 +23,8 @@
       @if (authService.isLoggedIn()) {
         @if (isAdmin) {
           <li class="nav-item"><a class="nav-link" routerLink="/admin">Home</a></li>
-          <li class="nav-item"><a class="nav-link" routerLink="/admin/users">Users</a></li>
-          <li class="nav-item"><a class="nav-link" routerLink="/admin/polls">Polls</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/admin/addmoderator">Add Moderator</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/admin/moderatorlist">Moderators</a></li>
           <li class="nav-item">
             <span class="nav-link d-flex align-items-center gap-1">
               <i class="bi bi-shield-lock-fill"></i>
@@ -35,12 +35,6 @@
           <li class="nav-item"><a class="nav-link" routerLink="/moderator">Home</a></li>
           <li class="nav-item"><a class="nav-link" routerLink="/moderator/emails">Emails</a></li>
           <li class="nav-item"><a class="nav-link" routerLink="/moderator/polls">Polls</a></li>
-          <!-- <li class="nav-item">
-            <span class="nav-link d-flex align-items-center gap-1">
-              <i class="bi bi-person-fill-gear"></i>
-              <strong>{{ userName }}</strong>
-            </span>
-          </li> -->
           <li class="nav-item">
             <a class="nav-link d-flex align-items-center gap-1" href="#" (click)="openModeratorDetail(userName, $event)">
               <i class="bi bi-person-fill-gear"></i>

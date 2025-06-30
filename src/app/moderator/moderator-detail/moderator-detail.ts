@@ -44,7 +44,8 @@ export class ModeratorDetail {
       this.moderatorService.getModeratorByEmail(this.email).subscribe(data => {
         this.moderator = data;
         this.initForm(data);
-        this.moderatorId = data.Id;
+        this.moderatorId = data.id;
+        console.log(this.moderator);
       });
     }
   }
@@ -81,9 +82,9 @@ export class ModeratorDetail {
 
     if (this.isModerator) {
       data.isDeleted = false;
-      this.moderatorService.updateAsAdmin(this.moderator.Id, data).subscribe(() => this.refreshData());
+      this.moderatorService.updateAsAdmin(this.moderator.id, data).subscribe(() => this.refreshData());
     } else if (this.isModerator) {
-      data.isDeleted = this.moderator.isdeleted;
+      data.isDeleted = this.moderator.isDeleted;
       this.moderatorService.updateAsModerator(data).subscribe(() => this.refreshData());
     }
   }
@@ -91,7 +92,7 @@ export class ModeratorDetail {
   submitEditWithPassword(data: any): void {
     if (!this.moderator) return;
 
-    data.isDeleted = this.moderator.isdeleted;
+    data.isDeleted = this.moderator.isDeleted;
     this.moderatorService.updateAsModerator(data).subscribe(() => this.refreshData());
   }
 
@@ -117,8 +118,7 @@ export class ModeratorDetail {
 
     const confirmDelete = confirm("Are you sure you want to delete this moderator?");
     if (!confirmDelete) return;
-
-    this.moderatorService.deleteModerator(this.moderator.Id).subscribe({
+    this.moderatorService.deleteModerator(this.moderator.id).subscribe({
       next: () => {
         alert('Moderator account deleted successfully.');
         this.refreshData();
@@ -139,7 +139,7 @@ export class ModeratorDetail {
       isDeleted: false
     };
 
-    this.moderatorService.updateAsAdmin(this.moderator.Id, updatedData).subscribe({
+    this.moderatorService.updateAsAdmin(this.moderator.id, updatedData).subscribe({
       next: () => {
         alert('Moderator re-added successfully.');
         this.refreshData();

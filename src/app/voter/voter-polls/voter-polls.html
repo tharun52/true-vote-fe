@@ -1,0 +1,11 @@
+<div class="container mt-4">
+  <h2>Welcome, Voter!</h2>
+  <p>This is your dashboard.</p>
+  <h3>On Going Polls</h3>
+  <app-polls-list [VoterId]="voterId" [ForVoting]="true"></app-polls-list>
+</div>
+<div class="container mt-4">
+  <h3>Previosly Voted Polls</h3>
+  <app-polls-list [VoterId]="voterId" [ForVoting]="false"></app-polls-list>
+</div>
+

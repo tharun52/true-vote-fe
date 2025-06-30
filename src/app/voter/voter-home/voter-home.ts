@@ -15,6 +15,5 @@ export class VoterHome implements OnInit {
 
   ngOnInit(): void {
     this.voterId = this.authService.getCurrentUser()?.userId ?? null;
-    console.log(this.voterId);
   }
 }

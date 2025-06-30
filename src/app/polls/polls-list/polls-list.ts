@@ -16,6 +16,7 @@ export class PollsList implements OnInit {
   @Input() createdByEmail: string | null = '';
   @Input() VoterId: string | null = '';
   @Input() ForVoting: boolean = false;
+ 
 
   polls: PollResponseItemModel[] = [];
   searchControl = new FormControl('');

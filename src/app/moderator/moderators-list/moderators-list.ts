@@ -1,20 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ModeratorModel, ModeratorQueryDto } from '../../models/ModeratorModel';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { Subject, debounceTime } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { NgClass } from '@angular/common';
 import { ModeratorService } from '../moderator.service';
+import { ModeratorDetail } from '../moderator-detail/moderator-detail';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-moderators-list',
-  imports: [FormsModule, NgClass],
+  imports: [FormsModule, NgClass, ModeratorDetail],
   templateUrl: './moderators-list.html',
   styleUrl: './moderators-list.css'
 })
 export class ModeratorsList {
-   moderators: ModeratorModel[] = [];
+  @Input() isDeleted: boolean = false;
+  
+  moderators: ModeratorModel[] = [];
   error: string | null = null;
 
   searchTerm: string = '';
@@ -24,9 +26,12 @@ export class ModeratorsList {
   pageSize: number = 10;
   totalPages: number = 1;
 
+  selectedModeratorEmail: string | null = null;
+  showModeratorPopup = false;
+
   private searchSubject = new Subject<void>();
 
-  constructor(private moderatorService: ModeratorService) {}
+  constructor(private moderatorService: ModeratorService, private authService:AuthService) {}
 
   ngOnInit() {
     this.searchSubject.pipe(debounceTime(400)).subscribe(() => {
@@ -53,7 +58,7 @@ export class ModeratorsList {
       this.sortDesc,
       this.page,
       this.pageSize,
-      false
+      this.isDeleted 
     );
 
     this.moderatorService.getModerators(query).subscribe({
@@ -84,6 +89,18 @@ export class ModeratorsList {
   }
 
   trackByFn(index: number, item: ModeratorModel) {
-    return item.Id;
+    return item.id;
+  }
+
+  openModeratorDetail(email: string): void {
+    this.selectedModeratorEmail = email;
+    this.showModeratorPopup = true;
+  }
+  isAdmin(){
+    return this.authService.getRole() == 'Admin';
+  }
+  onModeratorDetailClosed(): void {
+    this.showModeratorPopup = false;
+    this.fetchModerators(); 
   }
 }

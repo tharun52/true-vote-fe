@@ -1,9 +1,9 @@
 export class ModeratorModel{
     constructor(
-        public Id: string = "",
+        public id: string = "",
         public name:string = "",
         public email:string = "",
-        public isdeleted:boolean = false
+        public isDeleted:boolean = false
     )
     {}
 }

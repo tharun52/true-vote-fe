@@ -11,6 +11,9 @@ import { HomePage } from './shared/home-page/home-page.js';
 import { authGuard } from './auth-guard.js';
 import { ModeratorPolls } from './moderator/moderator-polls/moderator-polls.js';
 import { AddPoll } from './polls/add-poll/add-poll.js';
+import { VoterPolls } from './voter/voter-polls/voter-polls.js';
+import { AddModerator } from './admin/add-moderator/add-moderator.js';
+import { AdminModeratorList } from './admin/admin-moderator-list/admin-moderator-list.js';
 
 export const routes: Routes = [
   { path: '', component: HomePage },
@@ -23,9 +26,14 @@ export const routes: Routes = [
   { path: 'moderator/add-emails', component: AddVoterEmails, canActivate: [authGuard], data: { expectedRole: 'Moderator' } },
   { path: 'moderator/polls', component: ModeratorPolls, canActivate: [authGuard], data: { expectedRole: 'Moderator' } },
   { path: 'moderator/addpoll', component: AddPoll, canActivate: [authGuard], data: { expectedRole: 'Moderator' } },
-
+  
   { path: 'voter', component: VoterHome, canActivate: [authGuard], data: { expectedRole: 'Voter' } },
   { path: 'voter/moderators', component: VoterModerators, canActivate: [authGuard], data: { expectedRole: 'Voter' } },
+  { path: 'voter/polls', component: VoterPolls, canActivate: [authGuard], data: { expectedRole: 'Voter' } },
+  
+  { path: 'admin', component: AdimHome, canActivate: [authGuard], data: { expectedRole: 'Admin' } },
+  { path: 'admin/addmoderator', component: AddModerator, canActivate: [authGuard], data: { expectedRole: 'Admin' } },
+  { path: 'admin/moderatorlist', component: AdminModeratorList, canActivate: [authGuard], data: { expectedRole: 'Admin' } },
 
-  { path: 'admin', component: AdimHome, canActivate: [authGuard], data: { expectedRole: 'Admin' } }
+
 ];

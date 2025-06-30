@@ -17,10 +17,10 @@ export class ModeratorDashboard {
     const user = this.authService.getCurrentUser();
     if (user && user.role === 'Moderator') {
       this.moderator = {
-        Id: user.userId,
+        id: user.userId,
         name: user.username,
         email: `${user.username}@example.com`, 
-        isdeleted: false
+        isDeleted: false
       };
     }
   }

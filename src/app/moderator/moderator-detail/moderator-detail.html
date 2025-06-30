@@ -12,10 +12,10 @@
       <p><strong>Name:</strong> {{ moderator.name }}</p>
       <p><strong>Email:</strong> {{ moderator.email }}</p>
       <p>
-        @if(isModerator){
+        @if(isAdmin){
           <strong>Deleted:</strong>
-          <span [ngClass]="moderator.isdeleted ? 'text-danger' : 'text-success'">
-            {{ moderator.isdeleted ? '🗑️ Deleted' : '✅ Active' }}
+          <span [ngClass]="moderator.isDeleted ? 'text-danger' : 'text-success'">
+            {{ moderator.isDeleted ? '🗑️ Deleted' : '✅ Active' }}
           </span>
         }
       </p>
@@ -24,10 +24,10 @@
         @if (isModerator || isAdmin) {
           <button class="btn btn-warning" (click)="editMode = true">Edit</button>
         }
-        @if (isAdmin && !moderator.isdeleted) {
+        @if (isAdmin && moderator && !moderator.isDeleted) {
           <button class="btn btn-danger" (click)="deleteAccount()">Delete</button>
         }
-        @if(isAdmin && moderator.isdeleted){
+        @if(isAdmin && moderator.isDeleted){
           <button class="btn btn-success" (click)="reAddModerator()">Re Add moderator</button>
         }
       </div>

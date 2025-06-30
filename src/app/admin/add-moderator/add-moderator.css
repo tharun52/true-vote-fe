@@ -1,0 +1,51 @@
+.moderator-form {
+  background-color: var(--content-bg);
+  color: var(--content-text);
+  border: 1px solid var(--content-border);
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  padding: 2rem;
+  max-width: 600px;
+  margin: auto;
+}
+
+.moderator-form .form-label {
+  font-weight: 600;
+  color: var(--content-text);
+}
+
+.moderator-form .form-control {
+  background-color: transparent;
+  border: 1px solid var(--content-border);
+  color: var(--content-text);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.moderator-form .form-control:focus {
+  border-color: var(--content-accent);
+  box-shadow: 0 0 0 0.15rem rgba(79, 131, 255, 0.25);
+  background-color: transparent;
+  color: var(--content-text);
+}
+
+.moderator-form .btn-accent {
+  background-color: var(--content-accent);
+  color: var(--content-bg);
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.moderator-form .btn-accent:hover {
+  background-color: var(--nav-btn-hover);
+  color: var(--content-text);
+}
+
+.moderator-form .text-danger {
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.moderator-form textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}

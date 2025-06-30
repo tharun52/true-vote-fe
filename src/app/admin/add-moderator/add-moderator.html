@@ -1,0 +1,36 @@
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+                <form [formGroup]="moderatorForm" (ngSubmit)="submit()" class="moderator-form">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input id="name" class="form-control" formControlName="name" />
+                        @if (name?.touched && name?.errors) {
+                            <div class="text-danger small mt-1">Name is required</div>
+                        }
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input id="email" class="form-control" formControlName="email" />
+                        @if (email?.touched && email?.errors) {
+                            <div class="text-danger small mt-1">Name is required</div>
+                        }
+                        <textarea formControlName="description" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" formControlName="password" class="form-control" placeholder="Enter password">
+                        @if(password?.touched && password?.errors) {
+                            <div class="mt-1 text-danger small">Password must be at least 8 characters and include a number
+                            </div>
+                        }
+                    </div>
+
+                    <button type="submit" class="btn btn-accent w-100">Add Moderator</button>
+
+                    <div class="text-danger mt-2 small">{{ responseMessage }}</div>
+                </form>
+            </div>
+        </div>
+    </div>
