@@ -17,7 +17,9 @@ export class AuthService {
       this.tokenSubject.next(savedToken);
     }
   }
-
+  registerAdmin(adminData:any){
+    return this.http.post(`${environment.apiBaseUrl}Admin/add`, adminData);
+  }
   login(username: string, password: string): Observable<UserModel> {
     return this.http.post<UserModel>(this.API, { username, password }).pipe(
       tap((user) => {

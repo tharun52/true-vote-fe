@@ -1,61 +1,69 @@
-<form [formGroup]="pollForm" (ngSubmit)="submit()" enctype="multipart/form-data" class="card p-3 shadow-sm border mt-3">
-  <div class="mb-2">
-    <label class="form-label">Title *</label>
-    <input type="text" formControlName="title" class="form-control" />
-    @if (title?.touched && title?.errors) {
-      <div class="text-danger small mt-1">Title is required</div>
-    }
-  </div>
+<div class="container my-5">
+  <h2 class="mb-4 text-primary">
+    <i class="bi bi-pencil-square me-2"></i>Edit Poll
+  </h2>
 
-  <div class="mb-2">
-    <label class="form-label">Description</label>
-    <textarea formControlName="description" class="form-control" rows="2"></textarea>
-  </div>
-
-  <div class="mb-2">
-    <label class="form-label">Start Date</label>
-    <input type="date" formControlName="startDate" class="form-control" />
-    @if (startDate?.touched && startDate?.errors) {
-      <div class="text-danger small mt-1">Start Date is required</div>
-    }
-  </div>
-
-  <div class="mb-2">
-    <label class="form-label">End Date</label>
-    <input type="date" formControlName="endDate" class="form-control" />
-    @if (endDate?.touched && endDate?.errors) {
-      @if (endDate?.errors?.['endDatePastError']) {
-        <div class="text-danger small mt-1">End Date Cannot be before today</div>
+  <form [formGroup]="pollForm" (ngSubmit)="submit()" enctype="multipart/form-data" class="card p-4 shadow-sm border">
+    <div class="mb-3">
+      <label class="form-label">Title *</label>
+      <input type="text" formControlName="title" class="form-control" />
+      @if (title?.touched && title?.errors) {
+        <div class="text-danger small mt-1">Title is required</div>
       }
-      @if (endDate?.errors?.['required']) {
-        <div class="text-danger small mt-1">End Date is required</div>
-      }
-    }
-  </div>
+    </div>
 
-  <div class="mb-2" formArrayName="optionTexts">
-    <label class="form-label">Options</label>
-     @for (option of optionTexts.controls; track option; let i = $index) {
-        <div class="d-flex align-items-center gap-2 mb-1">
-            <input [formControlName]="i" class="form-control" />
-            @if (optionTexts.length > 2) {
-                <button type="button" class="btn btn-outline-danger btn-sm"  (click)="removeOption(i)">
-                  <i class="bi bi-x-lg"></i>
-                </button>
-            }
-            @if (option.invalid && (option.touched || option.dirty)) {
-              <div class="invalid-feedback d-block">Option text is required.</div>
-            }
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea formControlName="description" class="form-control" rows="3"></textarea>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Start Date *</label>
+        <input type="date" formControlName="startDate" class="form-control" />
+        @if (startDate?.touched && startDate?.errors) {
+          <div class="text-danger small mt-1">Start Date is required</div>
+        }
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label">End Date *</label>
+        <input type="date" formControlName="endDate" class="form-control" />
+        @if (endDate?.touched && endDate?.errors) {
+          @if (endDate?.errors?.['endDatePastError']) {
+            <div class="text-danger small mt-1">End Date cannot be before today</div>
+          }
+          @if (endDate?.errors?.['required']) {
+            <div class="text-danger small mt-1">End Date is required</div>
+          }
+        }
+      </div>
+    </div>
+
+    <div class="mb-3" formArrayName="optionTexts">
+      <label class="form-label">Options *</label>
+      @for (option of optionTexts.controls; track option; let i = $index) {
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <input [formControlName]="i" class="form-control" />
+          @if (optionTexts.length > 2) {
+            <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeOption(i)">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          }
         </div>
+        @if (option.invalid && (option.touched || option.dirty)) {
+          <div class="invalid-feedback d-block mb-2">Option text is required.</div>
+        }
       }
       <button type="button" class="btn btn-outline-primary btn-sm" (click)="addOption()">+ Add Option</button>
-  </div>
+    </div>
 
-  <div class="mb-2">
-    <label class="form-label">Poll File (optional)</label>
-    <input type="file" class="form-control" (change)="onFileChange($event)" />
-  </div>
+    <div class="mb-3">
+      <label class="form-label">Poll File (optional)</label>
+      <input type="file" class="form-control" (change)="onFileChange($event)" />
+    </div>
 
-  <button type="submit" class="btn btn-success w-100">Update Poll</button>
-  <div class="text-danger mt-2 small">{{ responseMessage }}</div>
-</form>
+    <button type="submit" class="btn btn-success w-100">Update Poll</button>
+    <div class="text-danger mt-3 small">{{ responseMessage }}</div>
+  </form>
+</div>

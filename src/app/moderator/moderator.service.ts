@@ -17,11 +17,11 @@ export class ModeratorService {
   }
 
   addModerator(data: { name: string; email: string; password: string }) {
-    return this.http.post(`${this.baseUrl}/add`, data);
+    return this.http.post(`${this.baseUrl}Moderator/add`, data);
   }
 
   addToWhitelist(emails: string[]): Observable<any> {
-    return this.http.post(`${this.baseUrl}Moderator/whitelist`, {
+    return this.http.post(`${this.baseUrl}Voter/whitelist`, {
       emails
     });
   }

@@ -45,10 +45,10 @@
 } @else {
     <div>Loading...</div>
   }
-  <button class="btn btn-success" (click)="ceratedPollsMode = true">View Previously Voted Polls</button>
+  <button class="btn btn-success" (click)="ceratedPollsMode = true">View Created Polls</button>
 </div>
 
-<!-- Modal for Previously Voted Polls -->
+<!-- Modal for Created Polls -->
 @if (ceratedPollsMode) {
   <div class="modal-box-lg bg-white p-4 rounded shadow">
     <button class="btn-close float-end" (click)="ceratedPollsMode = false"></button>

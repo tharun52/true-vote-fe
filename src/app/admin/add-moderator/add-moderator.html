@@ -16,7 +16,6 @@
                         @if (email?.touched && email?.errors) {
                             <div class="text-danger small mt-1">Name is required</div>
                         }
-                        <textarea formControlName="description" class="form-control" rows="3"></textarea>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Password</label>
@@ -24,6 +23,13 @@
                         @if(password?.touched && password?.errors) {
                             <div class="mt-1 text-danger small">Password must be at least 8 characters and include a number
                             </div>
+                        }
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" formControlName="confirmPassword" class="form-control" placeholder="Confirm password">
+                        @if(confirmPassword?.touched && moderatorForm.errors?.['passwordMismatch']) {
+                            <div class="mt-1 text-danger small">Passwords do not match</div>
                         }
                     </div>
 

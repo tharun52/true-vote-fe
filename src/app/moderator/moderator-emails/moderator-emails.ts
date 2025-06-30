@@ -15,15 +15,32 @@ export class ModeratorEmails {
   emails: VoterEmailModel[] = [];
   showPopup = false;
   selectedEmail: string | null = null;
-  constructor(private moderatorService:ModeratorService) {}
+
+  hasError = false;
+
+  constructor(private moderatorService: ModeratorService) {}
+
+  ngOnInit(): void {
+    this.fetchEmails();
+  }
+
+  fetchEmails(): void {
+    this.hasError = false;
+
+    this.moderatorService.getModeratorEmails().subscribe({
+      next: (data) => {
+        this.emails = data;
+      },
+      error: (err) => {
+        console.error('Failed to load emails:', err);
+        this.hasError = true;
+      }
+    });
+  }
 
   openVoterDetail(email: string, event: Event): void {
     event.preventDefault();
     this.selectedEmail = email;
     this.showPopup = true;
-  }
-
-  ngOnInit(): void {
-    this.moderatorService.getModeratorEmails().subscribe(data => this.emails = data);
   }
 }

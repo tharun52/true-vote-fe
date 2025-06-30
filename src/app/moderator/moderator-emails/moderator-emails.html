@@ -4,37 +4,57 @@
     <button class="btn btn-outline-primary" [routerLink]="['/moderator/add-emails']">
       <i class="bi bi-plus-circle-fill me-2 fs-6"></i>Add Emails
     </button>
-
   </div>
 
-  <table class="table table-bordered table-hover">
-    <thead class="table-primary" style="background-color: #2196F3; color: white;">
-      <tr>
-        <th>S.No</th>
-        <th>Email</th>
-        <th>Is Used?</th>
-        <th>Created At</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (email of emails; track $index; let i = $index) {
+  <!-- Error State -->
+  @if (hasError) {
+    <div class="alert alert-warning d-flex justify-content-between align-items-center">
+      <div>
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        Failed to load emails.
+      </div>
+      <button class="btn btn-sm btn-warning" (click)="fetchEmails()">Retry</button>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!hasError && emails.length === 0) {
+    <div class="alert alert-info">
+      No voter emails created.
+    </div>
+  }
+
+  <!-- Email Table -->
+  @if (!hasError && emails.length > 0) {
+    <table class="table table-bordered table-hover">
+      <thead class="table-primary" style="background-color: #2196F3; color: white;">
         <tr>
-          <td>{{ i + 1 }}</td>
-          <td>
-            @if (email.isUsed) {
-              <a href="#" (click)="openVoterDetail(email.email, $event)">
-                {{ email.email }}
-              </a>
-            } @else {
-              <span>{{ email.email }}</span>
-            }
-          </td>
-          <td>{{ email.isUsed ? 'Yes' : 'No' }}</td>
-          <td>{{ email.createdAt | date: 'medium' }}</td>
+          <th>S.No</th>
+          <th>Email</th>
+          <th>Is Used?</th>
+          <th>Created At</th>
         </tr>
-      }
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        @for (email of emails; track $index; let i = $index) {
+          <tr>
+            <td>{{ i + 1 }}</td>
+            <td>
+              @if (email.isUsed) {
+                <a href="#" (click)="openVoterDetail(email.email, $event)">
+                  {{ email.email }}
+                </a>
+              } @else {
+                <span>{{ email.email }}</span>
+              }
+            </td>
+            <td>{{ email.isUsed ? 'Yes' : 'No' }}</td>
+            <td>{{ email.createdAt | date: 'medium' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
 </div>
 
 <!-- Voter Detail Popup -->
