@@ -15,16 +15,20 @@ export class ModeratorService {
     return this.http.get<any>(`${this.baseUrl}Voter/moderator/emails`)
       .pipe(map(res => res.data?.$values || []));
   }
-
-  addModerator(data: { name: string; email: string; password: string }) {
-    return this.http.post(`${this.baseUrl}Moderator/add`, data);
-  }
-
+ 
   addToWhitelist(emails: string[]): Observable<any> {
     return this.http.post(`${this.baseUrl}Voter/whitelist`, {
       emails
     });
   }
+ 
+  deleteWhitelistedEmail(email: string) {
+    return this.http.delete(`${this.baseUrl}Voter/delete/whitelist/${encodeURIComponent(email)}`);
+  }
+  addModerator(data: { name: string; email: string; password: string }) {
+    return this.http.post(`${this.baseUrl}Moderator/add`, data);
+  }
+
 
   getModeratorByEmail(email: string): Observable<ModeratorModel> {
     return this.http.get<any>(`${this.baseUrl}Moderator/email/${email}`)

@@ -33,7 +33,7 @@ export class AdminSignup {
   public get email() { return this.AdminSignUpForm.get('email'); }
   public get password() { return this.AdminSignUpForm.get('nampassworde'); }
   public get confirmPassword() { return this.AdminSignUpForm.get('confirmPassword'); }  
-  public get seceretAdminKeyname() { return this.AdminSignUpForm.get('seceretAdminKey'); }
+  public get seceretAdminKey() { return this.AdminSignUpForm.get('seceretAdminKey'); }
 
   handleAdminSignup() {
       if (this.AdminSignUpForm.invalid) return;

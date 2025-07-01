@@ -1,33 +1,40 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../auth.service';
 import { passwordMatchValidator } from '../validators/password-match.validator';
 import { ModeratorsList } from "../../moderator/moderators-list/moderators-list";
 import { passwordValidator } from '../validators/password-validator';
+import { checkEmailValidator } from '../validators/check-email-validator';
+import { ToastService } from '../../shared/ToastService';
 
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule, FormsModule, ModeratorsList],
+  imports: [ReactiveFormsModule, FormsModule, ModeratorsList,RouterLink],
   templateUrl: './signup.html',
   styleUrl: './signup.css'
 })
 export class Signup {
   signupForm: FormGroup;
   error: string | null = null;
+  showModerators: boolean = false;
 
-  constructor(private http: HttpClient, private authService: AuthService, private router: Router) {
+  constructor(private http: HttpClient, private authService: AuthService, private toastService:ToastService) {
     this.signupForm = new FormGroup({
       name: new FormControl('', Validators.required),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      age: new FormControl(null, [Validators.required, Validators.min(1)]),
+      email: new FormControl('', {
+        validators: [Validators.required, Validators.email],
+        asyncValidators: [
+          checkEmailValidator(this.authService, this.toastService, () => this.showModerators = true)
+        ],
+        updateOn: 'blur'
+      }),
+      age: new FormControl(null, [Validators.required, Validators.min(18)]),
       password: new FormControl('', [Validators.required, passwordValidator]),
-      confirmPassword: new FormControl('', Validators.required),
-      }, 
-      { validators: passwordMatchValidator }
-    );
+      confirmPassword: new FormControl('', Validators.required)
+    }, { validators: passwordMatchValidator });
   }
 
   public get name() { return this.signupForm.get('name'); }
@@ -43,7 +50,6 @@ export class Signup {
 
     this.http.post(`${environment.apiBaseUrl}Voter/add`, { name, email, password, age }).subscribe({
       next: () => {
-        // auto login after signup
         this.authService.login(email, password).subscribe({
           next: () => {},
           error: err => this.error = 'Auto-login failed.'

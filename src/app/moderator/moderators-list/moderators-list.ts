@@ -23,7 +23,7 @@ export class ModeratorsList {
   sortBy: string = '';
   sortDesc: boolean = false;
   page: number = 1;
-  pageSize: number = 10;
+  pageSize: number = 3;
   totalPages: number = 1;
 
   selectedModeratorEmail: string | null = null;

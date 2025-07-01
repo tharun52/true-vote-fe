@@ -1,63 +1,82 @@
-<div class="container mt-4">
-  <h3 class="mb-3">Voter Signup</h3>
+<div class="container mt-5 voter-signup-form-container">
+  <div class="form-header mb-4">
+    <h3 class="fw-semibold">Voter Signup</h3>
+    <p class="text-muted mb-0">Create your account to participate in voting. All fields are required.</p>
+  </div>
 
-  <form [formGroup]="signupForm" (ngSubmit)="handleSignup()" class="needs-validation" novalidate>
+  <form [formGroup]="signupForm" (ngSubmit)="handleSignup()" class="voter-signup-form needs-validation" novalidate>
 
+    <!-- Name -->
     <div class="mb-3">
       <label class="form-label">Name</label>
-      <input type="text" formControlName="name" class="form-control" placeholder="Enter name">
+      <input type="text" formControlName="name" class="form-control" placeholder="Enter your full name">
       @if(name?.touched && name?.errors) {
-        <div class="mt-1 text-danger small">Name is required</div>
+        <div class="form-error text-danger mt-1">Name is required</div>
       }
     </div>
 
+    <!-- Email -->
     <div class="mb-3">
       <label class="form-label">Email</label>
-      <input type="email" formControlName="email" class="form-control" placeholder="Enter email">
+      <input type="email" formControlName="email" class="form-control" placeholder="Enter your email">
       @if(email?.touched && email?.errors) {
-        <div class="mt-1 text-danger small">Valid email is required</div>
+        <div class="form-error text-danger mt-1">Valid email is required</div>
       }
     </div>
 
+    <!-- Age -->
     <div class="mb-3">
       <label class="form-label">Age</label>
-      <input type="number" formControlName="age" class="form-control" placeholder="Enter age">
+      <input type="number" formControlName="age" class="form-control" placeholder="Enter your age">
       @if(age?.touched && age?.errors) {
-        <div class="mt-1 text-danger small">Age must be at least 1</div>
+        <div class="form-error text-danger mt-1">Age must be at least 18</div>
       }
     </div>
 
+    <!-- Password -->
     <div class="mb-3">
       <label class="form-label">Password</label>
-      <input type="password" formControlName="password" class="form-control" placeholder="Enter password">
+      <input type="password" formControlName="password" class="form-control" placeholder="Create a password">
       @if(password?.touched && password?.errors) {
-        <div class="mt-1 text-danger small">Password must be at least 8 characters and include a number</div>
+        <div class="form-error text-danger mt-1">Password must be at least 8 characters and include a number</div>
       }
     </div>
 
+    <!-- Confirm Password -->
     <div class="mb-3">
       <label class="form-label">Confirm Password</label>
-      <input type="password" formControlName="confirmPassword" class="form-control" placeholder="Confirm password">
+      <input type="password" formControlName="confirmPassword" class="form-control" placeholder="Re-enter your password">
       @if(confirmPassword?.touched && signupForm.errors?.['passwordMismatch']) {
-        <div class="mt-1 text-danger small">Passwords do not match</div>
+        <div class="form-error text-danger mt-1">Passwords do not match</div>
       }
     </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="signupForm.invalid">Sign Up</button>
-
-    @if(error) {
-      @if(error === 'An unexpected error occurred : You are not authorized to sign up. Please contact your moderator.') {
-        <div class="moderators-section">
-          <div class="alert alert-warning mt-3" role="alert">
-             You are not authorized to sign up. Please contact Any of these moderators.
-          </div>
-          <app-moderators-list></app-moderators-list>
-        </div>
-
-      }
-      @else {
-        <div class="mt-2 text-danger">{{ error }}</div>
-      }
-    }
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-accent w-100" [disabled]="signupForm.invalid">
+      <i class="bi bi-person-plus-fill me-1"></i> Sign Up
+    </button>
   </form>
+
+  <!-- Moderator list if email is invalid -->
+  @if (showModerators) {
+    <div class="moderators-section mt-4">
+      <div class="alert alert-warning" role="alert">
+        You are not authorized to sign up. Please contact any of these moderators:
+      </div>
+      <app-moderators-list></app-moderators-list>
+    </div>
+  }
+
+  <!-- Error message -->
+  @if(error && !showModerators) {
+    <div class="mt-2 text-danger">{{ error }}</div>
+  }
+
+  <!-- Login redirect -->
+  <div class="mt-4 text-center login-redirect">
+    <p class="login-text">
+      Already have an account?
+      <a routerLink="/login" class="login-link">Login</a>
+    </p>
+  </div>
 </div>

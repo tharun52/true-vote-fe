@@ -1,0 +1,121 @@
+/* General container */
+.container {
+  background-color: var(--bg);
+  color: var(--text);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  animation: fadeSlideIn 0.5s ease;
+}
+
+/* Form labels */
+.form-label {
+  color: var(--text) !important;
+  font-weight: 600;
+}
+
+/* Inputs, selects */
+.form-control,
+.form-select {
+  background-color: #fff !important;
+  color: var(--text) !important;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.15rem rgba(79, 131, 255, 0.3);
+  outline: none;
+}
+
+/* Buttons */
+button.btn {
+  transition: all 0.3s ease !important;
+}
+
+.btn-outline-secondary {
+  color: var(--text) !important;
+  border-color: var(--muted) !important;
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--hover-bg) !important;
+  color: var(--hover-text) !important;
+  border-color: var(--hover-accent) !important;
+}
+
+.btn-outline-primary {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--hover-bg) !important;
+  color: var(--hover-accent) !important;
+  border-color: var(--hover-accent) !important;
+}
+
+.btn-light {
+  background-color: #fff !important;
+  color: var(--accent) !important;
+  border: 1px solid var(--accent) !important;
+}
+
+.btn-light:hover {
+  background-color: var(--hover-bg) !important;
+  color: var(--hover-accent) !important;
+}
+
+/* Alert */
+.alert-danger {
+  background-color: #f8d7da !important;
+  color: #842029 !important;
+  border-radius: 0.6rem !important;
+}
+
+.alert-danger button {
+  font-size: 0.85rem;
+}
+
+/* Pagination buttons */
+button[disabled] {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+}
+
+/* Spinner */
+.spinner-border {
+  animation: spin 1s linear infinite;
+}
+
+/* Animation keyframes */
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Card animation for app-poll-card */
+app-poll-card {
+  display: block;
+  animation: fadeSlideIn 0.4s ease-in-out;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+app-poll-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}

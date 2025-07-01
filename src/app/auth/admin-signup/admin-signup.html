@@ -1,60 +1,62 @@
-<div class="container mt-4">
-  <h3 class="mb-3">Voter Signup</h3>
+<div class="container mt-5 admin-signup-form-container">
+  <div class="form-header mb-4">
+    <h3 class="fw-semibold">Admin Signup</h3>
+    <p class="text-muted mb-0">Register as an admin using your secret key. Ensure your credentials are secure and valid.</p>
+  </div>
 
-  <form [formGroup]="AdminSignUpForm" (ngSubmit)="handleAdminSignup()" class="needs-validation" novalidate>
+  <form [formGroup]="AdminSignUpForm" (ngSubmit)="handleAdminSignup()" class="admin-signup-form needs-validation" novalidate>
 
     <div class="mb-3">
-      <label class="form-label">Name</label>
-      <input type="text" formControlName="name" class="form-control" placeholder="Enter name">
+      <label class="form-label">Full Name</label>
+      <input type="text" formControlName="name" class="form-control" placeholder="Enter your full name">
       @if(name?.touched && name?.errors) {
-        <div class="mt-1 text-danger small">Name is required</div>
+        <div class="form-error">Name is required</div>
       }
     </div>
 
     <div class="mb-3">
-      <label class="form-label">Email</label>
-      <input type="email" formControlName="email" class="form-control" placeholder="Enter email">
+      <label class="form-label">Email Address</label>
+      <input type="email" formControlName="email" class="form-control" placeholder="Enter your email">
       @if(email?.touched && email?.errors) {
-        <div class="mt-1 text-danger small">Valid email is required</div>
+        <div class="form-error">Valid email is required</div>
       }
     </div>
 
-    
     <div class="mb-3">
-        <label class="form-label">Password</label>
-        <input type="password" formControlName="password" class="form-control" placeholder="Enter password">
-        @if(password?.touched && password?.errors) {
-            <div class="mt-1 text-danger small">Password must be at least 8 characters and include a number</div>
-        }
+      <label class="form-label">Password</label>
+      <input type="password" formControlName="password" class="form-control" placeholder="Enter password">
+      @if(password?.touched && password?.errors) {
+        <div class="form-error">Password must be at least 8 characters and include a number</div>
+      }
     </div>
-    
+
     <div class="mb-3">
-        <label class="form-label">Confirm Password</label>
-        <input type="password" formControlName="confirmPassword" class="form-control" placeholder="Confirm password">
-        @if(confirmPassword?.touched && AdminSignUpForm.errors?.['passwordMismatch']) {
-            <div class="mt-1 text-danger small">Passwords do not match</div>
-        }
+      <label class="form-label">Confirm Password</label>
+      <input type="password" formControlName="confirmPassword" class="form-control" placeholder="Confirm password">
+      @if(confirmPassword?.touched && AdminSignUpForm.errors?.['passwordMismatch']) {
+        <div class="form-error">Passwords do not match</div>
+      }
     </div>
+
     <div class="mb-3">
       <label class="form-label">Secret Admin Key</label>
       <input type="password" formControlName="seceretAdminKey" class="form-control" placeholder="Enter Secret Key">
-      @if(seceretAdminKeyname?.touched && seceretAdminKeyname?.errors) {
-        <div class="mt-1 text-danger small">Secret Admin Key is required</div>
+      @if(seceretAdminKey?.touched && seceretAdminKey?.errors) {
+        <div class="form-error">Secret Admin Key is required</div>
       }
     </div>
-    
-    <button type="submit" class="btn btn-primary" [disabled]="AdminSignUpForm.invalid">Sign Up</button>
+
+    <button type="submit" class="btn btn-accent w-100" [disabled]="AdminSignUpForm.invalid">
+      <i class="bi bi-shield-lock-fill me-1"></i> Sign Up as Admin
+    </button>
 
     @if(error) {
       @if(error === 'An unexpected error occurred : You are not authorized to sign up. Please contact your moderator.') {
-        <div class="moderators-section">
-          <div class="alert alert-warning mt-3" role="alert">
-             Error in Registering Admin
-          </div>
+        <div class="alert alert-warning mt-3" role="alert">
+          <strong>Error:</strong> You are not authorized to register. Please contact your assigned moderator.
         </div>
-      }
-      @else {
-        <div class="mt-2 text-danger">{{ error | json}}</div>
+      } @else {
+        <div class="mt-2 text-danger">{{ error | json }}</div>
       }
     }
   </form>

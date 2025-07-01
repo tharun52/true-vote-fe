@@ -1,1 +1,43 @@
-<p>home-page works!</p>
+<div class="truevote-home container py-5 text-center">
+
+  <!-- Logo and Branding -->
+  <div class="mb-4">
+    <i class="bi bi-hand-index-thumb-fill fs-1 text-accent"></i>
+    <h1 class="fw-bold mt-2">TrueVote</h1>
+    <p class="lead">Where your vote counts — and your identity doesn't.</p>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="row align-items-center my-5 g-4">
+    <div class="col-md-6">
+      <img src="assets/homeposter.webp" alt="Anonymous Voting" class="img-fluid rounded shadow-sm w-50" />
+    </div>
+
+    <div class="col-md-6 text-start">
+      <h2 class="fw-semibold text-accent">Vote Freely. Vote Anonymously.</h2>
+      <p class="mt-3">
+        TrueVote empowers individuals to participate in polls and elections without compromising their identity.
+        We prioritize <strong>anonymity above everything else</strong>, using end-to-end encrypted vote handling, IP scrubbing,
+        and unlinkable ballots.
+      </p>
+      <p class="text-muted">
+        Whether it's an internal team vote or a public opinion poll — your identity is never stored or revealed.
+      </p>
+
+      <div class="d-flex gap-3 mt-4">
+        <a class="btn btn-accent px-4 py-2" routerLink="/login">
+          <i class="bi bi-box-arrow-in-right me-1"></i> Login
+        </a>
+        <a class="btn btn-outline-accent px-4 py-2" routerLink="/signup">
+          <i class="bi bi-person-plus-fill me-1"></i> Sign Up
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust Banner -->
+  <div class="alert alert-light border d-flex align-items-center justify-content-center mt-5">
+    <i class="bi bi-shield-lock-fill text-accent fs-4 me-2"></i>
+    <span>100% anonymous. 0% compromise.</span>
+  </div>
+</div>

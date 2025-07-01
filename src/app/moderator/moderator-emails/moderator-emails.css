@@ -1,10 +1,103 @@
-table {
-  background-color: white;
+.container {
+  background-color: var(--bg) !important;
+  color: var(--text);
 }
-a {
-  color: #2196F3;
-  text-decoration: none;
+
+h3 {
+  color: var(--accent);
 }
-a:hover {
-  text-decoration: underline;
+
+.btn-outline-primary {
+  border-color: var(--accent);
+  color: var(--accent);
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--hover-bg);
+  border-color: var(--hover-accent);
+  color: var(--hover-accent);
+}
+
+.custom-alert {
+  background-color: rgba(79, 131, 255, 0.1);
+  border-left: 4px solid var(--accent);
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.alert.alert-warning,
+.alert.alert-info {
+  background-color: var(--hover-bg);
+  color: var(--text);
+  border-left: 4px solid var(--accent);
+  font-weight: 500;
+}
+
+.row.fw-semibold {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.email-row {
+  background-color: var(--bg);
+  color: var(--text);
+  border-left-width: 0.5rem;
+  border-left-style: solid;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.email-row.used {
+  border-left-color: #28a745; /* green */
+  cursor: pointer;
+}
+
+.email-row.unused {
+  border-left-color: #6c757d; /* muted gray */
+}
+
+.email-row.email-row.used:hover {
+  background-color: var(--hover-bg);
+  transform: scale(1.01);
+}
+
+
+.text-primary {
+  color: var(--accent) !important;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+}
+
+.bg-success {
+  background-color: #28a745 !important;
+}
+
+.bg-secondary {
+  background-color: #6c757d !important;
+}
+
+.btn-outline-danger {
+  border-color: #dc3545;
+  color: #dc3545;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+}
+
+.col-4 span {
+  font-size: 0.875rem;
+}
+
+@media (max-width: 576px) {
+  .row.fw-semibold {
+    font-size: 0.8rem;
+  }
 }

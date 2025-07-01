@@ -1,0 +1,108 @@
+/* Outer container background */
+.admin-signup-form-container {
+  background-color: var(--bg);
+  color: var(--text);
+  padding: 3rem 1rem;
+  border-radius: 0.75rem;
+  animation: fadeSlideIn 0.5s ease;
+}
+
+/* Header section */
+.form-header h3 {
+  color: var(--text);
+  font-size: 1.75rem;
+}
+
+.form-header p {
+  color: var(--muted) !important;
+  font-size: 1rem;
+}
+
+/* Signup form card */
+.admin-signup-form {
+  background-color: var(--accent);
+  color: var(--bg);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Input fields */
+.admin-signup-form .form-control {
+  background-color: #ffffff !important;
+  color: #000000 !important;           
+  border: 2px solid transparent;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.admin-signup-form .form-control:focus {
+  border-color: var(--hover-bg);
+  box-shadow: 0 0 0 0.15rem rgba(0, 0, 0, 0.15);
+  outline: none;
+}
+
+.admin-signup-form .form-control::placeholder {
+  color: var(--muted);
+}
+
+.admin-signup-form .form-control:hover {
+  box-shadow: 0 0 0 2px var(--hover-bg);
+}
+
+/* Button */
+.btn-accent {
+  background-color: var(--bg);
+  color: var(--accent);
+  font-weight: 600;
+  padding: 0.75rem;
+  border-radius: 0.6rem;
+  border: none;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-accent:hover {
+  background-color: var(--hover-bg);
+  color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* Error message styling */
+.form-error {
+  background-color: #e53935;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 0.375rem;
+  margin-top: 0.3rem;
+  display: inline-block;
+  animation: popWarning 0.3s ease-out;
+}
+
+/* Animations */
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popWarning {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

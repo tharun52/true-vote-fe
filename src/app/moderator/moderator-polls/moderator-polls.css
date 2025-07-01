@@ -5,19 +5,57 @@
   margin-left: auto;
   margin-right: auto;
 }
-
-.btn-accent {
-  background-color: var(--content-accent);
-  color: white;
-  border: none;
-  padding: 0.45rem 1rem;
-  border-radius: 0.4rem;
-  font-weight: 500;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+.polls-wrapper h5 i{
+  color: var(--accent);
+}
+.polls-wrapper h5 {
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: fadeInSlide 0.4s ease-in-out;
+}
+.polls-wrapper p {
+  color: var(--muted) !important;
+  font-size: 0.95rem;
+  animation: fadeIn 0.5s ease-in;
 }
 
-.btn-accent:hover {
-  background-color: var(--nav-btn-hover);
-  transform: scale(1.03);
-  color: var(--content-text);
+
+.polls-wrapper .btn-accent {
+  background-color: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.polls-wrapper .btn-accent:hover {
+  background-color: var(--hover-accent);
+  transform: translateY(-2px);
+}
+
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

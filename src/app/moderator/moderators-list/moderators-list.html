@@ -1,59 +1,85 @@
-  <div class="moderator-container mt-4">
+<div class="moderator-container mt-4">
 
-    <div class="mb-3 d-flex flex-wrap gap-2 align-items-center">
-      <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" class="form-control search-input" placeholder="Search moderators..."/>
+  <!-- Search, Sort and Toggle Controls -->
+  <div class="mb-3 row g-2 align-items-center">
+    <div class="col-md-5">
+      <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" 
+             class="form-control" placeholder="Search moderators..."/>
+    </div>
 
-      <select class="form-select sort-select" [(ngModel)]="sortBy" (change)="fetchModerators()">
+    <div class="col-md-3">
+      <select class="form-select" [(ngModel)]="sortBy" (change)="fetchModerators()">
         <option value="">Sort By</option>
         <option value="name">Name</option>
         <option value="email">Email</option>
       </select>
+    </div>
 
-      <button class="btn btn-outline-secondary sort-btn" (click)="toggleSortDirection()">
+    <div class="col-auto">
+      <button class="btn btn-outline-secondary" (click)="toggleSortDirection()">
         <i [ngClass]="sortDesc ? 'bi bi-sort-down' : 'bi bi-sort-up'"></i>
       </button>
     </div>
-
-    @if(error) {
-      <div class="text-danger">{{ error }}</div>
-    }
-
-    @if(moderators.length > 0) {
-      <h5 class="text-primary">Moderators :</h5>
-      <ul class="list-group moderator-list">
-        @for(mod of moderators; track $index) {
-          <li class="list-group-item bg-white d-flex justify-content-between align-items-center"
-            (click)="openModeratorDetail(mod.email)"
-            style="cursor: pointer;">
-            <span><strong>{{ mod.name }}</strong></span>
-            <span class="badge" [ngClass]="mod.isDeleted ? 'bg-danger' : 'bg-success'">
-              {{ mod.isDeleted ? 'Deleted' : 'Active' }}
-            </span>
-            <span class="text-muted">{{ mod.email }}</span>
-          </li>
-        }
-      </ul>
-
-    <div class="pagination-controls mt-4">
-        <button class="btn btn-outline-secondary btn-sm" (click)="previousPage()" [disabled]="page === 1">
-          ◀
-        </button>
-        <span class="text-dark mx-3">Page {{ page }} of {{ totalPages }}</span>
-        <button class="btn btn-outline-secondary btn-sm" (click)="nextPage()" [disabled]="page === totalPages">
-          ▶
-        </button>
-    </div>
-
-
-    } @else {
-      <div class="text-muted">No moderators found.</div>
-    }
   </div>
 
-  @if (showModeratorPopup && selectedModeratorEmail) {
-    <app-moderator-detail
-      [email]="selectedModeratorEmail"
-      [isAdmin]="false"
-      (close)="onModeratorDetailClosed()">
-    </app-moderator-detail>
+  <!-- Error Message -->
+  @if (error) {
+    <div class="text-danger">{{ error }}</div>
   }
+
+  <!-- Moderator Grid -->
+  @if (moderators.length > 0) {
+    <h5 class="text-primary mb-3">Moderators:</h5>
+    
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+      @for(mod of moderators; track $index) {
+        <div class="col">
+          <div 
+            class="card h-100 shadow-sm border rounded cursor-pointer"
+            (click)="openModeratorDetail(mod.email)">
+            <div class="card-body d-flex flex-column justify-content-between">
+              <div>
+                <h6 class="card-title mb-1 text-dark">{{ mod.name }}</h6>
+                <p class="card-subtitle mb-2 text-muted">{{ mod.email }}</p>
+              </div>
+
+              @if (isAdmin()) {
+                <span class="badge align-self-start mt-2"
+                      [ngClass]="mod.isDeleted ? 'bg-danger' : 'bg-success'">
+                  {{ mod.isDeleted ? 'Deleted' : 'Active' }}
+                </span>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Pagination Controls -->
+    @if (totalPages > 1) {
+      <div class="pagination-controls mt-4 d-flex justify-content-center align-items-center gap-3">
+        <button class="btn btn-outline-secondary btn-sm" 
+                (click)="previousPage()" 
+                [disabled]="page === 1">◀</button>
+
+        <span class="text-dark">Page {{ page }} of {{ totalPages }}</span>
+
+        <button class="btn btn-outline-secondary btn-sm" 
+                (click)="nextPage()" 
+                [disabled]="page === totalPages">▶</button>
+      </div>
+    }
+  } @else {
+    <div class="text-muted">No moderators found.</div>
+  }
+
+</div>
+
+<!-- Moderator Detail Popup -->
+@if (showModeratorPopup && selectedModeratorEmail) {
+  <app-moderator-detail
+    [email]="selectedModeratorEmail"
+    [isAdmin]="true"
+    (close)="onModeratorDetailClosed()">
+  </app-moderator-detail>
+}

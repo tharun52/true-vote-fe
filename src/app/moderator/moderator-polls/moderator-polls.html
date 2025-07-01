@@ -4,9 +4,13 @@
       <i class="bi bi-bar-chart-steps me-2"></i>Polls Created by You
     </h5>
     @if (isModerator) {
-        <button class="btn btn-accent" routerLink="/moderator/addpoll">
-            <i class="bi bi-plus-circle me-1"></i> Add Poll
-        </button>
+      <button class="btn btn-accent" routerLink="/moderator/addpoll">
+        <i class="bi bi-plus-circle me-1"></i> Add Poll
+      </button>
     }
-</div>
+  </div>
+  <p class="text-muted mb-3">
+    Here you can view all the polls you've created. 
+    You can also add a new poll using the button on the right.
+  </p>
 <app-polls-list [createdByEmail]="username"></app-polls-list>

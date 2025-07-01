@@ -1,51 +1,47 @@
-<div class="container p-4 mt-4 bg-white shadow rounded">
-    <h3 class="text-primary mb-3">Add Emails to Whitelist</h3>
+<div class="container mt-5 whitelist-container">
+  <h3 class="form-title mb-3">Add Emails to Whitelist</h3>
 
-    <!-- Single Email -->
-    <form [formGroup]="emailForm" (ngSubmit)="addSingleEmail()" class="d-flex gap-2 align-items-center mb-3">
-        <input type="email" class="form-control" formControlName="email" placeholder="Enter single email">
-        @if (email?.touched && email?.errors) {
-            <div class="mt-1 text-danger small">Invaild Email</div>
+  <!-- Single Email -->
+  <form [formGroup]="emailForm" (ngSubmit)="addSingleEmail()" class="d-flex flex-wrap gap-2 align-items-center mb-3 email-form">
+    <input type="email" class="form-control" formControlName="email" placeholder="Enter single email" />
+    @if (email?.touched && email?.errors) {
+      <div class="form-error">Invalid Email</div>
+    }
+    <button class="btn btn-accent" type="submit" [disabled]="emailForm.invalid">Add Email</button>
+  </form>
+
+  <hr class="my-4"/>
+
+  <!-- Bulk Upload -->
+  <div class="mb-3">
+    <label for="bulkUpload" class="form-label">
+      Upload Emails File <br />
+      <small class="text-muted">(Supported formats: <strong>.txt</strong>, <strong>.csv</strong>. One email per line.)</small>
+    </label>
+    <input type="file" class="form-control" id="bulkUpload" (change)="handleFileInput($event)" accept=".txt,.csv" />
+  </div>
+
+  <!-- Preview Uploaded Emails -->
+  @if (uploadedEmails.length > 0) {
+    <div class="email-preview p-3 mb-3">
+      <h6 class="mb-2 text-accent"><i class="bi bi-envelope-plus-fill"></i> Emails to be added ({{ uploadedEmails.length }}):</h6>
+      <ul class="list-group email-list">
+        @for (email of uploadedEmails; track email; let i = $index) {
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ email }}
+            <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeEmail(i)">Remove</button>
+          </li>
         }
-        <button class="btn btn-primary" type="submit" [disabled]="emailForm.invalid">Add Email</button>
-    </form>
-
-    <hr />
-
-    <!-- Bulk Upload -->
-    <div class="mb-3">
-        <label for="bulkUpload" class="form-label">
-            Upload Emails File <br>
-            <small class="text-muted">
-                (Supported formats: <strong>.txt</strong>, <strong>.csv</strong>. One email per line.)
-            </small>
-        </label>
-        <input type="file" class="form-control" id="bulkUpload" (change)="handleFileInput($event)" accept=".txt,.csv">
+      </ul>
     </div>
+  }
 
-    <!-- Preview Uploaded Emails -->
-    @if (uploadedEmails.length>0) {
-        <div class="border rounded p-3 mb-3 bg-light">
-            <h6 class="mb-2 text-primary">📧 Emails to be added ({{ uploadedEmails.length }}):</h6>
-            
-            <ul class="list-group">
-                @for (email of uploadedEmails; track email; let i = $index) {
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{ email }}
-                        <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeEmail(i)">
-                            Remove
-                        </button>
-                    </li>
-                }
-            </ul>
-        </div>
-    }
+  <!-- Submit Button -->
+  <button class="btn btn-success mt-2" (click)="addBulkEmails()" [disabled]="uploadedEmails.length === 0">
+    Add {{ uploadedEmails.length }} Emails
+  </button>
 
-    <!-- Submit Button -->
-    <button class="btn btn-success mb-2" (click)="addBulkEmails()" [disabled]="uploadedEmails.length === 0">
-        Add {{ uploadedEmails.length }} Emails
-    </button>
-    @if (message) {
+  @if (message) {
     <div class="alert alert-info mt-3">{{ message }}</div>
-    }
+  }
 </div>

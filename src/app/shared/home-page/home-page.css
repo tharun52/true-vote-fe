@@ -1,0 +1,47 @@
+.truevote-home {
+  background-color: var(--bg);
+  color: var(--text);
+  animation: fadeSlideIn 0.5s ease;
+}
+
+.text-accent {
+  color: var(--accent) !important;
+}
+
+.btn-accent {
+  background-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-accent:hover {
+  background-color: var(--hover-accent);
+  transform: translateY(-1px);
+}
+
+.btn-outline-accent {
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-accent:hover {
+  background-color: var(--hover-bg);
+  color: var(--hover-accent);
+}
+
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { PollQueryDto, PollResponseItemModel} from '../../models/PollModels';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime} from 'rxjs';
 import { PollService } from '../poll.service';
 import { PollCard } from "../poll-card/poll-card";
 import { AuthService } from '../../auth/auth.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-polls-list',
@@ -25,11 +26,13 @@ export class PollsList implements OnInit {
   startDateFrom = '';
   startDateTo = '';
   page = 1;
-  pageSize = 10;
+  pageSize = 4;
   totalPages: number = 1;
 
   loading: boolean = true;
   errorMessage: string | null = null;
+  
+  showFilters = false;
 
   constructor(private pollService: PollService, private authService:AuthService) {}
 
@@ -63,7 +66,6 @@ export class PollsList implements OnInit {
 
     this.pollService.getPolls(query).subscribe({
       next: response => {
-        console.log(response.data); 
         this.polls = response.data;
         this.totalPages = response.pagination.totalPages;
         this.loading = false;
@@ -113,7 +115,12 @@ export class PollsList implements OnInit {
     link.click();
     document.body.removeChild(link);
   }
+  
   get isModerator(): boolean {
     return this.authService.getRole()?.toLowerCase() === 'moderator';
+  }
+
+  toggleFilters() {
+    this.showFilters = !this.showFilters;
   }
 }

@@ -1,11 +1,12 @@
 <div class="container my-4 p-4 rounded shadow bg-white border">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h3 class="text-primary m-0">Whitelisted Emails</h3>
+    
     <button class="btn btn-outline-primary" [routerLink]="['/moderator/add-emails']">
       <i class="bi bi-plus-circle-fill me-2 fs-6"></i>Add Emails
     </button>
   </div>
-
+  
   <!-- Error State -->
   @if (hasError) {
     <div class="alert alert-warning d-flex justify-content-between align-items-center">
@@ -16,49 +17,71 @@
       <button class="btn btn-sm btn-warning" (click)="fetchEmails()">Retry</button>
     </div>
   }
-
+  
   <!-- Empty State -->
   @if (!hasError && emails.length === 0) {
     <div class="alert alert-info">
       No voter emails created.
     </div>
   }
-
-  <!-- Email Table -->
+  
+  <!-- Email Grid -->
   @if (!hasError && emails.length > 0) {
-    <table class="table table-bordered table-hover">
-      <thead class="table-primary" style="background-color: #2196F3; color: white;">
-        <tr>
-          <th>S.No</th>
-          <th>Email</th>
-          <th>Is Used?</th>
-          <th>Created At</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (email of emails; track $index; let i = $index) {
-          <tr>
-            <td>{{ i + 1 }}</td>
-            <td>
-              @if (email.isUsed) {
-                <a href="#" (click)="openVoterDetail(email.email, $event)">
-                  {{ email.email }}
-                </a>
-              } @else {
-                <span>{{ email.email }}</span>
-              }
-            </td>
-            <td>{{ email.isUsed ? 'Yes' : 'No' }}</td>
-            <td>{{ email.createdAt | date: 'medium' }}</td>
-          </tr>
-        }
-      </tbody>
-    </table>
+    <div class="alert alert-info custom-alert mb-4">
+      <i class="bi bi-info-circle-fill me-2"></i>
+      You can add or view whitelisted voter emails here. 
+      Only whitelisted emails can be used to sign up. 
+      If an email has already been used, you will be able to view that voter's details.
+    </div>
+    <div class="row fw-semibold border-bottom pb-2 mb-2 text-secondary">
+      <div class="col-1">S.No</div>
+      <div class="col-5">Email</div>
+      <div class="col-2">Is Used?</div>
+      <div class="col-4">Created At</div>
+    </div>
+
+    @for (email of emails; track $index; let i = $index) {
+      <div 
+        class="row align-items-center p-2 rounded mb-2 email-row"
+        [ngClass]="email.isUsed ? 'used' : 'unused'"
+        (click)="email.isUsed && openVoterDetail(email.email, $event)"
+      >
+
+        <div class="col-1">{{ i + 1 }}</div>
+
+        <div class="col-5 text-primary fw-medium">
+          {{ email.email }}
+        </div>
+
+        <div class="col-2">
+          <span class="badge" [ngClass]="email.isUsed ? 'bg-success' : 'bg-secondary'">
+            {{ email.isUsed ? 'Yes' : 'No' }}
+          </span>
+        </div>
+
+        <div class="col-4 d-flex justify-content-between align-items-center">
+          <span>{{ email.createdAt | date: 'medium' }}</span>
+
+          @if (!email.isUsed) {
+            <button 
+              class="btn btn-sm btn-outline-danger ms-2" 
+              (click)="deleteEmail(email.email); $event.stopPropagation();"
+            >
+              <i class="bi bi-trash"></i>
+            </button>
+          }
+        </div>
+      </div>
+    }
+
   }
 </div>
 
 <!-- Voter Detail Popup -->
 @if (showPopup && selectedEmail) {
-  <app-voter-detail [email]="selectedEmail" [isModerator]="true" (close)="showPopup = false">
+  <app-voter-detail 
+    [email]="selectedEmail" 
+    [isModerator]="true" 
+    (close)="showPopup = false">
   </app-voter-detail>
 }

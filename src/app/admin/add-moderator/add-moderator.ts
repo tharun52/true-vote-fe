@@ -19,7 +19,7 @@ export class AddModerator {
   constructor(private moderatorService: ModeratorService, private router:Router, private toastService:ToastService) {
     this.moderatorForm = new FormGroup({
       name: new FormControl('', Validators.required),
-      email: new FormControl('', Validators.email),
+      email: new FormControl('', [Validators.email, Validators.required]),
       password: new FormControl('', [Validators.required, passwordValidator]),
       confirmPassword: new FormControl('', Validators.required)
     }, 
@@ -34,7 +34,7 @@ export class AddModerator {
 
   submit() {
     if (this.moderatorForm.invalid) {
-      this.responseMessage = 'Please fill all required fields.';
+      this.responseMessage = 'Please fill all required fields properly.';
       return;
     }
 

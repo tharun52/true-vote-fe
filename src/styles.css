@@ -5,39 +5,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700&display=swap');
 
 :root {
-  --nav-bg: #4F83FF;
-  --nav-text: #F9FAFB;
-  --nav-accent: #E8EAED;
-  --nav-btn-hover: #d6dbe4;
+  --accent: #4F83FF;
+  --text: #000000;
+  --bg: #F9FAFB;
+  --muted: #6c757d;
 
-  --body-bg: #F9FAFB;
-  --body-text: #4F83FF;
-
-  --content-bg: #F9FAFB;
-  --content-text: #000000;
-  --content-accent: #4F83FF;
-  --content-border: #e0e0e0;
-  --content-muted: #6c757d;
+  --hover-accent:#024dfb;
+  --hover-text:#303030;
+  --hover-bg: #E8EAED;
 }
 
 [data-theme='dark'] {
-  --nav-bg:  #303134;
-  --nav-text: #E8EAED;
-  --nav-accent: #4F83FF;
+  --accent: #4F83FF;
+  --text: #F9FAFB;
+  --bg: #303030;
+  --muted: #b0b0b0;
 
-  --body-bg: #202020;
-  --body-text: #ffffff;
-
-  --content-bg: #303134;
-  --content-text: #ffffff;
-  --content-accent: #4F83FF;
-  --content-border: #555;
-  --content-muted: #b0b0b0;
+  --hover-accent:#024dfb;
+  --hover-text:#E8EAED;
+  --hover-bg: #202020;
 }
 
 body {
   font-family: 'Mulish', sans-serif;
-  background-color: var(--body-bg);
-  color: var(--body-text);
+  background-color: var(--bg);
+  color: var(--text);
   transition: background-color 0.3s ease, color 0.3s ease;
 }

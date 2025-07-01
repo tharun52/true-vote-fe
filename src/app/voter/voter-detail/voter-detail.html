@@ -5,7 +5,7 @@
 <div class="modal-box container p-4 rounded shadow bg-white border">
   <button class="btn-close float-end" (click)="closePopup()"></button>
 
-  <h3 class="text-primary mb-3">Voter Details</h3>
+  <h3 class=" mb-3">Voter Details</h3>
 
   @if (voter && !editMode) {
     <div>
@@ -53,7 +53,7 @@
 @if (prevPollsMode) {
   <div class="modal-box-lg bg-white p-4 rounded shadow">
     <button class="btn-close float-end" (click)="prevPollsMode = false"></button>
-    <h4 class="text-primary mb-3">Previously Voted Polls</h4>
+    <h4 class="mb-3">Previously Voted Polls</h4>
     <app-polls-list [VoterId]="voterId" [ForVoting]="false"></app-polls-list>
   </div>
 }

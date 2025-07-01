@@ -1,13 +1,17 @@
+/* Backdrop */
 .modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(2px);
   z-index: 1040;
+  animation: fadeIn 0.4s ease-in-out;
 }
 
+/* Modal Box (Standard) */
 .modal-box {
   position: fixed;
   top: 50%;
@@ -16,19 +20,114 @@
   z-index: 1050;
   width: 90%;
   max-width: 500px;
+  background-color: var(--bg) !important;
+  color: var(--text);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  animation: scaleIn 0.4s ease-out;
 }
 
+/* Modal Box (Large) for Previous Polls */
 .modal-box-lg {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1055;
-  width: 80vw;  
+  width: 85vw;
   height: 90vh;
   overflow-y: auto;
-  background-color: white;
+  background-color: var(--bg) !important;
+  color: var(--text);
   border-radius: 1rem;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
   padding: 2rem;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Titles */
+.modal-box h3,
+.modal-box-lg h4 {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* Buttons */
+.modal-box .btn,
+.modal-box-lg .btn {
+  transition: transform 0.2s ease, background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.modal-box .btn:hover,
+.modal-box-lg .btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Accent Button */
+.btn-accent {
+  background-color: var(--accent);
+  color: var(--bg);
+  font-weight: 600;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-accent:hover {
+  background-color: var(--hover-accent);
+  transform: translateY(-1px);
+  color: var(--bg);
+}
+
+/* Close Button */
+.btn-close {
+  background-color: transparent;
+  border: none;
+  font-size: 1.3rem;
+  color: var(--text);
+  transition: transform 0.2s ease;
+}
+
+.btn-close:hover {
+  transform: scale(1.1);
+  color: var(--hover-text);
+}
+
+/* Text status styles */
+.text-danger {
+  color: #dc3545 !important;
+  font-weight: 600;
+}
+
+.text-success {
+  color: #198754 !important;
+  font-weight: 600;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }

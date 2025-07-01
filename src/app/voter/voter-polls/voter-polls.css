@@ -1,0 +1,45 @@
+/* Container Styling */
+.polls-dashboard {
+  animation: fadeIn 0.5s ease;
+}
+
+/* Section Headers */
+.section-header {
+  text-align: left;
+  animation: slideIn 0.4s ease-out;
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+
+/* Divider */
+hr {
+  border-top: 2px dashed var(--hover-bg);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+}

@@ -1,3 +1,128 @@
-.container {
-  max-width: 600px;
+.whitelist-container {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  padding: 2.5rem 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  animation: fadeSlideIn 0.4s ease;
+}
+
+.whitelist-container .form-label,
+.whitelist-container .form-label small {
+  color: #333333 !important;
+}
+
+.whitelist-container .email-preview {
+  background-color: #f8f9fa;
+  color: #000000;
+  border-left: 4px solid var(--accent);
+}
+
+.whitelist-container .form-control {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #ced4da;
+}
+
+.whitelist-container .form-control::placeholder {
+  color: #6c757d;
+}
+
+/* Error messages */
+.whitelist-container .form-error {
+  background-color: #e53935;
+  color: #ffffff;
+}
+
+.whitelist-container .btn-accent {
+  background-color: var(--accent);
+  color: #ffffff;
+}
+
+.form-title {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.email-form .form-control {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-radius: 0.5rem;
+  border: 2px solid transparent;
+  padding: 0.6rem 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.email-form .form-control:focus {
+  border-color: var(--hover-bg);
+  box-shadow: 0 0 0 0.15rem rgba(0, 0, 0, 0.1);
+}
+
+.btn-accent {
+  background-color: var(--accent);
+  color: #ffffff;
+  font-weight: 600;
+  padding: 0.55rem 1rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-accent:hover {
+  background-color: var(--hover-accent);
+  transform: translateY(-1px);
+}
+
+/* Error Message */
+.form-error {
+  background-color: #e53935;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 0.4rem;
+  animation: popWarning 0.3s ease-out;
+}
+
+.email-preview {
+  background-color: var(--hover-bg);
+  border-radius: 0.75rem;
+  border-left: 4px solid var(--accent);
+}
+
+.text-accent {
+  color: var(--accent);
+}
+
+.email-list .list-group-item {
+  background-color: var(--bg);
+  color: var(--text);
+  border-color: rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s ease;
+}
+
+.email-list .list-group-item:hover {
+  background-color: var(--hover-bg);
+}
+
+/* Animations */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popWarning {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

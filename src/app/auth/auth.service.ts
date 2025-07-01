@@ -20,6 +20,12 @@ export class AuthService {
   registerAdmin(adminData:any){
     return this.http.post(`${environment.apiBaseUrl}Admin/add`, adminData);
   }
+  checkEmail(email: string) {
+    return this.http.get<boolean>(`${environment.apiBaseUrl}Voter/check-email`, {
+      params: { email }
+    });
+  }
+
   login(username: string, password: string): Observable<UserModel> {
     return this.http.post<UserModel>(this.API, { username, password }).pipe(
       tap((user) => {

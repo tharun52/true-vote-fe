@@ -1,11 +1,23 @@
-<div class="container mt-4">
-  <h2>Welcome, Voter!</h2>
-  <p>This is your dashboard.</p>
-  <h3>On Going Polls</h3>
-  <app-polls-list [VoterId]="voterId" [ForVoting]="true"></app-polls-list>
-</div>
-<div class="container mt-4">
-  <h3>Previosly Voted Polls</h3>
-  <app-polls-list [VoterId]="voterId" [ForVoting]="false"></app-polls-list>
-</div>
+<div class="container my-5 polls-dashboard">
+  <div class="polls-section">
+    <div class="section-header">
+      <h3 class="section-title text-accent">
+        <i class="bi bi-hourglass-split me-2"></i> On Going Polls
+      </h3>
+      <p class="text-muted mb-4">These are polls that are currently open for voting. Cast your vote anonymously and securely.</p>
+    </div>
+    <app-polls-list [VoterId]="voterId" [ForVoting]="true"></app-polls-list>
+  </div>
 
+  <hr class="my-5" />
+
+  <div class="polls-section">
+    <div class="section-header">
+      <h3 class="section-title text-accent">
+        <i class="bi bi-clock-history me-2"></i> Previously Voted Polls
+      </h3>
+      <p class="text-muted mb-4">Here's a list of polls you've already voted in. You can review the results and activity.</p>
+    </div>
+    <app-polls-list [VoterId]="voterId" [ForVoting]="false"></app-polls-list>
+  </div>
+</div>

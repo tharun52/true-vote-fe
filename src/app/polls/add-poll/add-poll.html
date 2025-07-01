@@ -1,6 +1,14 @@
-<div class="container my-5">
+<div class="container my-5 poll-form-container">
   <div class="row justify-content-center">
     <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+      <h2 class="fw-bold text-accent">Create a New Poll <i class="bi bi-hand-index-thumb-fill"></i></h2>
+      <p>
+        Use the form below to set up your poll. Provide a title and description, specify the active dates, 
+        and add at least two voting options. Optionally, you can attach a file for reference. Once created, 
+        voters will be able to vote during the set time window.
+      </p>
+      <div class="text-center mb-4">
+      </div>
       <form [formGroup]="pollForm" (ngSubmit)="submit()" enctype="multipart/form-data"
         class="poll-form card p-4 shadow-sm border-0">
         <div class="mb-3">
@@ -59,8 +67,10 @@
         </div>
 
         <button type="submit" class="btn btn-accent w-100">Create Poll</button>
-
-        <div class="text-danger mt-2 small">{{ responseMessage }}</div>
+        
+        @if (responseMessage) {
+          <div class="text-danger mt-2 small">{{ responseMessage }}</div>
+        }
       </form>
     </div>
   </div>

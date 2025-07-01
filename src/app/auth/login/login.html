@@ -1,16 +1,19 @@
-<div class="container mt-4">
-  <h3 class="mb-3">Login</h3>
-  <form [formGroup]="loginForm" (ngSubmit)="handleLogin()" class="needs-validation" novalidate>
+<div class="container mt-5 login-form-container">
+  <div class="form-header mb-4">
+    <h3 class="fw-semibold">Login</h3>
+    <p class="mb-0">Enter your email and password to log in to your account.</p>
+  </div>
+
+  <form [formGroup]="loginForm" (ngSubmit)="handleLogin()" class="login-form needs-validation" novalidate>
 
     <div class="mb-3">
       <label class="form-label">Username (Email)</label>
-      <input type="text" formControlName="un" class="form-control" placeholder="Enter username">
+      <input type="text" formControlName="un" class="form-control" placeholder="Enter email">
       @if(un?.touched && un?.errors) {
         @if(un?.errors?.['required']) {
-          <div class="mt-1 text-danger small">Username cannot be empty</div>
-        }
-        @else {
-          <div class="mt-1 text-danger small">Invalid email</div>
+          <div class="form-error">Username cannot be empty</div>
+        } @else {
+          <div class="form-error">Invalid email format</div>
         }
       }
     </div>
@@ -18,28 +21,28 @@
     <div class="mb-3">
       <label class="form-label">Password</label>
       <input type="password" formControlName="pass" class="form-control" placeholder="Enter password">
-      @if(pass?.touched && pass?.errors)
-      {
-        <div class="mt-1 text-danger small">Password cannot be empty</div>
+      @if(pass?.touched && pass?.errors) {
+        <div class="form-error">Password cannot be empty</div>
       }
     </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Login</button>
+    <button type="submit" class="btn btn-accent w-100" [disabled]="loginForm.invalid">
+      <i class="bi bi-box-arrow-in-right me-1"></i> Login
+    </button>
 
-    @if(error === 'No such user')
-    {
+    @if(error === 'No such user') {
       <div class="alert alert-danger mt-3" role="alert">
         No account found. <a routerLink="/signup" class="alert-link">Click here to sign up as a voter.</a>
       </div>
     }
-    @if(error && error !== 'No such user')
-    {
-      <div class="mt-2 text-danger">{{ error }}</div>
+
+    @if(error && error !== 'No such user') {
+      <div class="form-error">{{ error }}</div>
     }
 
   </form>
 
-  <div class="mt-3">
-    <p>Don't have an account? <a routerLink="/signup">Sign up as voter</a></p>
+  <div class="mt-4 text-center">
+    <p class="text-muted signup-text">Don't have an account? <a routerLink="/signup">Sign up as voter</a></p>
   </div>
 </div>
