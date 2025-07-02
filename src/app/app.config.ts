@@ -9,6 +9,7 @@ import { ModeratorService } from './moderator/moderator.service';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { PollService } from './polls/poll.service';
 import { ToastService } from './shared/ToastService';
+import { AdminService } from './admin/admin.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,6 +26,7 @@ export const appConfig: ApplicationConfig = {
         },
     VoterService,
     ModeratorService,
+    AdminService,
     PollService,
     ToastService
   ]

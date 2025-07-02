@@ -79,7 +79,7 @@
 @if (showModeratorPopup && selectedModeratorEmail) {
   <app-moderator-detail
     [email]="selectedModeratorEmail"
-    [isAdmin]="true"
+    [isAdmin]="isAdmin()"
     (close)="onModeratorDetailClosed()">
   </app-moderator-detail>
 }

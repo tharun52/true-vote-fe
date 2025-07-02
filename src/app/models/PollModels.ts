@@ -4,6 +4,7 @@ export class PollOption {
     public pollId: string = "",
     public optionText: string = "",
     public voteCount: number = 0,
+    public createdByEmail: string = "",
     public isDeleted: boolean = false
   ) {}
 }

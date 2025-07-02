@@ -11,6 +11,9 @@ export class VoterService {
     constructor(private http:HttpClient)
     {}
     
+    getStats(voterId: string): Observable<any> {
+        return this.http.get(`${this.baseUrl}Voter/stats/${voterId}`);
+    }
     getVoterByEmail(email: string): Observable<VoterModel> {
         return this.http.get<any>(`${this.baseUrl}Voter/${email}`)
         .pipe(map(res => res.data));

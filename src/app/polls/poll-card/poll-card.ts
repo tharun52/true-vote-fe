@@ -11,12 +11,16 @@ import { Router } from '@angular/router';
   imports: [DatePipe, EditPoll],
   templateUrl: './poll-card.html',
   styleUrl: './poll-card.css',
-
 })
 export class PollCard implements OnInit {
   @Input() poll: any;
   @Input() voteTime?: string | null;
   @Input() ForVoting: boolean = false;
+  
+  loggedInEmail:string | undefined = undefined;
+
+  // selectedModeratorEmail: string | null = null;
+  // showModeratorPopup = false;
 
   selectedOptionId: string | null = null;
   voting: boolean = false;
@@ -30,6 +34,8 @@ export class PollCard implements OnInit {
   constructor(private pollService: PollService, private authService:AuthService, private toastService:ToastService, private router:Router) {}
 
   ngOnInit(): void {
+    const user = this.authService.getCurrentUser();
+    this.loggedInEmail = user?.username;
     if (this.poll?.poleFileId) {
       this.pollService.getFileMetadata(this.poll.poleFileId).subscribe({
         next: (type: string) => {
@@ -87,7 +93,15 @@ export class PollCard implements OnInit {
   isModerator(){
     return this.authService.getRole() == 'Moderator';
   }
-  closeModal() {
-    this.showEdit = false;
-  }
+
+  // openModeratorDetail(email: string): void {
+  //   this.selectedModeratorEmail = email;
+  //   this.showModeratorPopup = true;
+  // }
+  // isAdmin(){
+  //   return this.authService.getRole() == 'Admin';
+  // }
+  // onModeratorDetailClosed(): void {
+  //   this.showModeratorPopup = false;
+  // }
 }

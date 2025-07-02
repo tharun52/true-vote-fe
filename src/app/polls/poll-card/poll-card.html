@@ -8,7 +8,7 @@
         Voted at {{ voteTime | date: 'medium' }}
       </span>
     }
-    @if (isModerator()) {
+    @if (isModerator() && poll.createdByEmail==loggedInEmail) {
       <div class="text-end mb-2">
         <button class="btn btn-accent-outline btn-sm" (click)="showEdit = !showEdit">
           <i class="bi bi-pencil-square me-1"></i> {{ showEdit ? 'Close Edit' : 'Edit' }}
@@ -16,7 +16,6 @@
       </div>
     }
   </div>
-
   <div class="card-body">
     @if (showEdit) {
       <!-- Edit View -->
@@ -91,6 +90,25 @@
           <strong>End:</strong> {{ poll?.endDate | date:'mediumDate' }}
         </span>
       </div>
+
+      <div class="text-end mt-2">
+        <span 
+          class="created-by-badge clickable" >
+          <!-- (click)="openModeratorDetail(poll?.createdByEmail)" -->
+          <i class="bi bi-person-circle me-1"></i> {{ poll?.createdByEmail }}
+        </span>
+      </div>
+
     }
   </div>
 </div>
+
+
+<!-- Moderator Detail Popup -->
+<!-- @if (showModeratorPopup && selectedModeratorEmail) {
+  <app-moderator-detail
+    [email]="selectedModeratorEmail"
+    [isAdmin]="true"
+    (close)="onModeratorDetailClosed()">
+  </app-moderator-detail>
+} -->

@@ -14,7 +14,11 @@ export class ModeratorService {
   getModeratorEmails(): Observable<VoterEmailModel[]> {
     return this.http.get<any>(`${this.baseUrl}Voter/moderator/emails`)
       .pipe(map(res => res.data?.$values || []));
+  } 
+  getStats(moderatorId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}Moderator/stats/${moderatorId}`);
   }
+
  
   addToWhitelist(emails: string[]): Observable<any> {
     return this.http.post(`${this.baseUrl}Voter/whitelist`, {

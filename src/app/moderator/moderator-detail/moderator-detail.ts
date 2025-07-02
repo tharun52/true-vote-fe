@@ -11,9 +11,10 @@ import { ModeratorEditForm } from '../moderator-edit-form/moderator-edit-form';
 
 @Component({
   selector: 'app-moderator-detail',
+  standalone: true,
   imports: [NgClass, FormsModule, ReactiveFormsModule, PollsList, ModeratorEditForm],
   templateUrl: './moderator-detail.html',
-  styleUrl: './moderator-detail.css'
+  styleUrls: ['./moderator-detail.css'] 
 })
 export class ModeratorDetail {
   @Input() email!: string;

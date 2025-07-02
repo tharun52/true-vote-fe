@@ -1,6 +1,70 @@
-<div class="moderators-section">
-    <h3>Moderator List :</h3>
-    <app-moderators-list></app-moderators-list>
-</div>
+<div class="container my-5 moderator-dashboard">
+  @if (admin) {
+    <h2 class="mb-4 fw-bold" id="welome-title">
+      <i class="bi bi-shield-lock-fill me-2 text-accent"></i>Welcome, {{ admin.name }}
+    </h2>
 
-<app-polls-list></app-polls-list>
+    <!-- Admin Info Card -->
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h5 class="mb-3"><i class="bi bi-person-badge me-2"></i>Admin Info</h5>
+        <p><strong>Name:</strong> {{ admin.name }}</p>
+        <p><strong>Email:</strong>{{ admin.email}}</p>
+        <p><strong>Role:</strong> <span class="badge bg-danger ms-2">Admin</span></p>
+        <p class="mt-3">
+          As an <strong>Admin</strong>, you can oversee all moderators and monitor the entire voting system. You have full access to view polls and moderate users.
+        </p>
+      </div>
+    </div>
+
+    <!-- Admin Stats -->
+    @if (stats) {
+      <div class="row g-4 mb-5">
+        <div class="col-md-3">
+          <div class="stat-card animate-pop">
+            <h6>Polls Created</h6>
+            <p class="display-6">{{ stats.totalPollsCreated }}</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card animate-pop">
+            <h6>Votes Voted</h6>
+            <p class="display-6">{{ stats.totalVotesVoted }}</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card animate-pop">
+            <h6>Moderators Registered</h6>
+            <p class="display-6">{{ stats.totalModeratorRegistered }}</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card animate-pop">
+            <h6>Voters Registered</h6>
+            <p class="display-6">{{ stats.totalVotersRegistered }}</p>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Moderator List -->
+    <div class="moderators-section mb-5">
+      <h4 class="section-title text-primary mb-3">
+        <i class="bi bi-people-fill me-2"></i>All Moderators
+      </h4>
+      <p class="text-muted mb-3">Here is a list of all active moderators currently managing polls. You can edit and view them.</p>
+      <app-moderators-list></app-moderators-list>
+    </div>
+
+    <!-- All Polls -->
+    <div class="polls-section">
+      <h4 class="section-title text-primary mb-3">
+        <i class="bi bi-bar-chart-line-fill me-2"></i>All Polls
+      </h4>
+      <p class="text-muted mb-3">This is a complete list of all polls created by any moderator across the platform.</p>
+      <app-polls-list></app-polls-list>
+    </div>
+  } @else {
+    <p class="text-danger">Admin details not found.</p>
+  }
+</div>

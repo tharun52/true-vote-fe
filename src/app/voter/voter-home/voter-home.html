@@ -1,8 +1,65 @@
-<div class="container mt-4">
-  <h2>Welcome, Voter!</h2>
-  <p>This is your dashboard.</p>
-  <h3>On Going Polls</h3>
-  <app-polls-list [VoterId]="voterId" [ForVoting]="true"></app-polls-list>
+<div class="container my-5 voter-dashboard">
+  @if (voter) {
+    <h2 class="mb-4 fw-bold">
+      <i class="bi bi-person-check-fill me-2 text-accent"></i>Welcome, {{ voter.name }}
+    </h2>
+
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h5 class="mb-3"><i class="bi bi-person me-2"></i>Your Info</h5>
+        <p><strong>Name:</strong> {{ voter.name }}</p>
+        <p><strong>Email:</strong> {{ voter.email }}</p>
+        <p><strong>Role:</strong> <span class="badge bg-primary ms-2">Voter</span></p>
+        <p class="mt-3">
+          You can <strong>vote</strong> in polls. All responses remain <em>anonymous</em>.
+        </p>
+      </div>
+    </div>
+
+    @if (stats) {
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="card stat-card h-100 animate-pop">
+          <div class="card-body">
+            <h6 class="text-uppercase fw-bold">Ongoing Polls</h6>
+            <p class="display-6">{{ stats.totalOnGoingPolls }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card stat-card h-100 animate-pop">
+          <div class="card-body">
+            <h6 class="text-uppercase fw-bold">Polls Voted</h6>
+            <p class="display-6">{{ stats.totalPollsVoted }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+<!-- Actions Section -->
+<div class="voter-actions mt-5">
+  <h4 class="section-title text-primary mb-4"><i class="bi bi-bar-chart me-2"></i>Poll Participation</h4>
+
+  <div class="mb-4">
+    <h5 class="fw-semibold"><i class="bi bi-play-circle me-2 text-accent"></i>Ongoing Polls</h5>
+    <p>These are the polls that are currently open for voting. Cast your vote before the deadline.</p>
+    <app-polls-list [VoterId]="voter.id" [ForVoting]="true"></app-polls-list>
+  </div>
+
+  <div class="mb-5">
+    <h5 class="fw-semibold"><i class="bi bi-clock-history me-2 text-accent"></i>Previously Voted Polls</h5>
+    <p>Here are the polls you've already participated in. You can revisit them to view their status.</p>
+    <app-polls-list [VoterId]="voter.id"></app-polls-list>
+  </div>
+
+  <div>
+    <h4 class="section-title text-primary mb-3"><i class="bi bi-person-video3 me-2"></i>Moderators</h4>
+    <p class="text-muted mb-3">Below is a list of moderators managing the polls. You can reach out to them.</p>
+    <app-moderators-list></app-moderators-list>
+  </div>
 </div>
 
-<!-- <router-outlet></router-outlet> -->
+  } @else {
+    <p class="text-danger">Voter details not found.</p>
+  }
+</div>
