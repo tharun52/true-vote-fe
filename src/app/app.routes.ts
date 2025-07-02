@@ -15,6 +15,8 @@ import { VoterPolls } from './voter/voter-polls/voter-polls.js';
 import { AddModerator } from './admin/add-moderator/add-moderator.js';
 import { AdminModeratorList } from './admin/admin-moderator-list/admin-moderator-list.js';
 import { AdminSignup } from './auth/admin-signup/admin-signup.js';
+import { AuditLogs } from './admin/audit-logs/audit-logs.js';
+
 
 export const routes: Routes = [
   { path: '', component: HomePage },
@@ -35,7 +37,6 @@ export const routes: Routes = [
   { path: 'admin', component: AdimHome, canActivate: [authGuard], data: { expectedRole: 'Admin' } },
   { path: 'admin/addmoderator', component: AddModerator, canActivate: [authGuard], data: { expectedRole: 'Admin' } },
   { path: 'admin/moderatorlist', component: AdminModeratorList, canActivate: [authGuard], data: { expectedRole: 'Admin' } },
+  { path: 'admin/auditlogs', component: AuditLogs, canActivate: [authGuard], data: { expectedRole: 'Admin' } },
   { path: 'admin/signup', component: AdminSignup},
-
-
 ];

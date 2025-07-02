@@ -39,8 +39,13 @@
                   (change)="selectedOptionId = option.id"
                   [disabled]="voting"
                 />
-                <label class="form-check-label">{{ option.optionText }}</label>
+                <label class="form-check-label">
+                  {{ option.optionText }}
+                </label>
               </div>
+              <span class="vote-badge small">
+                {{ option.voteCount }} votes
+              </span>
             </li>
           }
           @if (selectedOptionId) {
@@ -52,13 +57,6 @@
                 <i class="bi bi-send me-1"></i> Submit Vote
               </button>
             </div>
-          }
-        } @else {
-          @for (option of poll?.pollOptions?.$values; track option.id) {
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span>{{ option.optionText }}</span>
-              <span class="vote-badge">{{ option.voteCount }} votes</span>
-            </li>
           }
         }
       </ul>

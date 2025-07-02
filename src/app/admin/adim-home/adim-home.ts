@@ -18,7 +18,7 @@ export class AdimHome {
     const user = this.authService.getCurrentUser();
     if (user && user.role === 'Admin') {
 
-      this.adminService.getAdmmin(user.userId).subscribe({
+      this.adminService.getAdmin(user.userId).subscribe({
         next: (adminData) => {
           this.admin = adminData;
           this.getAdminStats();

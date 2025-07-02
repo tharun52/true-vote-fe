@@ -1,0 +1,52 @@
+<div class="container mt-4 audit-container">
+  <div class="row">
+    <div class="col-12">
+      @if (error) {
+        <div class="text-danger">{{ error }}</div>
+      }
+
+      @if (logs.length > 0) {
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead class="table-light">
+              <tr>
+                <th>#</th>
+                <th>Description</th>
+                <th>Entity ID</th>
+                <th>Created By</th>
+                <th>Created At</th>
+                <th>Updated By</th>
+                <th>Updated At</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (log of logs; track $index; let i = $index) {
+                <tr>
+                  <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+                  <td>{{ log.description }}</td>
+                  <td>{{ log.entityId }}</td>
+                  <td>{{ log.createdBy || '-' }}</td>
+                  <td>{{ log.createdAt | date:'short' }}</td>
+                  <td>{{ log.updatedBy || '-' }}</td>
+                  <td>{{ log.updatedAt ? (log.updatedAt | date:'short') : '-' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+      @if (logs.length === 0 && !error) {
+        <div class="text-muted">No audit logs found.</div>
+      }
+
+      @if (totalPages > 1) {
+        <div class="pagination-controls mt-4 d-flex justify-content-center align-items-center gap-3 flex-wrap">
+          <button class="btn btn-outline-secondary btn-sm" (click)="previousPage()" [disabled]="page === 1">◀</button>
+          <span class="text-dark">Page {{ page }} of {{ totalPages }}</span>
+          <button class="btn btn-outline-secondary btn-sm" (click)="nextPage()" [disabled]="page === totalPages">▶</button>
+        </div>
+      }
+    </div>
+  </div>
+</div>

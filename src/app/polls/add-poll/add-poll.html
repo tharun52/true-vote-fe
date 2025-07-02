@@ -1,7 +1,7 @@
 <div class="container my-5 poll-form-container">
   <div class="row justify-content-center">
     <div class="col-12 col-sm-10 col-md-8 col-lg-6">
-      <h2 class="fw-bold text-accent">Create a New Poll <i class="bi bi-hand-index-thumb-fill"></i></h2>
+      <h2 class="fw-bold text-accent">Create a New Poll <i class="bi bi-hand-index-thumb-fill logo"></i></h2>
       <p>
         Use the form below to set up your poll. Provide a title and description, specify the active dates, 
         and add at least two voting options. Optionally, you can attach a file for reference. Once created, 
@@ -13,7 +13,7 @@
         class="poll-form card p-4 shadow-sm border-0">
         <div class="mb-3">
           <label class="form-label">Title</label>
-          <input type="text" formControlName="title" class="form-control" />
+          <input type="text" formControlName="title" class="form-control" placeholder="Enter Title"/>
           @if (title?.touched && title?.errors) {
             <div class="text-danger small mt-1">Title is required</div>
           }
@@ -21,7 +21,7 @@
 
         <div class="mb-3">
           <label class="form-label">Description</label>
-          <textarea formControlName="description" class="form-control" rows="3"></textarea>
+          <textarea formControlName="description" class="form-control" rows="3" placeholder="Enter Description"></textarea>
         </div>
 
         <div class="mb-3">

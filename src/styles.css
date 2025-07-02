@@ -16,14 +16,18 @@
 }
 
 [data-theme='dark'] {
-  --accent: #4F83FF;
+  --accent: #1d63ed;
   --text: #F9FAFB;
-  --bg: #303030;
+  --bg: #101014;
   --muted: #b0b0b0;
 
   --hover-accent:#024dfb;
   --hover-text:#E8EAED;
   --hover-bg: #202020;
+}
+
+.text-muted{
+  color: var(--muted) !important;
 }
 
 body {

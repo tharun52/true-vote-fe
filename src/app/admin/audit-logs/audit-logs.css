@@ -1,0 +1,67 @@
+.audit-container {
+  background-color: var(--bg);
+  color: var(--text);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.audit-container table {
+  background-color: white;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.audit-container thead {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.audit-container tbody tr:hover {
+  background-color: var(--hover-bg);
+  transition: background-color 0.3s ease;
+}
+
+.audit-container td,
+.audit-container th {
+  vertical-align: middle;
+  padding: 0.75rem 1rem;
+}
+
+.audit-container .pagination-controls {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.audit-container .btn-outline-secondary {
+  border-color: var(--accent);
+  color: var(--accent);
+  transition: all 0.3s ease-in-out;
+}
+
+.audit-container .btn-outline-secondary:hover {
+  background-color: var(--hover-bg);
+  color: var(--hover-accent);
+  border-color: var(--hover-accent);
+}
+
+.audit-container .text-danger,
+.audit-container .text-muted {
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  color: var(--muted);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
