@@ -16,13 +16,13 @@ import { AddModerator } from './admin/add-moderator/add-moderator.js';
 import { AdminModeratorList } from './admin/admin-moderator-list/admin-moderator-list.js';
 import { AdminSignup } from './auth/admin-signup/admin-signup.js';
 import { AuditLogs } from './admin/audit-logs/audit-logs.js';
+import { NoAuthGuard } from './no-auth.guard.js';
 
 
 export const routes: Routes = [
-  { path: '', component: HomePage },
-
-  { path: 'login', component: Login },
-  { path: 'signup', component: Signup },
+  { path: '', component: HomePage, canActivate: [NoAuthGuard] },
+  { path: 'login', component: Login, canActivate: [NoAuthGuard] },
+  { path: 'signup', component: Signup, canActivate: [NoAuthGuard] },
 
   { path: 'moderator', component: ModeratorDashboard, canActivate: [authGuard], data: { expectedRole: 'Moderator' } },
   { path: 'moderator/emails', component: ModeratorEmails, canActivate: [authGuard], data: { expectedRole: 'Moderator' } },

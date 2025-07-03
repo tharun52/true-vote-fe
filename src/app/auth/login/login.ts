@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { ToastService } from '../../shared/ToastService';
+import { checkEmailValidator } from '../validators/check-email-validator';
 
 @Component({
   selector: 'app-login',
@@ -12,15 +14,28 @@ import { AuthService } from '../auth.service';
 export class Login {
   loginForm: FormGroup;
   error: string | null = null;
+  emailBlurred = false;
 
   loading: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private toastService: ToastService) {
     this.loginForm = new FormGroup({
-      un: new FormControl('', [Validators.required, Validators.email]),
-      pass: new FormControl('', Validators.required),
+      un: new FormControl(
+        '',
+        {
+          validators: [Validators.required, Validators.email],
+          asyncValidators: [
+            checkEmailValidator(this.authService, this.toastService, () => {
+              this.loginForm.get('un')?.setErrors({ emailNotFound: true });
+            }, false)
+          ],
+          updateOn: 'blur' 
+        }
+      ),
+      pass: new FormControl('', Validators.required)
     });
   }
+
 
   public get un() {
     return this.loginForm.get('un');

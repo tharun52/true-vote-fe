@@ -21,7 +21,7 @@
 
 .moderator-form label {
   font-weight: 500;
-  color: var(--bg);
+  color: #ffffff  ;
   transition: color 0.3s ease;
 }
 
@@ -76,7 +76,7 @@
 /* Submit button */
 .btn-accent {
   background-color: var(--bg);
-  color: var(--accent);
+  color: var(--text);
   font-weight: 600;
   padding: 0.75rem;
   border-radius: 0.6rem;

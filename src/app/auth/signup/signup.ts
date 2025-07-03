@@ -28,7 +28,7 @@ export class Signup {
       email: new FormControl('', {
         validators: [Validators.required, Validators.email],
         asyncValidators: [
-          checkEmailValidator(this.authService, this.toastService, () => this.showModerators = true)
+          checkEmailValidator(this.authService, this.toastService, () => this.showModerators = true, true)
         ],
         updateOn: 'blur'
       }),

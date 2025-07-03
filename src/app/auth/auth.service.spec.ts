@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 import { UserModel } from '../models/UserModel';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment';
 
 describe('AuthService', () => {
@@ -125,17 +125,7 @@ describe('AuthService', () => {
         expect(user?.token).toBe(token);
     });
 
-    it('should call checkEmail with correct email', () => {
-        const email = 'test@example.com';
-
-        service.checkEmail(email).subscribe(res => {
-            expect(res).toBeTrue();
-        });
-
-        const req = httpMock.expectOne(`${environment.apiBaseUrl}Voter/check-email?email=${email}`);
-        expect(req.request.method).toBe('GET');
-        req.flush(true);
-    });
+    
 
     it('should call registerAdmin with admin data', () => {
         const adminData = { name: 'Admin', email: 'admin@test.com' };

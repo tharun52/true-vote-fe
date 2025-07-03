@@ -20,16 +20,17 @@ export class AuthService {
   registerAdmin(adminData:any){
     return this.http.post(`${environment.apiBaseUrl}Admin/add`, adminData);
   }
-  checkEmail(email: string) {
+  
+  checkEmail(email: string, isVoter: boolean) {
     return this.http.get<boolean>(`${environment.apiBaseUrl}Voter/check-email`, {
-      params: { email }
+      params: { email, isVoter }
     });
   }
+
 
   login(username: string, password: string): Observable<UserModel> {
     return this.http.post<UserModel>(this.API, { username, password }).pipe(
       tap((user) => {
-        // Store only the token (and refreshToken if needed)
         localStorage.setItem('token', user.token);
         localStorage.setItem('refreshToken', user.refreshToken);
         this.tokenSubject.next(user.token);

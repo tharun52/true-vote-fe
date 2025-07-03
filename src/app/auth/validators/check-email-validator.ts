@@ -1,14 +1,13 @@
-// email-check.validator.ts
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { debounceTime, switchMap, catchError, of } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { ToastService } from '../../shared/ToastService';
 
-
 export function checkEmailValidator(
   authService: AuthService,
   toastService: ToastService,
-  onInvalidEmail: () => void
+  onInvalidEmail: () => void,
+  isVoter: boolean
 ): AsyncValidatorFn {
   return (control: AbstractControl) => {
     const email = control.value;
@@ -16,13 +15,28 @@ export function checkEmailValidator(
 
     return of(email).pipe(
       debounceTime(300),
-      switchMap(email => authService.checkEmail(email)),
+      switchMap(email => authService.checkEmail(email, isVoter)),
       switchMap(exists => {
         if (!exists) {
-          toastService.show("Email Does not exits", "You email is unknown to any of the moderator, please contact the moderator so that they could add your email", true);
+          control.setErrors({ emailNotFound: true });
+
+          if (isVoter) {
+            toastService.show(
+              "Email does not exist",
+              "Your email is unknown to any of the moderators. Please contact a moderator to get added.",
+              true
+            );
+          }
+          else{
+            toastService.show(
+              "Email does not exist",
+              "Your email is unknown. Please Sign up.",
+              true
+            );
+          }
           onInvalidEmail();
         }
-        return of(null); 
+        return of(null);
       }),
       catchError(() => of(null)) 
     );
