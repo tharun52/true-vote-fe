@@ -13,24 +13,31 @@ import { AdminService } from '../admin.service';
 export class AdimHome {
   admin: { id: string; name: string; email: string } | null = null;
   stats: any;
+  isLoadingAdmin = true;
+  isLoadingStats = false;
 
   constructor(private authService: AuthService, private adminService: AdminService) {
     const user = this.authService.getCurrentUser();
     if (user && user.role === 'Admin') {
-
       this.adminService.getAdmin(user.userId).subscribe({
         next: (adminData) => {
           this.admin = adminData;
+          this.isLoadingAdmin = false;
           this.getAdminStats();
         },
         error: (err) => {
           console.error('Error fetching admin info', err);
+          this.isLoadingAdmin = false;
         }
       });
+    } else {
+      this.isLoadingAdmin = false;
     }
   }
 
   getAdminStats() {
+    this.isLoadingStats = true;
+
     this.adminService.getStats().subscribe({
       next: (data) => {
         this.stats = {
@@ -43,10 +50,12 @@ export class AdimHome {
         this.animateCount('totalPollsCreated', data.totalPollsCreated);
         this.animateCount('totalVotesVoted', data.totalVotesVoted);
         this.animateCount('totalModeratorRegistered', data.totalModeratorRegistered);
-        this.animateCount('totalVotersRegistered', data.totalVotersREgistered); // watch casing
+        this.animateCount('totalVotersRegistered', data.totalVotersREgistered);
+        this.isLoadingStats = false;
       },
       error: (err) => {
         console.error('Error fetching admin stats', err);
+        this.isLoadingStats = false;
       }
     });
   }

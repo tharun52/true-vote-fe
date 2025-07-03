@@ -6,7 +6,6 @@
   animation: fadeSlideIn 0.5s ease;
 }
 
-/* Header */
 .form-header h3 {
   color: var(--text);
   font-size: 1.75rem;
@@ -18,7 +17,7 @@
 .form-label{
   color: #ffffff;
 }
-/* Form card */
+
 .voter-signup-form {
   background-color: var(--accent);
   color: var(--bg);
@@ -28,7 +27,6 @@
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* Input fields */
 .voter-signup-form .form-control {
   background-color: #ffffff !important;
   color: #000000 !important;
@@ -72,7 +70,6 @@
   text-decoration: underline;
 }
 
-/* Submit button */
 .btn-accent {
   background-color: var(--bg);
   color: var(--accent);
@@ -90,7 +87,6 @@
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
 }
 
-/* Error Message Styling */
 .form-error {
   background-color: #e53935;
   color: #ffffff !important;
@@ -107,7 +103,6 @@
   background: var(--bg) !important;
 }
 
-/* Animations */
 @keyframes fadeSlideIn {
   0% {
     opacity: 0;
@@ -127,4 +122,17 @@
     transform: scale(1);
     opacity: 1;
   }
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
 }

@@ -13,6 +13,8 @@ export class Login {
   loginForm: FormGroup;
   error: string | null = null;
 
+  loading: boolean = false;
+
   constructor(private authService: AuthService, private router: Router) {
     this.loginForm = new FormGroup({
       un: new FormControl('', [Validators.required, Validators.email]),
@@ -34,9 +36,14 @@ export class Login {
     const username = this.un?.value;
     const password = this.pass?.value;
 
+    this.loading = true;
+
     this.authService.login(username, password).subscribe({
-      next: () => {},
+      next: () => {
+        this.loading = false;
+      },
       error: (err) => {
+        this.loading = false;
         if (typeof err.error === 'string') {
           this.error = err.error;
         } else if (typeof err.error === 'object') {

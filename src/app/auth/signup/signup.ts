@@ -20,6 +20,7 @@ export class Signup {
   signupForm: FormGroup;
   error: string | null = null;
   showModerators: boolean = false;
+  loading: boolean = false;
 
   constructor(private http: HttpClient, private authService: AuthService, private toastService:ToastService) {
     this.signupForm = new FormGroup({
@@ -44,18 +45,26 @@ export class Signup {
   public get confirmPassword() { return this.signupForm.get('confirmPassword'); }
 
   handleSignup() {
+    
     if (this.signupForm.invalid) return;
+    this.loading = true; 
 
     const { name, email, password, age } = this.signupForm.value;
 
     this.http.post(`${environment.apiBaseUrl}Voter/add`, { name, email, password, age }).subscribe({
       next: () => {
         this.authService.login(email, password).subscribe({
-          next: () => {},
-          error: err => this.error = 'Auto-login failed.'
+          next: () => {
+            this.loading = false;
+          },
+          error: err => {
+            this.loading = false;
+            this.error = 'Auto-login failed.';
+          }
         });
       },
       error: err => {
+        this.loading = false; 
         this.error = err.error?.message || 'Signup failed';
       }
     });

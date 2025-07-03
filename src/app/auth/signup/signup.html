@@ -6,7 +6,6 @@
 
   <form [formGroup]="signupForm" (ngSubmit)="handleSignup()" class="voter-signup-form needs-validation" novalidate>
 
-    <!-- Name -->
     <div class="mb-3">
       <label class="form-label">Name</label>
       <input type="text" formControlName="name" class="form-control" placeholder="Enter your full name">
@@ -15,7 +14,6 @@
       }
     </div>
 
-    <!-- Email -->
     <div class="mb-3">
       <label class="form-label">Email</label>
       <input type="email" formControlName="email" class="form-control" placeholder="Enter your email">
@@ -24,7 +22,6 @@
       }
     </div>
 
-    <!-- Age -->
     <div class="mb-3">
       <label class="form-label">Age</label>
       <input type="number" formControlName="age" class="form-control" placeholder="Enter your age">
@@ -33,7 +30,6 @@
       }
     </div>
 
-    <!-- Password -->
     <div class="mb-3">
       <label class="form-label">Password</label>
       <input type="password" formControlName="password" class="form-control" placeholder="Create a password">
@@ -42,7 +38,6 @@
       }
     </div>
 
-    <!-- Confirm Password -->
     <div class="mb-3">
       <label class="form-label">Confirm Password</label>
       <input type="password" formControlName="confirmPassword" class="form-control" placeholder="Re-enter your password">
@@ -51,13 +46,11 @@
       }
     </div>
 
-    <!-- Submit Button -->
     <button type="submit" class="btn btn-accent w-100" [disabled]="signupForm.invalid">
       <i class="bi bi-person-plus-fill me-1"></i> Sign Up
     </button>
   </form>
 
-  <!-- Moderator list if email is invalid -->
   @if (showModerators) {
     <div class="moderators-section mt-4">
       <div class="alert alert-warning" role="alert">
@@ -67,12 +60,10 @@
     </div>
   }
 
-  <!-- Error message -->
   @if(error && !showModerators) {
     <div class="mt-2 text-danger">{{ error }}</div>
   }
 
-  <!-- Login redirect -->
   <div class="mt-4 text-center login-redirect">
     <p class="login-text">
       Already have an account?
@@ -80,3 +71,9 @@
     </p>
   </div>
 </div>
+
+@if (loading) {
+  <div class="loading-overlay">
+    <div class="spinner-border text-accent" role="status"></div>
+  </div>
+}

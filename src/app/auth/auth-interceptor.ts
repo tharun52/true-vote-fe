@@ -27,9 +27,8 @@ export class AuthInterceptor implements HttpInterceptor {
       retry(2), // Retry failed requests up to 2 times (excluding 4xx)
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
-          // Automatically log out on 401 Unauthorized
-          // this.authService.logout();
-          // alert('Session expired. Please log in again.');
+          this.authService.logout();
+          alert('Something went wrong. Please log in again.');
         }
 
         // Could extend to handle 403, 500, etc. globally if desired
