@@ -1,0 +1,56 @@
+<div class="container mt-4">
+  @if (loading) {
+    <div class="text-center my-4">
+      <div class="spinner-border text-primary" role="status"></div>
+    </div>
+  }
+
+  @if (!loading && messages.length === 0) {
+    <div class="alert alert-info">
+      No created messages found.
+    </div>
+  }
+
+  <ul class="list-group">
+    @for (msg of messages; track $index) {
+      <li class="list-group-item inbox-item d-flex justify-content-between align-items-start animate__animated animate__fadeInUp">
+        <div class="message-details">
+          <strong>{{ msg.msg }}</strong><br />
+          <small class="text-muted">Sent At: {{ msg.sentAt | date:'medium' }}</small><br />
+          @if (msg.to) {
+            <small class="text-muted"><i class="bi bi-person"></i> To: {{ getEmail(msg.to!) }}</small>
+          }
+          @else {
+            <small class="text-muted"><i class="bi bi-person"></i> To: All Voters</small>
+          }
+        </div>
+
+        <div class="actions d-flex align-items-center gap-2">
+          @if (msg.pollId && pollMap[msg.pollId]) {
+            <button class="btn btn-outline-primary btn-sm" (click)="openPollModal(msg.pollId)">
+              <i class="bi bi-eye"></i> View Poll
+            </button>
+          }
+
+          <button class="btn btn-outline-danger btn-sm" (click)="deleteMessage(msg.id)">
+            <i class="bi bi-x-lg"></i> Delete
+          </button>
+        </div>
+      </li>
+    }
+  </ul>
+
+  @if (selectedPoll) {
+    <div class="custom-modal-overlay" (click)="closePollModal()">
+      <div class="custom-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header d-flex justify-content-between align-items-center">
+          <h5 class="modal-title">Poll Details</h5>
+          <button class="btn-close" (click)="closePollModal()"></button>
+        </div>
+        <div class="modal-body mt-3">
+          <app-poll-card [poll]="selectedPoll"></app-poll-card>
+        </div>
+      </div>
+    </div>
+  }
+</div>

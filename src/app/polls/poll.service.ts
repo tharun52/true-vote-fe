@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { PollQueryDto, PollResponseItemModel } from '../models/PollModels';
+import { PollModel, PollQueryDto, PollResponseItemModel } from '../models/PollModels';
 import { ApiResponse, PagedResponse } from '../models/ResponseModes';
 
 @Injectable()
@@ -25,8 +25,8 @@ export class PollService {
     if (query.startDateTo) params = params.set('StartDateTo', query.startDateTo);
     if (query.createdByEmail) params = params.set('CreatedByEmail', query.createdByEmail);
 
-    if (query.VoterId) params = params.set('VoterId', query.VoterId);          // ✅ Add this
-    if (query.ForVoting !== undefined) params = params.set('ForVoting', query.ForVoting.toString()); // ✅ Add this
+    if (query.VoterId) params = params.set('VoterId', query.VoterId);          
+    if (query.ForVoting !== undefined) params = params.set('ForVoting', query.ForVoting.toString()); 
 
     params = params.set('Page', (query.page || 1).toString());
     params = params.set('PageSize', (query.pageSize || 10).toString());
@@ -66,6 +66,11 @@ export class PollService {
       .pipe(
         map(response => response.headers.get('Content-Type') || '')
       );
+  }
+  getPollById(pollId: string): Observable<PollModel> {
+    return this.http.get<any>(`${this.baseUrl}Poll/${pollId}`).pipe(
+      map(response => response.data.poll as PollModel)
+    );
   }
 
   vote(pollOptionId: string) {

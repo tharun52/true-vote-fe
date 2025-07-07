@@ -4,17 +4,25 @@ import { AuthService } from '../../auth/auth.service';
 import { VoterService } from '../voter.service';
 import { VoterModel } from '../../models/VoterModel';
 import { ModeratorsList } from "../../moderator/moderators-list/moderators-list";
+import { MessageInbox } from "../../message/message-inbox/message-inbox";
+import { MessageService } from '../../message/message.service';
+import { MessageModel } from '../../models/MessageModel';
 
 @Component({
   selector: 'app-voter-home',
-  imports: [PollsList, ModeratorsList],
+  imports: [PollsList, ModeratorsList, MessageInbox],
   templateUrl: './voter-home.html',
   styleUrl: './voter-home.css'
 })
 export class VoterHome{
   voter: VoterModel | null = null;
   stats: any;
-  constructor(private authService: AuthService, private voterService: VoterService) {
+  messages: MessageModel[] = [];
+
+  constructor(private authService: AuthService, 
+              private voterService: VoterService,
+              private messageService: MessageService
+    ) {
     const user = this.authService.getCurrentUser();
     console.log(user);
     if (user && user.role === 'Voter') {
@@ -26,6 +34,10 @@ export class VoterHome{
           this.getVoterStats(voterData.id);
         },
         error: (err) => console.error('Error fetching voter info', err)
+      });
+
+      this.messageService.getMessages().subscribe((msgs) => {
+        this.messages = msgs;
       });
     }
   }
@@ -60,5 +72,9 @@ export class VoterHome{
         clearInterval(interval);
       }
     }, 1000 / frameRate);
+  }
+
+  hasMessages(): boolean {
+    return this.messages.length > 0;
   }
 }

@@ -35,6 +35,14 @@
           <li class="nav-item"><a class="nav-link" routerLink="/moderator/addpoll">Add Poll</a></li>
           <li class="nav-item"><a class="nav-link" routerLink="/moderator/polls">My Polls</a></li>
           <li class="nav-item">
+            <a class="nav-link" routerLink="/moderator/messages">
+              Messages
+              @if (hasMessages) {
+                <span class="message-dot"></span>
+              }
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link d-flex align-items-center gap-1" href="#" (click)="openModeratorDetail(userName, $event)">
               <i class="bi bi-person-fill-gear"></i>
               <strong>{{ userName }}</strong>
@@ -44,6 +52,14 @@
           <li class="nav-item"><a class="nav-link" routerLink="/voter">Home</a></li>
           <li class="nav-item"><a class="nav-link" routerLink="/voter/moderators">Moderators</a></li>
           <li class="nav-item"><a class="nav-link" routerLink="/voter/polls">Polls</a></li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/voter/messages">
+              Messages
+              @if (hasMessages) {
+                <span class="message-dot"></span>
+              }
+            </a>
+          </li>
           <li class="nav-item">
             <a class="nav-link d-flex align-items-center gap-1" href="#" (click)="openVoterDetail(userName, $event)">
               <i class="bi bi-person-vcard"></i>

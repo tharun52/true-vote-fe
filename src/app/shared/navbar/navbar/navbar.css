@@ -9,25 +9,23 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
-/* Typography */
 .navbar .navbar-brand,
 .navbar .nav-link {
   white-space: nowrap; 
   word-break: keep-all;
-  color: var(--bg) !important;
+  color: #fff !important;
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .navbar .navbar-brand:hover,
 .navbar .nav-link:hover {
-  color: var(--hover-bg) !important;
+  color: #fff;
   transform: scale(1.05);
   text-decoration: none;
 }
 
-/* === Button Styling to Look Like Nav Items === */
 .navbar .nav-btn {
-  background-color: var(--bg);
+  background-color: #fff;
   color: var(--accent);
   border: none;
   padding: 0.5rem 1rem;
@@ -50,13 +48,12 @@
 }
 
 .navbar .nav-btn:hover {
-  background-color: var(--hover-bg);
+  background-color: #E8EAED;
   color: var(--accent);
   transform: translateY(-2px);
   opacity: 0.95;
 }
 
-/* Toggler */
 .custom-toggler {
   border: none !important;
   background-color: transparent !important;
@@ -71,7 +68,6 @@
   transform: rotate(90deg);
 }
 
-/* Slide menu for mobile */
 .slide-menu {
   position: fixed;
   top: 0;
@@ -144,7 +140,6 @@
   color: var(--hover-bg);
 }
 
-/* Nav link padding & animation */
 .slide-menu .nav-item {
   width: 100%;
 }
@@ -176,4 +171,14 @@
   background-color: rgba(255, 255, 255, 0.05);
   color: var(--bg);
   transform: translateX(4px);
+}
+
+.message-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
+  margin-left: 6px;
+  vertical-align: middle;
 }

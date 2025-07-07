@@ -33,7 +33,11 @@ export class ModeratorService {
     return this.http.post(`${this.baseUrl}Moderator/add`, data);
   }
 
-
+  getModerator(id: string): Observable<ModeratorModel> {
+    return this.http.get<any>(`${this.baseUrl}Moderator/${id}`)
+      .pipe(map(res => res.data));
+  }
+  
   getModeratorByEmail(email: string): Observable<ModeratorModel> {
     return this.http.get<any>(`${this.baseUrl}Moderator/email/${email}`)
       .pipe(map(res => res.data));

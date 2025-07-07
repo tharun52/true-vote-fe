@@ -36,6 +36,18 @@
       </div>
     </div>
     }
+
+    @if (hasMessages()) {
+      <hr>  
+      <div class="announcement-wrapper">
+        <div class="announcement-card">
+          <h2 class="announcement-title" style="color: var(--accent);"><i class="bi bi-megaphone-fill"></i> Moderator's Announcements</h2>
+          <p class="announcement-subtitle">Stay updated with the latest updates and actions from the moderators.</p>
+          <app-message-inbox></app-message-inbox>
+        </div>
+      </div>
+    }
+
 <!-- Actions Section -->
 <div class="voter-actions mt-5">
   <h4 class="section-title text-primary mb-4"><i class="bi bi-bar-chart me-2"></i>Poll Participation</h4>

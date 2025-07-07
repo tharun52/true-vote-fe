@@ -9,7 +9,7 @@ export class NoAuthGuard implements CanActivate {
   canActivate(): boolean {
     if (this.authService.isLoggedIn()) {
       const role = this.authService.getRole(); 
-      // Redirect based on role
+
       switch (role) {
         case 'Admin':
           this.router.navigate(['/admin']);

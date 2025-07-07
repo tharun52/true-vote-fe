@@ -17,6 +17,8 @@ import { AdminModeratorList } from './admin/admin-moderator-list/admin-moderator
 import { AdminSignup } from './auth/admin-signup/admin-signup.js';
 import { AuditLogs } from './admin/audit-logs/audit-logs.js';
 import { NoAuthGuard } from './no-auth.guard.js';
+import { VoterMessage } from './voter-message/voter-message.js';
+import { ModeratorMessage } from './moderator/moderator-message/moderator-message.js';
 
 
 export const routes: Routes = [
@@ -29,10 +31,12 @@ export const routes: Routes = [
   { path: 'moderator/add-emails', component: AddVoterEmails, canActivate: [authGuard], data: { expectedRole: 'Moderator' } },
   { path: 'moderator/polls', component: ModeratorPolls, canActivate: [authGuard], data: { expectedRole: 'Moderator' } },
   { path: 'moderator/addpoll', component: AddPoll, canActivate: [authGuard], data: { expectedRole: 'Moderator' } },
+  { path: 'moderator/messages', component: ModeratorMessage, canActivate: [authGuard], data: { expectedRole: 'Moderator' } },
   
   { path: 'voter', component: VoterHome, canActivate: [authGuard], data: { expectedRole: 'Voter' } },
   { path: 'voter/moderators', component: VoterModerators, canActivate: [authGuard], data: { expectedRole: 'Voter' } },
   { path: 'voter/polls', component: VoterPolls, canActivate: [authGuard], data: { expectedRole: 'Voter' } },
+  { path: 'voter/messages', component: VoterMessage, canActivate: [authGuard], data: { expectedRole: 'Voter' } },
   
   { path: 'admin', component: AdimHome, canActivate: [authGuard], data: { expectedRole: 'Admin' } },
   { path: 'admin/addmoderator', component: AddModerator, canActivate: [authGuard], data: { expectedRole: 'Admin' } },

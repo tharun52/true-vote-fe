@@ -24,14 +24,13 @@ export class AuthInterceptor implements HttpInterceptor {
       : req;
 
     return next.handle(authReq).pipe(
-      retry(2), // Retry failed requests up to 2 times (excluding 4xx)
+      retry(2), 
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           this.authService.logout();
-          alert('Something went wrong. Please log in again.');
+          // alert('Something went wrong. Please log in again.');
         }
 
-        // Could extend to handle 403, 500, etc. globally if desired
         return throwError(() => error);
       })
     );

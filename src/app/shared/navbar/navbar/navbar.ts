@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../auth/auth.service';
 import { RouterLink } from '@angular/router';
 import { VoterDetail } from "../../../voter/voter-detail/voter-detail";
 import { ThemeService } from '../../ThemeService';
 import { ModeratorDetail } from "../../../moderator/moderator-detail/moderator-detail";
+import { MessageService } from '../../../message/message.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,15 +13,25 @@ import { ModeratorDetail } from "../../../moderator/moderator-detail/moderator-d
   styleUrl: './navbar.css'
 })
 
-export class Navbar {
+export class Navbar implements OnInit{
   showPopup = false;
   selectedEmail: string | null = null;
   isMenuOpen = false;
+  hasMessages: boolean = false;
 
   showModeratorPopup = false;
   selectedModeratorEmail: string | null = null;
 
-  constructor(public authService: AuthService, private themeService:ThemeService) {}
+  constructor(public authService: AuthService, 
+              private themeService:ThemeService,
+              private messageService:MessageService
+        ) {}
+        
+  ngOnInit(): void {
+    this.messageService.getMessages().subscribe(messages => {
+      this.hasMessages = messages.length > 0;
+    });
+  }
 
   logout() {
     this.authService.logout();

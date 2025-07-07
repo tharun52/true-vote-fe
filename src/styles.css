@@ -13,6 +13,11 @@
   --hover-accent:#024dfb;
   --hover-text:#303030;
   --hover-bg: #E8EAED;
+
+
+  /* body {
+    background-image: url(assets/background.webp);
+  } */
 }
 
 [data-theme='dark'] {
@@ -24,6 +29,10 @@
   --hover-accent:#024dfb;
   --hover-text:#E8EAED;
   --hover-bg: #202020;
+
+  /* body{
+    background-image: url(assets/background-negate.jpg);
+  } */
 }
 
 .text-muted{
