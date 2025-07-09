@@ -26,9 +26,6 @@
           <strong style="color: var(--text);">{{ msg.msg }}</strong><br />
           <small class="text-muted">Sent At: {{ msg.sentAt | date:'medium' }}</small><br />
           <small class="text-muted"><i class="bi bi-person"></i> From: {{ getEmail(msg.from) }}</small><br />
-          @if (msg.to) {
-            <small class="text-muted"><i class="bi bi-send"></i> To: {{ getEmail(msg.to) }}</small>
-          }
         </div>
 
         <div class="actions d-flex align-items-center gap-2">

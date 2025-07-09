@@ -1,0 +1,116 @@
+<div class="message-form">
+  <h4 class="message-form__title">
+    <i class="bi bi-plus-circle"></i> Add New Message
+  </h4>
+
+  <form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+    <!-- Message Input -->
+    <div class="message-form__group">
+      <textarea formControlName="msg" rows="4" class="message-form__textarea"
+        placeholder="Type your message..."></textarea>
+      @if (msg?.touched && msg?.errors) {
+      <div class="message-form__error">Message is required.</div>
+      }
+    </div>
+
+    <!-- Optional Poll Attachment -->
+    <div class="message-form__group">
+      <button type="button" class="btn btn-outline-secondary" (click)="openPollModal()">
+        <i class="bi bi-search"></i> Choose Poll (Optional)
+      </button>
+      @if (selectedPoll) {
+      <div class="mt-2">
+        <small class="text-muted">Selected Poll:</small>
+        <app-poll-card [poll]="selectedPoll.poll"></app-poll-card>
+      </div>
+      }
+      @if (pollId?.touched && pollId?.errors) {
+      <div class="message-form__error">Poll is required.</div>
+      }
+    </div>
+
+    <!-- Optional Voter Attachment -->
+    <div class="message-form__group">
+      <button type="button" class="btn btn-outline-secondary" (click)="openVoterModal()">
+        <i class="bi bi-person-plus"></i> Choose Voters (Optional)
+      </button>
+      @if (selectedVoter) {
+      <div class="mt-2">
+        <small class="text-muted">Selected Voter:</small>
+        <ul class="list-group">
+          <li class="list-group-item bg-dark text-light">
+            {{ selectedVoter.name }} ({{ selectedVoter.email }})
+          </li>
+        </ul>
+      </div>
+      }
+      <div class="text-muted mt-1">
+        If no voters are selected, the message will be sent to all.
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <button class="btn btn-primary mt-2" [disabled]="loading || messageForm.invalid">
+      <i class="bi bi-send"></i> {{ loading ? 'Sending...' : 'Send Message' }}
+    </button>
+  </form>
+
+  @if (success) {
+  <div class="text-success mt-2">Message sent successfully!</div>
+  }
+  @if (error) {
+  <div class="text-danger mt-2">{{ error }}</div>
+  }
+</div>
+
+<!-- Poll Modal -->
+@if (showPollModal) {
+<div class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <input class="form-control me-2" type="text" placeholder="Search polls..." [value]="searchTerm"
+        (input)="onSearchChange($event)" />
+      <button class="btn btn-sm btn-outline-danger" (click)="closePollModal()">×</button>
+    </div>
+
+    <div class="poll-grid">
+      @for (pollItem of polls; track $index) {
+      <div class="poll-card-wrapper" (click)="selectPoll(pollItem)">
+        <app-poll-card [poll]="pollItem.poll"></app-poll-card>
+      </div>
+      }
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-sm btn-secondary" (click)="prevPage()" [disabled]="currentPage <= 1">Previous</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button class="btn btn-sm btn-secondary" (click)="nextPage()" [disabled]="currentPage >= totalPages">Next</button>
+    </div>
+  </div>
+</div>
+}
+
+<!-- Voter Modal -->
+@if (showVoterModal) {
+<div class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="text-light">Select Voters</h5>
+      <button class="btn btn-sm btn-outline-danger" (click)="closeVoterModal()">×</button>
+    </div>
+
+    <div class="voter-list-scrollable">
+      @for (voter of voters; track $index) {
+      <div class="poll-card-wrapper" [class.bg-secondary]="isVoterSelected(voter)"
+        (click)="toggleVoterSelection(voter)">
+        <div class="p-3 rounded border">
+          <h6 class="mb-1">{{ voter.name }}</h6>
+          <p class="mb-0"><small>{{ voter.email }}</small></p>
+        </div>
+      </div>
+      }
+    </div>
+
+  </div>
+</div>
+}

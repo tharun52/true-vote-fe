@@ -1,0 +1,133 @@
+.message-form {
+  background-color: var(--bg);
+  border: 1px solid var(--hover-bg);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+  color: var(--text);
+}
+
+.message-form__title {
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.message-form__group {
+  margin-bottom: 1rem;
+}
+
+.message-form__textarea {
+  background-color: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--hover-bg);
+  border-radius: 8px;
+  width: 100%;
+  padding: 0.5rem;
+}
+
+.message-form__textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.2rem rgba(79, 131, 255, 0.25);
+}
+
+.message-form__error {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.25rem;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: var(--bg);
+  color: var(--text);
+  padding: 2rem;
+  width: 95vw;
+  max-width: 1200px;
+  border-radius: 16px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.poll-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.poll-card-wrapper {
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  border-radius: 10px;
+}
+
+.poll-card-wrapper:hover {
+  transform: scale(1.02);
+  background-color: var(--hover-bg);
+}
+
+.voter-list-scrollable {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+/* Input styles inside modal */
+.modal-content input.form-control {
+  background-color: var(--hover-bg);
+  color: var(--hover-text);
+  border: 1px solid var(--muted);
+}
+
+.modal-content input.form-control::placeholder {
+  color: var(--muted);
+}
+
+/* Button styles */
+button.btn-outline-danger {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+button.btn-outline-danger:hover {
+  background-color: var(--hover-bg);
+  color: var(--hover-text);
+}
+
+button.btn-sm {
+  background-color: var(--accent);
+  color: var(--text);
+  border: none;
+}
+
+button.btn-sm:hover {
+  background-color: var(--hover-accent);
+  color: var(--hover-text);
+}

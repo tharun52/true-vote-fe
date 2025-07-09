@@ -18,11 +18,14 @@
           <strong>{{ msg.msg }}</strong><br />
           <small class="text-muted">Sent At: {{ msg.sentAt | date:'medium' }}</small><br />
           @if (msg.to) {
-            <small class="text-muted"><i class="bi bi-person"></i> To: {{ getEmail(msg.to!) }}</small>
+            <small class="text-muted" [title]="getEmail(msg.to)">
+              <i class="bi bi-person"></i> To: {{ getEmail(msg.to) }}
+            </small>
           }
           @else {
-            <small class="text-muted"><i class="bi bi-person"></i> To: All Voters</small>
+            <small class="text-muted"><i class="bi bi-people"></i> To: All Voters</small>
           }
+
         </div>
 
         <div class="actions d-flex align-items-center gap-2">

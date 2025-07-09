@@ -4,7 +4,6 @@ import { passwordValidator } from '../validators/password-validator';
 import { passwordMatchValidator } from '../validators/password-match.validator';
 import { AuthService } from '../auth.service';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { JsonPipe } from '@angular/common';
 

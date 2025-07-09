@@ -7,6 +7,7 @@ import { ToastService } from '../../shared/ToastService';
 import { PollModel } from '../../models/PollModels';
 import { PollCard } from "../../polls/poll-card/poll-card";
 import { PollService } from '../../polls/poll.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-message-created',
@@ -25,14 +26,35 @@ export class MessageCreated {
     private messageService: MessageService,
     private userService: UserService,
     private toastService: ToastService,
-    private pollService:PollService
+    private authService: AuthService,
+    private pollService: PollService
   ) {}
 
   ngOnInit(): void {
     this.loadCreatedMessages();
+
+    // SignalR: Handle new message
+    this.messageService.newMessage$.subscribe((newMsg) => {
+      const currentUserId = this.authService.getCurrentUser()?.userId;
+      if (newMsg.from === currentUserId) {
+        this.messages.unshift(newMsg);
+
+        if (newMsg.pollId && !this.pollMap[newMsg.pollId]) {
+          this.pollService.getPollById(newMsg.pollId).subscribe({
+            next: (poll) => this.pollMap[newMsg.pollId!] = poll,
+            error: (err) => console.error('Poll fetch failed:', err)
+          });
+        }
+      }
+    });
+
+    // SignalR: Handle deleted message
+    this.messageService.messageDeleted$.subscribe((deletedId) => {
+      this.messages = this.messages.filter(m => m.id !== deletedId);
+    });
   }
 
-   loadCreatedMessages() {
+  loadCreatedMessages() {
     this.loading = true;
     this.messageService.getCreatedMessages().subscribe({
       next: (msgs) => {
@@ -58,31 +80,31 @@ export class MessageCreated {
     const confirmed = window.confirm('Are you sure you want to delete this message?');
     if (confirmed) {
       this.messageService.deleteCreatedMessage(id).subscribe(() => {
-        this.loadCreatedMessages();
+
         this.toastService.show("Message Deleted", "This message has been deleted successfully and it is no longer visible to voters", true);
       });
     }
   }
 
-
-  getEmail(userId: string): string {
-    if (!userId) return '';
+  getEmail(userId: string | null | undefined): string {
+    if (!userId) return 'All Voters';
 
     if (!this.emailCache[userId]) {
       this.userService.getUserById(userId).subscribe({
-        next: (res) => this.emailCache[userId] = res.email,
+        next: (res) => this.emailCache[userId!] = res.email,
         error: (err) => {
           console.error(`Failed to fetch email for userId: ${userId}`, err);
-          this.emailCache[userId] = 'Unknown';
+          this.emailCache[userId!] = 'Unknown';
         }
       });
-      return 'Loading...';
     }
 
-    return this.emailCache[userId];
+    return this.emailCache[userId] || 'Loading...';
   }
 
-    openPollModal(pollId: string) {
+
+
+  openPollModal(pollId: string) {
     this.selectedPoll = this.pollMap[pollId];
   }
 

@@ -10,7 +10,12 @@ export class VoterService {
     
     constructor(private http:HttpClient)
     {}
-    
+    getAllVoters(): Observable<VoterModel[]> {
+        return this.http.get<any>(`${this.baseUrl}Voter`).pipe(
+            map(res => res?.data?.$values ?? [])
+        );
+    }
+
     getStats(voterId: string): Observable<any> {
         return this.http.get(`${this.baseUrl}Voter/stats/${voterId}`);
     }

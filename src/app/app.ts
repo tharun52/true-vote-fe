@@ -10,5 +10,5 @@ import { Toast } from "./shared/toast/toast";
   styleUrl: './app.css'
 })
 export class App {
-  protected title = 'true-vote-fe';
+  protected title = 'True Vote';
 }

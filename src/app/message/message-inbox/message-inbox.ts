@@ -6,6 +6,7 @@ import { PollModel } from '../../models/PollModels';
 import { PollService } from '../../polls/poll.service';
 import { PollCard } from "../../polls/poll-card/poll-card";
 import { UserService } from '../../shared/UserService';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-message-inbox',
@@ -16,17 +17,35 @@ import { UserService } from '../../shared/UserService';
 export class MessageInbox {
   messages: MessageModel[] = [];
   pollMap: { [pollId: string]: PollModel } = {};
-emailCache: { [key: string]: string } = {};
- loading: boolean = false; 
+  emailCache: { [key: string]: string } = {};
+  loading: boolean = false;
   selectedPoll: PollModel | null = null;
 
   constructor(private messageService: MessageService,
-              private pollService: PollService,
-              private userService: UserService
-  ) {}
+    private pollService: PollService,
+    private userService: UserService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
     this.loadMessages();
+    this.messageService.newMessage$.subscribe((msg) => {
+      const currentUserId = this.authService.getCurrentUser()?.userId;
+      if (!currentUserId) return;
+      if (!msg.to || msg.to.includes(currentUserId)) {
+        this.messages.unshift(msg);
+
+        if (msg.pollId && !this.pollMap[msg.pollId]) {
+          this.pollService.getPollById(msg.pollId).subscribe({
+            next: (poll) => this.pollMap[msg.pollId!] = poll,
+            error: (err) => console.error("Poll fetch failed:", err)
+          });
+        }
+      }
+    });
+    this.messageService.messageDeleted$.subscribe((messageId: string) => {
+      this.messages = this.messages.filter(m => m.id !== messageId);
+    });
   }
 
   loadMessages() {
@@ -46,19 +65,19 @@ emailCache: { [key: string]: string } = {};
       },
       error: (err) => {
         console.error(err);
-        this.loading = false; 
+        this.loading = false;
       }
     });
   }
   deleteMessage(id: string) {
     this.messageService.deleteMessage(id).subscribe(() => {
-      this.loadMessages(); 
+      this.loadMessages();
     });
   }
 
   clearAllMessages() {
     this.messageService.clearAll().subscribe(() => {
-      this.loadMessages(); 
+      this.loadMessages();
     });
   }
   getEmail(userId: string): string {
@@ -79,7 +98,7 @@ emailCache: { [key: string]: string } = {};
 
     return this.emailCache[userId];
   }
-  
+
   openPollModal(pollId: string) {
     this.selectedPoll = this.pollMap[pollId];
   }

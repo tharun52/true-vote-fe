@@ -42,5 +42,6 @@ export const routes: Routes = [
   { path: 'admin/addmoderator', component: AddModerator, canActivate: [authGuard], data: { expectedRole: 'Admin' } },
   { path: 'admin/moderatorlist', component: AdminModeratorList, canActivate: [authGuard], data: { expectedRole: 'Admin' } },
   { path: 'admin/auditlogs', component: AuditLogs, canActivate: [authGuard], data: { expectedRole: 'Admin' } },
-  { path: 'admin/signup', component: AdminSignup},
+  { path: 'admin/signup', component: AdminSignup, canActivate: [NoAuthGuard] }
+
 ];
