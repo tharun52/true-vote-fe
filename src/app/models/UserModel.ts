@@ -5,5 +5,5 @@ export class UserModel{
         public role: string = "",
         public token: string = "",
         public refreshToken: string = "") 
-    {}
+    {} 
 }
