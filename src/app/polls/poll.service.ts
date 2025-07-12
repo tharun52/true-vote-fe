@@ -51,6 +51,10 @@ export class PollService {
   updatePoll(pollId: string, formData: FormData) {
     return this.http.put(`${this.baseUrl}Poll/update/${pollId}`, formData);
   }
+  
+  deletePoll(pollId: string) {
+    return this.http.delete(`${this.baseUrl}Poll/${pollId}`);
+  }
 
 
   getPollFileUrl(fileId: string): string {

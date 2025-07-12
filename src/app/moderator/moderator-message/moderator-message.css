@@ -26,7 +26,6 @@
   animation: slideUp 0.5s ease-out;
 }
 
-/* Card heading */
 .announcement-title {
   color: var(--accent);
   font-size: 1.6rem;
@@ -36,20 +35,17 @@
   gap: 0.5rem;
 }
 
-/* Subtitle under heading */
 .announcement-subtitle {
   color: var(--muted);
   font-size: 1rem;
   margin-bottom: 1.5rem;
 }
 
-/* Optional hover effect */
 .announcement-card:hover {
   box-shadow: 0 14px 35px rgba(0, 0, 0, 0.1);
   border-color: var(--hover-accent);
 }
 
-/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;

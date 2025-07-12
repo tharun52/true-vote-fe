@@ -6,10 +6,14 @@ import { PollService } from '../../polls/poll.service';
 import { PollCard } from "../../polls/poll-card/poll-card";
 import { VoterService } from '../../voter/voter.service';
 import { VoterModel } from '../../models/VoterModel';
+import { AuthService } from '../../auth/auth.service';
+import { ModeratorService } from '../../moderator/moderator.service';
+import { ModeratorModel } from '../../models/ModeratorModel';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-add-message',
-  imports: [FormsModule, ReactiveFormsModule, PollCard],
+  imports: [FormsModule, ReactiveFormsModule, PollCard, NgClass],
   templateUrl: './add-message.html',
   styleUrl: './add-message.css'
 })
@@ -25,23 +29,36 @@ export class AddMessage {
   currentPage = 1;
   totalPages = 1;
   showPollModal = false;
+  showModeratorModal = false;
+
+  role: string = '';
 
   voters: VoterModel[] = [];
   selectedVoter: VoterModel | null = null; // ✅ single voter
   showVoterModal = false;
 
+  moderators: ModeratorModel[] = [];
+  selectedModerator: ModeratorModel | null = null;
+
+
   constructor(
     private messageService: MessageService,
     private pollService: PollService,
-    private voterService: VoterService
+    private voterService: VoterService,
+    private authService: AuthService,
+    private moderatorService: ModeratorService
   ) {
     this.messageForm = new FormGroup({
       msg: new FormControl('', Validators.required),
       pollId: new FormControl(''),
-      to: new FormControl('')
+      to: new FormControl('', this.authService.getRole() === 'Voter' ? Validators.required : [])
     });
 
-    this.loadPolls(); 
+    this.role = authService.getRole()!;
+    if (this.role === 'Voter') {
+      this.loadModerators();
+    }
+    this.loadPolls();
   }
 
   get msg() {
@@ -56,7 +73,7 @@ export class AddMessage {
     const query: PollQueryDto = {
       searchTerm: this.searchTerm,
       page: this.currentPage,
-      ForVoting : false,
+      ForVoting: false,
       pageSize: 6
     };
 
@@ -66,10 +83,17 @@ export class AddMessage {
     });
   }
 
+  loadModerators() {
+    this.moderatorService.getModerators({ page: 1, pageSize: 100, isDeleted: false })
+      .subscribe(res => {
+        this.moderators = res.data;
+      });
+  }
+
   selectPoll(poll: PollResponseItemModel) {
     this.selectedPoll = poll;
     this.messageForm.patchValue({ pollId: poll.poll.id });
-     this.closePollModal(); 
+    this.closePollModal();
   }
 
   sendMessage() {
@@ -91,11 +115,13 @@ export class AddMessage {
       payload.pollId = this.selectedPoll.poll.id;
     }
 
-    if (this.selectedVoter) {
-      payload.to = this.selectedVoter.id; // ✅ single voter
+    if (this.role === 'Moderator' && this.selectedVoter) {
+      payload.to = this.selectedVoter.id;
     }
 
-    console.log('Sending:', payload);
+    if (this.role === 'Voter' && this.selectedModerator) {
+      payload.to = this.selectedModerator.id;
+    }
 
     this.messageService.addMessage(payload).subscribe({
       next: () => {
@@ -103,6 +129,7 @@ export class AddMessage {
         this.messageForm.reset();
         this.selectedPoll = null;
         this.selectedVoter = null;
+        this.selectedModerator = null;
         this.loading = false;
       },
       error: (err) => {
@@ -112,6 +139,7 @@ export class AddMessage {
       }
     });
   }
+
 
   nextPage() {
     if (this.currentPage < this.totalPages) {
@@ -145,7 +173,7 @@ export class AddMessage {
     this.messageForm.patchValue({
       to: voter.id
     });
-    this.closeVoterModal(); // ✅ close modal immediately
+    this.closeVoterModal();
   }
   isVoterSelected(voter: VoterModel): boolean {
     return this.selectedVoter?.id === voter.id;
@@ -161,4 +189,35 @@ export class AddMessage {
       this.voters = voters;
     });
   }
+  openModeratorModal() {
+    this.showModeratorModal = true;
+  }
+
+  closeModeratorModal() {
+    this.showModeratorModal = false;
+  }
+
+  toggleModeratorSelection(mod: ModeratorModel) {
+    this.selectedModerator = mod;
+    this.messageForm.patchValue({ to: mod.id });
+    this.closeModeratorModal();
+  }
+
+  isModeratorSelected(mod: ModeratorModel): boolean {
+      return this.selectedModerator?.id === mod.id;
+    }
+    clearSelectedPoll() {
+    this.selectedPoll = null;
+    this.messageForm.patchValue({ pollId: '' });
+  }
+
+  clearSelectedRecipient() {
+    if (this.role === 'Moderator') {
+      this.selectedVoter = null;
+    } else if (this.role === 'Voter') {
+      this.selectedModerator = null;
+    }
+    this.messageForm.patchValue({ to: '' });
+  }
+
 }

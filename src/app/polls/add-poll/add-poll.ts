@@ -26,14 +26,14 @@ export class AddPoll {
       optionTexts: new FormArray([
         new FormControl('', Validators.required),
         new FormControl('', Validators.required)
-      ])
+      ]),
+      ForPublishing: new FormControl(false) 
     });
   }
 
   public get title() {return this.pollForm.get('title');}
   public get startDate() {return this.pollForm.get('startDate');}
   public get endDate() {return this.pollForm.get('endDate');}
-  // public get optionTextsForm() { return this.pollForm.get('optionTexts');}
 
   get optionTexts(): FormArray {
     return this.pollForm.get('optionTexts') as FormArray;
@@ -65,6 +65,7 @@ export class AddPoll {
     formData.append('Description', this.pollForm.get('description')?.value || '');
     formData.append('StartDate', this.pollForm.get('startDate')?.value);
     formData.append('EndDate', this.pollForm.get('endDate')?.value);
+    formData.append('ForPublishing', this.pollForm.get('ForPublishing')?.value);
 
     const options = this.optionTexts.value;
     for (let i = 0; i < options.length; i++) {

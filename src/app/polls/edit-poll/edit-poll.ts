@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormArray, FormControl, FormsModule
 import { PollService } from '../poll.service';
 import { endDateValidator } from '../../auth/validators/end-date-validator';
 import { ToastService } from '../../shared/ToastService';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-poll',
@@ -24,7 +25,7 @@ export class EditPoll {
   public get startDate() {return this.pollForm.get('startDate');}
   public get endDate() {return this.pollForm.get('endDate');}
   
-  constructor(private fb: FormBuilder, private pollService: PollService, private toastService:ToastService) {}
+  constructor(private fb: FormBuilder, private pollService: PollService, private toastService:ToastService, private router:Router) {}
   
   ngOnInit(): void {
     const startDate = this.formatDate(this.poll.startDate);
@@ -105,4 +106,20 @@ export class EditPoll {
     const day = String(d.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
+  deletePoll() {
+    if (confirm('Are you sure you want to delete this poll? This action cannot be undone.')) {
+      this.pollService.deletePoll(this.poll.id).subscribe({
+        next: () => {
+          this.toastService.show('Poll Deleted', 'The poll was successfully deleted.', false);
+          this.updated.emit(null); 
+          window.location.reload();
+          // this.router.navigateByUrl('moderator/polls');
+        },
+        error: (err) => {
+          this.responseMessage = err?.error?.message || '❌ Failed to delete poll.';
+        }
+      });
+    }
+  }
+
 }

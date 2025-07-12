@@ -4,66 +4,101 @@
   </h4>
 
   <form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
-    <!-- Message Input -->
     <div class="message-form__group">
       <textarea formControlName="msg" rows="4" class="message-form__textarea"
         placeholder="Type your message..."></textarea>
       @if (msg?.touched && msg?.errors) {
-      <div class="message-form__error">Message is required.</div>
+         <div class="form-error text-danger mt-1">Valid email is required</div>
       }
     </div>
 
-    <!-- Optional Poll Attachment -->
     <div class="message-form__group">
       <button type="button" class="btn btn-outline-secondary" (click)="openPollModal()">
         <i class="bi bi-search"></i> Choose Poll (Optional)
       </button>
       @if (selectedPoll) {
-      <div class="mt-2">
-        <small class="text-muted">Selected Poll:</small>
-        <app-poll-card [poll]="selectedPoll.poll"></app-poll-card>
-      </div>
+        <div class="mt-2 d-flex align-items-center gap-2">
+          <small class="text-muted">Selected Poll:</small>
+          <app-poll-card [poll]="selectedPoll.poll"></app-poll-card>
+          <button class="btn btn-sm btn-outline-danger" (click)="clearSelectedPoll()" title="Remove Poll">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
       }
+
       @if (pollId?.touched && pollId?.errors) {
-      <div class="message-form__error">Poll is required.</div>
+        <div class="message-form__error">Poll is required.</div>
       }
     </div>
 
-    <!-- Optional Voter Attachment -->
     <div class="message-form__group">
-      <button type="button" class="btn btn-outline-secondary" (click)="openVoterModal()">
-        <i class="bi bi-person-plus"></i> Choose Voters (Optional)
+      <button type="button" class="btn btn-outline-secondary"
+        (click)="role === 'Moderator' ? openVoterModal() : openModeratorModal()">
+        <i class="bi"
+          [ngClass]="{'bi-person-plus': role === 'Moderator', 'bi-person-lines-fill': role === 'Voter'}"></i>
+        {{ role === 'Moderator' ? 'Choose Voter' : 'Choose Moderator' }}
       </button>
-      @if (selectedVoter) {
-      <div class="mt-2">
-        <small class="text-muted">Selected Voter:</small>
-        <ul class="list-group">
-          <li class="list-group-item bg-dark text-light">
-            {{ selectedVoter.name }} ({{ selectedVoter.email }})
-          </li>
-        </ul>
-      </div>
+      @if (messageForm.get('to')?.touched && messageForm.get('to')?.errors?.['required']) {
+        <div class="message-form__error">Moderator is required.</div>
       }
+
+
+      @if (selectedVoter && role === 'Moderator') {
+        <div class="mt-2 d-flex align-items-center gap-2">
+          <small class="text-muted">Selected Voter:</small>
+          <ul class="list-group m-0">
+            <li class="list-group-item bg-dark text-light">
+              {{ selectedVoter.name }} ({{ selectedVoter.email }})
+            </li>
+          </ul>
+          <button class="btn btn-sm btn-outline-danger" (click)="clearSelectedRecipient()" title="Remove Voter">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+      }
+
+      @if (selectedModerator && role === 'Voter') {
+        <div class="mt-2 d-flex align-items-center gap-2">
+          <small class="text-muted">Selected Moderator:</small>
+          <ul class="list-group m-0">
+            <li class="list-group-item bg-dark text-light">
+              {{ selectedModerator.name }} ({{ selectedModerator.email }})
+            </li>
+          </ul>
+          <button class="btn btn-sm btn-outline-danger" (click)="clearSelectedRecipient()" title="Remove Moderator">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+      }
+
+
       <div class="text-muted mt-1">
-        If no voters are selected, the message will be sent to all.
+        @if (role === 'Moderator') {
+          If no voter is selected, the message will be sent to all.
+        } @else if (role === 'Voter') {
+          You must select a moderator to send the message.
+        }
       </div>
+
+      @if (messageForm.get('to')?.touched && messageForm.get('to')?.errors?.['required'] && role === 'Voter') {
+        <div class="message-form__error">Please select a moderator to send the message.</div>
+      }
+
     </div>
 
-    <!-- Submit -->
     <button class="btn btn-primary mt-2" [disabled]="loading || messageForm.invalid">
       <i class="bi bi-send"></i> {{ loading ? 'Sending...' : 'Send Message' }}
     </button>
   </form>
 
   @if (success) {
-  <div class="text-success mt-2">Message sent successfully!</div>
+    <div class="text-success mt-2">Message sent successfully!</div>
   }
   @if (error) {
-  <div class="text-danger mt-2">{{ error }}</div>
+    <div class="text-danger mt-2">{{ error }}</div>
   }
 </div>
 
-<!-- Poll Modal -->
 @if (showPollModal) {
 <div class="modal-overlay">
   <div class="modal-content">
@@ -111,6 +146,31 @@
       }
     </div>
 
+  </div>
+</div>
+}
+
+
+<!-- Moderator Modal -->
+@if (showModeratorModal) {
+<div class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="text-light">Select Moderator</h5>
+      <button class="btn btn-sm btn-outline-danger" (click)="closeModeratorModal()">×</button>
+    </div>
+
+    <div class="voter-list-scrollable">
+      @for (mod of moderators; track $index) {
+      <div class="poll-card-wrapper" [class.bg-secondary]="isModeratorSelected(mod)"
+        (click)="toggleModeratorSelection(mod)">
+        <div class="p-3 rounded border">
+          <h6 class="mb-1">{{ mod.name }}</h6>
+          <p class="mb-0"><small>{{ mod.email }}</small></p>
+        </div>
+      </div>
+      }
+    </div>
   </div>
 </div>
 }

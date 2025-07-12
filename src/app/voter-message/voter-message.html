@@ -1,7 +1,38 @@
 <div class="announcement-wrapper">
-  <div class="announcement-card">
-    <h2 class="announcement-title"><i class="bi bi-megaphone-fill"></i> Moderator's Announcements</h2>
-    <p class="announcement-subtitle">Stay updated with the latest updates and actions from the moderators.</p>
-    <app-message-inbox></app-message-inbox>
+  <div class="card-container">
+
+    <!-- Compose Message to Moderator -->
+    <div class="announcement-card">
+      <h2 class="announcement-title">
+        <i class="bi bi-chat-dots-fill"></i> Contact Your Moderator
+      </h2>
+      <p class="announcement-subtitle">
+        You can send a private message to your moderator here.
+      </p>
+      <app-add-message></app-add-message>
+    </div>
+
+    <!-- Sent Messages by Voter -->
+    <div class="announcement-card">
+      <h2 class="announcement-title">
+        <i class="bi bi-send-fill"></i> Your Sent Messages
+      </h2>
+      <p class="announcement-subtitle">
+        View the messages you’ve sent to moderators.
+      </p>
+      <app-message-created></app-message-created>
+    </div>
+
+    <!-- Messages Received by Voter -->
+    <div class="announcement-card">
+      <h2 class="announcement-title">
+        <i class="bi bi-inbox-fill"></i> Messages from Moderators
+      </h2>
+      <p class="announcement-subtitle">
+        These are messages or announcements sent to you by moderators.
+      </p>
+      <app-message-inbox></app-message-inbox>
+    </div>
+
   </div>
 </div>
