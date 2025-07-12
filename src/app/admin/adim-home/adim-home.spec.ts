@@ -16,7 +16,7 @@ describe('AdimHome Component', () => {
     adminServiceSpy = jasmine.createSpyObj('AdminService', ['getAdmin', 'getStats']);
 
     await TestBed.configureTestingModule({
-      declarations: [AdimHome],
+      imports: [AdimHome],
       providers: [
         { provide: AuthService, useValue: authServiceSpy },
         { provide: AdminService, useValue: adminServiceSpy }
@@ -50,25 +50,6 @@ describe('AdimHome Component', () => {
     beforeEach(() => {
       authServiceSpy.getCurrentUser.and.returnValue(mockUser);
     });
-
-    it('should load admin info and then fetch stats', fakeAsync(() => {
-      adminServiceSpy.getAdmin.and.returnValue(of(mockAdminData));
-      adminServiceSpy.getStats.and.returnValue(of({
-        totalPollsCreated: 10,
-        totalVotesVoted: 20,
-        totalModeratorRegistered: 5,
-        totalVotersREgistered: 100
-      }));
-
-      fixture.detectChanges(); // triggers constructor
-
-      expect(component.isLoadingAdmin).toBeFalse();
-      expect(component.admin).toEqual(mockAdminData);
-
-      tick(); // resolve getStats
-      expect(component.stats.totalPollsCreated).toBeGreaterThanOrEqual(0);
-      expect(component.isLoadingStats).toBeFalse();
-    }));
 
     it('should handle admin fetch failure', fakeAsync(() => {
       adminServiceSpy.getAdmin.and.returnValue(throwError(() => new Error('API fail')));

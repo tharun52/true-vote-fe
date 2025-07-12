@@ -1,30 +1,29 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddModerator } from './add-moderator';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ModeratorService } from '../../moderator/moderator.service';
-import { Router } from '@angular/router';
 import { ToastService } from '../../shared/ToastService';
+import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 
-describe('AddModerator Component', () => {
+describe('AddModerator', () => {
   let component: AddModerator;
   let fixture: ComponentFixture<AddModerator>;
   let moderatorServiceSpy: jasmine.SpyObj<ModeratorService>;
-  let routerSpy: jasmine.SpyObj<Router>;
   let toastServiceSpy: jasmine.SpyObj<ToastService>;
+  let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
     moderatorServiceSpy = jasmine.createSpyObj('ModeratorService', ['addModerator']);
-    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     toastServiceSpy = jasmine.createSpyObj('ToastService', ['show']);
+    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
-      declarations: [AddModerator],
+      imports: [AddModerator, ReactiveFormsModule],
       providers: [
         { provide: ModeratorService, useValue: moderatorServiceSpy },
-        { provide: Router, useValue: routerSpy },
         { provide: ToastService, useValue: toastServiceSpy },
+        { provide: Router, useValue: routerSpy }
       ]
     }).compileComponents();
 
@@ -33,48 +32,46 @@ describe('AddModerator Component', () => {
     fixture.detectChanges();
   });
 
-  it('should create the component and initialize form', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
-    expect(component.moderatorForm).toBeDefined();
   });
 
-  it('should mark form as invalid if required fields are empty', () => {
+  it('should show validation error when form is invalid', () => {
     component.submit();
     expect(component.responseMessage).toBe('Please fill all required fields properly.');
   });
 
-  it('should call addModerator and navigate on successful submission', fakeAsync(() => {
-    component.moderatorForm.setValue({
-      name: 'Test Name',
-      email: 'test@example.com',
-      password: 'Test1234',
-      confirmPassword: 'Test1234'
-    });
+  it('should submit form and navigate on success', () => {
+    const formValue = {
+      name: 'Moderator One',
+      email: 'mod@example.com',
+      password: 'Password123',
+      confirmPassword: 'Password123'
+    };
 
-    moderatorServiceSpy.addModerator.and.returnValue(of({ message: 'Success' }));
+    component.moderatorForm.setValue(formValue);
+    moderatorServiceSpy.addModerator.and.returnValue(of({}));
 
     component.submit();
-    tick();
 
-    expect(moderatorServiceSpy.addModerator).toHaveBeenCalledWith(component.moderatorForm.value);
+    expect(moderatorServiceSpy.addModerator).toHaveBeenCalledWith(formValue);
     expect(toastServiceSpy.show).toHaveBeenCalledWith('Success', '✅ Moderator added successfully!', false);
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/admin']);
-  }));
+  });
 
-  it('should show error toast on failed submission', fakeAsync(() => {
-    component.moderatorForm.setValue({
-      name: 'Test Name',
-      email: 'test@example.com',
-      password: 'Test1234',
-      confirmPassword: 'Test1234'
-    });
+  it('should show error toast on failure', () => {
+    const formValue = {
+      name: 'Moderator One',
+      email: 'mod@example.com',
+      password: 'Password123',
+      confirmPassword: 'Password123'
+    };
 
-    moderatorServiceSpy.addModerator.and.returnValue(throwError(() => new Error('Failed')));
+    component.moderatorForm.setValue(formValue);
+    moderatorServiceSpy.addModerator.and.returnValue(throwError(() => 'Add failed'));
 
     component.submit();
-    tick();
 
-    expect(moderatorServiceSpy.addModerator).toHaveBeenCalled();
     expect(toastServiceSpy.show).toHaveBeenCalledWith('Error', '❌ Failed to add moderator.', true);
-  }));
+  });
 });

@@ -1,141 +1,138 @@
 import { TestBed } from '@angular/core/testing';
+import { AuthService } from './auth.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
-import { UserModel } from '../models/UserModel';
-import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment';
+import { UserModel } from '../models/UserModel';
 
 describe('AuthService', () => {
-    let service: AuthService;
-    let httpMock: HttpTestingController;
-    let routerSpy: jasmine.SpyObj<Router>;
+  let service: AuthService;
+  let httpMock: HttpTestingController;
+  let routerSpy: jasmine.SpyObj<Router>;
 
-    const dummyUser: UserModel = new UserModel(
-        '1',
-        'testuser',
-        'Voter',
-        'dummyToken.jwt.token',
-        'dummyRefreshToken'
-    );
+  beforeEach(() => {
+    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
-    beforeEach(() => {
-        routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-
-        TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
-            providers: [
-                AuthService,
-                { provide: Router, useValue: routerSpy }
-            ]
-        });
-
-        service = TestBed.inject(AuthService);
-        httpMock = TestBed.inject(HttpTestingController);
-        localStorage.clear();
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        AuthService,
+        { provide: Router, useValue: routerSpy }
+      ]
     });
 
-    afterEach(() => {
-        httpMock.verify();
-    });
+    service = TestBed.inject(AuthService);
+    httpMock = TestBed.inject(HttpTestingController);
+    localStorage.clear();
+  });
 
-    it('should be created', () => {
-        expect(service).toBeTruthy();
-    });
+  afterEach(() => {
+    httpMock.verify();
+    localStorage.clear();
+  });
 
-    it('should login and store tokens', () => {
-        service.login('testuser', 'password123').subscribe(user => {
-            expect(user).toEqual(dummyUser);
-            expect(localStorage.getItem('token')).toBe(dummyUser.token);
-            expect(localStorage.getItem('refreshToken')).toBe(dummyUser.refreshToken);
-        });
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
 
-        const req = httpMock.expectOne(`${environment.apiBaseUrl}Authentication`);
-        expect(req.request.method).toBe('POST');
-        req.flush(dummyUser);
+  describe('login', () => {
+    it('should login and store token and navigate based on role', () => {
+      const mockUser: UserModel = {
+        userId: '123',
+        username: 'testuser',
+        role: 'Voter',
+        token: 'dummy.token.voter',
+        refreshToken: 'refresh.token'
+      };
 
+      service.login('testuser', 'password').subscribe((user) => {
+        expect(user).toEqual(mockUser);
+        expect(localStorage.getItem('token')).toBe(mockUser.token);
+        expect(localStorage.getItem('refreshToken')).toBe(mockUser.refreshToken);
         expect(routerSpy.navigate).toHaveBeenCalledWith(['/voter']);
+      });
+
+      const req = httpMock.expectOne(`${environment.apiBaseUrl}Authentication`);
+      expect(req.request.method).toBe('POST');
+      req.flush(mockUser);
+    });
+  });
+
+  it('should return null if no token is available in getToken', () => {
+    expect(service.getToken()).toBeNull();
+  });
+
+  it('should return true if token is set', () => {
+    localStorage.setItem('token', 'dummy.token');
+    (service as any).tokenSubject.next('dummy.token');
+    expect(service.isLoggedIn()).toBeTrue();
+  });
+
+  it('should decode token and get role/username', () => {
+    const payload = btoa(JSON.stringify({ role: 'Admin', nameid: 'adminuser' }));
+    const token = `header.${payload}.signature`;
+    localStorage.setItem('token', token);
+    (service as any).tokenSubject.next(token);
+
+    expect(service.getRole()).toBe('Admin');
+    expect(service.getUsername()).toBe('adminuser');
+  });
+
+  it('should logout, remove tokens and navigate to login', () => {
+    localStorage.setItem('token', 't1');
+    localStorage.setItem('refreshToken', 'r1');
+
+    service.logout();
+
+    const req = httpMock.expectOne(`${environment.apiBaseUrl}Authentication/logout`);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({ refreshToken: 'r1' });
+
+    expect(localStorage.getItem('token')).toBeNull();
+    expect(localStorage.getItem('refreshToken')).toBeNull();
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/login']);
+  });
+
+  it('should return current user from decoded token', () => {
+    const payload = {
+      UserId: 'u1',
+      nameid: 'testuser',
+      role: 'Moderator'
+    };
+    const token = `header.${btoa(JSON.stringify(payload))}.signature`;
+
+    localStorage.setItem('token', token);
+    localStorage.setItem('refreshToken', 'r-token');
+
+    const user = service.getCurrentUser();
+
+    expect(user?.userId).toBe('u1');
+    expect(user?.username).toBe('testuser');
+    expect(user?.role).toBe('Moderator');
+  });
+
+  it('should register an admin', () => {
+    const adminData = { name: 'Admin' };
+
+    service.registerAdmin(adminData).subscribe(res => {
+      expect(res).toEqual({ success: true });
     });
 
-    it('should logout and clear tokens', () => {
-        localStorage.setItem('token', 'testToken');
-        localStorage.setItem('refreshToken', 'testRefreshToken');
+    const req = httpMock.expectOne(`${environment.apiBaseUrl}Admin/add`);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(adminData);
+    req.flush({ success: true });
+  });
 
-        service.logout();
+  it('should check email availability', () => {
+    const email = 'test@example.com';
 
-        const req = httpMock.expectOne(`${environment.apiBaseUrl}Authentication/logout`);
-        expect(req.request.method).toBe('POST');
-        req.flush({});
-
-        expect(localStorage.getItem('token')).toBeNull();
-        expect(localStorage.getItem('refreshToken')).toBeNull();
-        expect(routerSpy.navigate).toHaveBeenCalledWith(['/login']);
+    service.checkEmail(email, true).subscribe(isAvailable => {
+      expect(isAvailable).toBeTrue();
     });
 
-    it('should return the token from localStorage', () => {
-        localStorage.setItem('token', 'storedToken');
-
-        service = TestBed.inject(AuthService);
-
-        const token = service.getToken();
-        expect(token).toBe('storedToken');
-    });
-
-    it('should return isLoggedIn as true if token exists', () => {
-        localStorage.setItem('token', 'storedToken');
-        service = TestBed.inject(AuthService);
-        expect(service.isLoggedIn()).toBeTrue();
-    });
-
-    it('should decode token and return correct role', () => {
-        const mockPayload = { role: 'Admin' };
-        const encoded = btoa(JSON.stringify(mockPayload));
-        const token = `header.${encoded}.signature`;
-
-        localStorage.setItem('token', token);
-        service = TestBed.inject(AuthService);
-
-        expect(service.getRole()).toBe('Admin');
-    });
-
-    it('should decode token and return correct username', () => {
-        const mockPayload = { nameid: 'testuser' };
-        const encoded = btoa(JSON.stringify(mockPayload));
-        const token = `header.${encoded}.signature`;
-
-        localStorage.setItem('token', token);
-        service = TestBed.inject(AuthService);
-
-        expect(service.getUsername()).toBe('testuser');
-    });
-
-    it('should return current user from token', () => {
-        const payload = {
-            nameid: 'john',
-            role: 'Moderator',
-            UserId: '10'
-        };
-        const encoded = btoa(JSON.stringify(payload));
-        const token = `header.${encoded}.signature`;
-        localStorage.setItem('token', token);
-        localStorage.setItem('refreshToken', 'refToken');
-
-        const user = service.getCurrentUser();
-        expect(user?.username).toBe('john');
-        expect(user?.role).toBe('Moderator');
-        expect(user?.token).toBe(token);
-    });
-
-    
-
-    it('should call registerAdmin with admin data', () => {
-        const adminData = { name: 'Admin', email: 'admin@test.com' };
-
-        service.registerAdmin(adminData).subscribe(res => {
-            expect(res).toEqual({ success: true });
-        });
-
-        const req = httpMock.expectOne(`${environment.apiBaseUrl}Admin/add`);
-        expect(req.request.method).toBe('POST');
-        req.flush({ success: true });
-    });
+    const req = httpMock.expectOne(`${environment.apiBaseUrl}Voter/check-email?email=${email}&isVoter=true`);
+    expect(req.request.method).toBe('GET');
+    req.flush(true);
+  });
 });

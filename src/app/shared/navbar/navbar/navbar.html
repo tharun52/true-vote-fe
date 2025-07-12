@@ -19,10 +19,10 @@
 
       @if (authService.isLoggedIn()) {
         @if (isAdmin) {
-          <li class="nav-item"><a class="nav-link" routerLink="/admin">Home</a></li>
-          <li class="nav-item"><a class="nav-link" routerLink="/admin/auditlogs">Audit Logs</a></li>
-          <li class="nav-item"><a class="nav-link" routerLink="/admin/addmoderator">Add Moderator</a></li>
-          <li class="nav-item"><a class="nav-link" routerLink="/admin/moderatorlist">Moderators</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/admin" (click)="closeMenu()">Home</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/admin/auditlogs" (click)="closeMenu()">Audit Logs</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/admin/addmoderator" (click)="closeMenu()">Add Moderator</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/admin/moderatorlist" (click)="closeMenu()">Moderators</a></li>
           <li class="nav-item">
             <span class="nav-link d-flex align-items-center gap-1">
               <i class="bi bi-shield-lock-fill"></i>
@@ -30,12 +30,12 @@
             </span>
           </li>
         } @else if (isModerator) {
-          <li class="nav-item"><a class="nav-link" routerLink="/moderator">Home</a></li>
-          <li class="nav-item"><a class="nav-link" routerLink="/moderator/emails">Voter Emails</a></li>
-          <li class="nav-item"><a class="nav-link" routerLink="/moderator/addpoll">Add Poll</a></li>
-          <li class="nav-item"><a class="nav-link" routerLink="/moderator/polls">My Polls</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/moderator" (click)="closeMenu()">Home</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/moderator/emails" (click)="closeMenu()">Voter Emails</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/moderator/addpoll" (click)="closeMenu()">Add Poll</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/moderator/polls" (click)="closeMenu()">My Polls</a></li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/moderator/messages">
+            <a class="nav-link" routerLink="/moderator/messages" (click)="closeMenu()">
               Messages
               @if (hasMessages) {
                 <span class="message-dot"></span>
@@ -49,11 +49,11 @@
             </a>
           </li>
         } @else if (isVoter) {
-          <li class="nav-item"><a class="nav-link" routerLink="/voter">Home</a></li>
-          <li class="nav-item"><a class="nav-link" routerLink="/voter/moderators">Moderators</a></li>
-          <li class="nav-item"><a class="nav-link" routerLink="/voter/polls">Polls</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/voter" (click)="closeMenu()">Home</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/voter/moderators" (click)="closeMenu()">Moderators</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/voter/polls" (click)="closeMenu()">Polls</a></li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/voter/messages">
+            <a class="nav-link" routerLink="/voter/messages" (click)="closeMenu()">
               Messages
               @if (hasMessages) {
                 <span class="message-dot"></span>

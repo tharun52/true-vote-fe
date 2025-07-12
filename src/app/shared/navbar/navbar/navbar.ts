@@ -72,4 +72,8 @@ export class Navbar implements OnInit{
   toggleTheme(): void {
     this.themeService.toggleTheme();
   }
+  closeMenu(): void {
+    this.isMenuOpen = false;
+  }
+
 }

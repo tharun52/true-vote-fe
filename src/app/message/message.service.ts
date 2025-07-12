@@ -51,12 +51,12 @@ export class MessageService {
   }
 
   private startSignalRConnection(): void {
-    var currentUserId = this.authService.getCurrentUser()?.userId;
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${this.baseUrl.replace('api/v1/', '')}messageHub?voterId=${currentUserId}`)
+      .withUrl(`${this.baseUrl.replace('api/v1/', '')}messageHub`, {
+        accessTokenFactory: () => this.authService.getToken() || ''  // ✅ Ensure no null
+      })
       .withAutomaticReconnect()
       .build();
-
 
     this.hubConnection.start()
       .then(() => console.log('SignalR connected to /messageHub'))
@@ -64,16 +64,17 @@ export class MessageService {
 
     this.hubConnection.on('ReceiveMessage', (msg: MessageModel) => {
       const currentUserId = this.authService.getCurrentUser()?.userId;
-      
 
-      if (!currentUserId) return; 
+      if (!currentUserId) return;
 
       if (!msg.to || msg.to.includes(currentUserId)) {
         this.newMessageSubject.next(msg);
       }
     });
+
     this.hubConnection.on('DeleteMessage', (messageId: string) => {
       this.messageDeletedSubject.next(messageId);
     });
   }
+
 }
