@@ -74,7 +74,13 @@
         </div>
 
 
-        <button type="submit" class="btn btn-accent w-100">Create Poll</button>
+        <button type="submit" class="btn btn-accent w-100" [disabled]="loading">
+          @if (loading) {
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          }
+          {{ loading ? 'Submitting...' : 'Create Poll' }}
+        </button>
+
         
         @if (responseMessage) {
           <div class="text-danger mt-2 small">{{ responseMessage }}</div>

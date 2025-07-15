@@ -16,8 +16,9 @@ export class AddPoll {
   pollForm: FormGroup;
   pollFile: File | null = null;
   responseMessage = '';
+  loading = false;
 
-  constructor(private fb: FormBuilder, private pollService: PollService, private router:Router, private toastService:ToastService) {
+  constructor(private fb: FormBuilder, private pollService: PollService, private router: Router, private toastService: ToastService) {
     this.pollForm = new FormGroup({
       title: new FormControl('', Validators.required),
       description: new FormControl(),
@@ -27,13 +28,13 @@ export class AddPoll {
         new FormControl('', Validators.required),
         new FormControl('', Validators.required)
       ]),
-      ForPublishing: new FormControl(false) 
+      ForPublishing: new FormControl(false)
     });
   }
 
-  public get title() {return this.pollForm.get('title');}
-  public get startDate() {return this.pollForm.get('startDate');}
-  public get endDate() {return this.pollForm.get('endDate');}
+  public get title() { return this.pollForm.get('title'); }
+  public get startDate() { return this.pollForm.get('startDate'); }
+  public get endDate() { return this.pollForm.get('endDate'); }
 
   get optionTexts(): FormArray {
     return this.pollForm.get('optionTexts') as FormArray;
@@ -60,6 +61,8 @@ export class AddPoll {
       return;
     }
 
+    this.loading = true; // 👈 Start loading
+
     const formData = new FormData();
     formData.append('Title', this.pollForm.get('title')?.value);
     formData.append('Description', this.pollForm.get('description')?.value || '');
@@ -77,7 +80,7 @@ export class AddPoll {
     }
 
     this.pollService.addPoll(formData).subscribe({
-      next: (res) => {
+      next: () => {
         this.responseMessage = 'Poll added successfully!';
         this.pollForm.reset();
         this.optionTexts.clear();
@@ -89,6 +92,9 @@ export class AddPoll {
       error: (err) => {
         this.responseMessage = 'Error: ' + (err?.error?.message ?? 'Something went wrong');
       },
+      complete: () => {
+        this.loading = false; 
+      }
     });
   }
 }

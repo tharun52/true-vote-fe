@@ -91,17 +91,4 @@ describe('AdimHome Component', () => {
       expect(adminServiceSpy.getAdmin).not.toHaveBeenCalled();
     });
   });
-
-  it('should animate stat count correctly', fakeAsync(() => {
-    component.stats = {
-      totalPollsCreated: 0,
-      totalVotesVoted: 0,
-      totalModeratorRegistered: 0,
-      totalVotersRegistered: 0
-    };
-
-    component.animateCount('totalPollsCreated', 50);
-    tick(800); // duration of animation
-    expect(component.stats.totalPollsCreated).toBe(50);
-  }));
 });

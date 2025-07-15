@@ -3,8 +3,11 @@
     <h2 class="text-primary mb-0">
       <i class="bi bi-pencil-square me-2"></i>Edit Poll
     </h2>
-    <button type="button" class="btn btn-outline-danger btn-sm" (click)="deletePoll()">
-      <i class="bi bi-trash me-1"></i> Delete Poll
+    <button type="button" class="btn btn-outline-danger btn-sm" (click)="deletePoll()" [disabled]="deleteLoading">
+      @if (deleteLoading) {
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+      }
+      {{ deleteLoading ? 'Deleting...' : 'Delete Poll' }}
     </button>
   </div>
   <form [formGroup]="pollForm" (ngSubmit)="submit()" enctype="multipart/form-data" class="card p-4 shadow-sm border">
@@ -68,7 +71,13 @@
       <input type="file" class="form-control" (change)="onFileChange($event)" />
     </div>
 
-    <button type="submit" class="btn btn-success w-100">Update Poll</button>
+    <button type="submit" class="btn btn-success w-100" [disabled]="loading">
+      @if (loading) {
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+      }
+      {{ loading ? 'Updating...' : 'Update Poll' }}
+    </button>
+
     <div class="text-danger mt-3 small">{{ responseMessage }}</div>
   </form>
 </div>

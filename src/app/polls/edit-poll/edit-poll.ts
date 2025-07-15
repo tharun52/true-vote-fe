@@ -19,6 +19,8 @@ export class EditPoll {
   pollForm!: FormGroup;
   responseMessage = '';
   file: File | null = null;
+  loading = false;
+  deleteLoading = false;
 
   
   public get title() {return this.pollForm.get('title');}
@@ -70,6 +72,8 @@ export class EditPoll {
       return;
     }
 
+    this.loading = true; // Start loading
+
     const formData = new FormData();
     const formValue = this.pollForm.value;
 
@@ -93,11 +97,14 @@ export class EditPoll {
         this.toastService.show("Update Successs", "Your details have been updated successfully", false);
       },
       error: (err) => {
-        this.responseMessage =
-          err?.error?.message || '❌ Failed to update poll.';
+        this.responseMessage = err?.error?.message || '❌ Failed to update poll.';
       },
+      complete: () => {
+        this.loading = false; // Stop loading
+      }
     });
   }
+
 
   private formatDate(date: string | Date): string {
     const d = new Date(date);
@@ -108,18 +115,24 @@ export class EditPoll {
   }
   deletePoll() {
     if (confirm('Are you sure you want to delete this poll? This action cannot be undone.')) {
+      this.deleteLoading = true; 
+
       this.pollService.deletePoll(this.poll.id).subscribe({
         next: () => {
           this.toastService.show('Poll Deleted', 'The poll was successfully deleted.', false);
           this.updated.emit(null); 
-          window.location.reload();
-          // this.router.navigateByUrl('moderator/polls');
+          window.location.reload(); 
         },
         error: (err) => {
           this.responseMessage = err?.error?.message || '❌ Failed to delete poll.';
+          this.deleteLoading = false;
+        },
+        complete: () => {
+          this.deleteLoading = false; 
         }
       });
     }
   }
+
 
 }

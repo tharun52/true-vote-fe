@@ -15,6 +15,7 @@ import { ModeratorEmails } from '../moderator-emails/moderator-emails';
 export class ModeratorDashboard {
   moderator: ModeratorModel | null = null;
   stats: any;
+  loading = true;
 
   constructor(private authService: AuthService, private moderatorService: ModeratorService) {
     const user = this.authService.getCurrentUser();
@@ -28,10 +29,14 @@ export class ModeratorDashboard {
         },
         error: (err) => {
           console.error('Error fetching moderator info', err);
+          this.loading = false; 
         }
       });
+    } else {
+      this.loading = false;
     }
   }
+
 
   getModeratorStats(moderatorId: string) {
     this.moderatorService.getStats(moderatorId).subscribe({
@@ -50,9 +55,13 @@ export class ModeratorDashboard {
       },
       error: (err) => {
         console.error('Error fetching stats', err);
+      },
+      complete: () => {
+        this.loading = false; // stop loading after stats fetch
       }
     });
   }
+
 
   animateCount(key: keyof typeof this.stats, target: number) {
     const duration = 800;
