@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './edit-poll.html',
   styleUrl: './edit-poll.css',
-  standalone:true
+  standalone: true
 })
 export class EditPoll {
   @Input() poll: any;
@@ -22,13 +22,13 @@ export class EditPoll {
   loading = false;
   deleteLoading = false;
 
-  
-  public get title() {return this.pollForm.get('title');}
-  public get startDate() {return this.pollForm.get('startDate');}
-  public get endDate() {return this.pollForm.get('endDate');}
-  
-  constructor(private fb: FormBuilder, private pollService: PollService, private toastService:ToastService, private router:Router) {}
-  
+
+  public get title() { return this.pollForm.get('title'); }
+  public get startDate() { return this.pollForm.get('startDate'); }
+  public get endDate() { return this.pollForm.get('endDate'); }
+
+  constructor(private fb: FormBuilder, private pollService: PollService, private toastService: ToastService, private router: Router) { }
+
   ngOnInit(): void {
     const startDate = this.formatDate(this.poll.startDate);
     const endDate = this.formatDate(this.poll.endDate);
@@ -114,25 +114,29 @@ export class EditPoll {
     return `${year}-${month}-${day}`;
   }
   deletePoll() {
-    if (confirm('Are you sure you want to delete this poll? This action cannot be undone.')) {
-      this.deleteLoading = true; 
+    const confirmation = prompt(
+      'To confirm deletion, please type DELETE (in uppercase):'
+    );
 
-      this.pollService.deletePoll(this.poll.id).subscribe({
-        next: () => {
-          this.toastService.show('Poll Deleted', 'The poll was successfully deleted.', false);
-          this.updated.emit(null); 
-          window.location.reload(); 
-        },
-        error: (err) => {
-          this.responseMessage = err?.error?.message || '❌ Failed to delete poll.';
-          this.deleteLoading = false;
-        },
-        complete: () => {
-          this.deleteLoading = false; 
-        }
-      });
+    if (confirmation !== 'DELETE') {
+      return; // Abort deletion
     }
+
+    this.deleteLoading = true;
+
+    this.pollService.deletePoll(this.poll.id).subscribe({
+      next: () => {
+        this.toastService.show('Poll Deleted', 'The poll was successfully deleted.', false);
+        this.updated.emit(null);
+        window.location.reload();
+      },
+      error: (err) => {
+        this.responseMessage = err?.error?.message || '❌ Failed to delete poll.';
+        this.deleteLoading = false;
+      },
+      complete: () => {
+        this.deleteLoading = false;
+      }
+    });
   }
-
-
 }

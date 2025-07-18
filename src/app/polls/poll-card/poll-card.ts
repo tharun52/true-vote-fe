@@ -16,6 +16,7 @@ export class PollCard implements OnInit {
   @Input() poll: any;
   @Input() voteTime?: string | null;
   @Input() ForVoting: boolean = false;
+
   
   loggedInEmail:string | undefined = undefined;
 

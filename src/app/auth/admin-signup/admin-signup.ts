@@ -23,40 +23,43 @@ export class AdminSignup {
     confirmPassword: new FormControl('', Validators.required),
     seceretAdminKey: new FormControl('', Validators.required)
   },
-  {validators:passwordMatchValidator});
+    { validators: passwordMatchValidator });
 
-  constructor(private authService:AuthService, private http: HttpClient, private router:Router)
-  {}
+  constructor(private authService: AuthService, private http: HttpClient, private router: Router) { }
 
   public get name() { return this.AdminSignUpForm.get('name'); }
   public get email() { return this.AdminSignUpForm.get('email'); }
   public get password() { return this.AdminSignUpForm.get('nampassworde'); }
-  public get confirmPassword() { return this.AdminSignUpForm.get('confirmPassword'); }  
+  public get confirmPassword() { return this.AdminSignUpForm.get('confirmPassword'); }
   public get seceretAdminKey() { return this.AdminSignUpForm.get('seceretAdminKey'); }
-
   handleAdminSignup() {
-      if (this.AdminSignUpForm.invalid) return;
-  
-      const { name, email, password, seceretAdminKey } = this.AdminSignUpForm.value;
+    if (this.AdminSignUpForm.invalid) return;
 
-      if (!name || !email || !password || !seceretAdminKey) {
-        this.error = 'Form is invalid.';
-        return;
-      }
-      
-      const adminData = { name, email, password, seceretAdminKey};
-      
-      this.authService.registerAdmin(adminData).subscribe({
-        next:res =>{
-          this.authService.login(email, password).subscribe({
-            next: () => {},
-            error: err => this.error = 'Auto-login failed.'
-          });
-          this.router.navigateByUrl('admin');
-        },
-        error:err => {
-          this.error = err
+    const { name, email, password, seceretAdminKey } = this.AdminSignUpForm.value;
+
+    if (!name || !email || !password || !seceretAdminKey) {
+      this.error = 'Form is invalid.';
+      return;
+    }
+
+    const adminData = { name, email, password, seceretAdminKey };
+
+    this.authService.registerAdmin(adminData).subscribe({
+      next: res => {
+        this.authService.login(email, password).subscribe({
+          next: () => { },
+          error: () => this.error = 'Auto-login failed.'
+        });
+        this.router.navigateByUrl('admin');
+      },
+      error: err => {
+        if (err.status === 401 && err.error?.message) {
+          this.error = err.error.message;  // ✅ Extract backend message
+        } else {
+          this.error = 'Something went wrong. Please try again.';
         }
-      });
-   }
+      }
+    });
+  }
+
 }

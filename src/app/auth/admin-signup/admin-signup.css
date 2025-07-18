@@ -74,7 +74,7 @@
 /* Error message styling */
 .form-error {
   background-color: #e53935;
-  color: #ffffff;
+  color: #ffffff !important;
   font-weight: 600;
   font-size: 0.875rem;
   padding: 0.4rem 0.75rem;

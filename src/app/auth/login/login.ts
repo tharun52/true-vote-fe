@@ -46,7 +46,20 @@ export class Login {
   }
 
   handleLogin() {
-    if (this.loginForm.invalid) return;
+    if (this.loginForm.invalid) {
+    this.loginForm.markAllAsTouched();
+
+    const emailErrors = this.loginForm.get('un')?.errors;
+    if (emailErrors?.['emailNotFound']) {
+      this.toastService.show(
+        "Email not found",
+        "Please sign up or contact support.",
+        true
+      );
+    }
+
+    return;
+  }
 
     const username = this.un?.value;
     const password = this.pass?.value;

@@ -31,6 +31,8 @@ export class ModeratorDetail {
 
   moderatorId: string = '';
 
+  loading = true;
+
   constructor(
     private moderatorService: ModeratorService,
     private authService: AuthService
@@ -42,15 +44,26 @@ export class ModeratorDetail {
     this.isModerator = role === 'Moderator'; 
 
     if (this.email) {
-      this.moderatorService.getModeratorByEmail(this.email).subscribe(data => {
-        this.moderator = data;
-        this.initForm(data);
-        this.moderatorId = data.id;
-        console.log(this.moderator);
-      });
+      this.fetchModerator();
     }
   }
 
+  fetchModerator(): void {
+    this.loading = true;
+
+    this.moderatorService.getModeratorByEmail(this.email).subscribe({
+      next: (data) => {
+        this.moderator = data;
+        this.initForm(data);
+        this.moderatorId = data.id;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching moderator:', err);
+        this.loading = false;
+      }
+    });
+  }
 
   public get name() { return this.editForm.get('name'); }
   public get prevPassword() { return this.editForm.get('prevPassword'); }

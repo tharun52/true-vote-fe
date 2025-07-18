@@ -28,7 +28,7 @@ export class AddPoll {
         new FormControl('', Validators.required),
         new FormControl('', Validators.required)
       ]),
-      ForPublishing: new FormControl(false)
+      ForPublishing: new FormControl(false),
     });
   }
 

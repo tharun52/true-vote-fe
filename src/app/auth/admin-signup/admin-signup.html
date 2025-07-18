@@ -56,7 +56,7 @@
           <strong>Error:</strong> You are not authorized to register. Please contact your assigned moderator.
         </div>
       } @else {
-        <div class="mt-2 text-danger">{{ error | json }}</div>
+        <div class="form-error text-danger mt-1">{{ error | json }}</div>
       }
     }
   </form>
