@@ -31,6 +31,8 @@ export class VoterDetail {
 
   voterId: string = '';
 
+  loading = true;
+
   constructor(
     private voterService: VoterService,
     private authService: AuthService
@@ -41,10 +43,17 @@ export class VoterDetail {
     this.isVoter = role === 'Voter';
 
     if (this.email) {
-      this.voterService.getVoterByEmail(this.email).subscribe(data => {
-        this.voter = data;
-        this.initForm(data);
-        this.voterId = data.id;
+      this.loading = true;
+      this.voterService.getVoterByEmail(this.email).subscribe({
+        next: (data) => {
+          this.voter = data;
+          this.initForm(data);
+          this.voterId = data.id;
+          this.loading = false;
+        },
+        error: () => {
+          this.loading = false;
+        }
       });
     }
   }
@@ -102,12 +111,20 @@ export class VoterDetail {
     this.editMode = false;
     this.changePasswordMode = false;
     if (this.email) {
-      this.voterService.getVoterByEmail(this.email).subscribe(data => {
-        this.voter = data;
-        this.initForm(data);
+      this.loading = true;
+      this.voterService.getVoterByEmail(this.email).subscribe({
+        next: (data) => {
+          this.voter = data;
+          this.initForm(data);
+          this.loading = false;
+        },
+        error: () => {
+          this.loading = false;
+        }
       });
     }
   }
+
 
   closePopup(): void {
     this.close.emit();

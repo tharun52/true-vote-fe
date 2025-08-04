@@ -8,7 +8,7 @@
       <textarea formControlName="msg" rows="4" class="message-form__textarea"
         placeholder="Type your message..."></textarea>
       @if (msg?.touched && msg?.errors) {
-         <div class="form-error text-danger mt-1">Valid email is required</div>
+         <div class="form-error text-danger mt-1">A message should contain atleast one character</div>
       }
     </div>
 

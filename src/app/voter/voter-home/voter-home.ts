@@ -17,6 +17,7 @@ import { MessageModel } from '../../models/MessageModel';
 export class VoterHome{
   voter: VoterModel | null = null;
   stats: any;
+  loading = true;
   messages: MessageModel[] = [];
 
   constructor(private authService: AuthService, 
@@ -33,7 +34,10 @@ export class VoterHome{
           this.voter = voterData;
           this.getVoterStats(voterData.id);
         },
-        error: (err) => console.error('Error fetching voter info', err)
+        error: (err) => {
+          console.error('Error fetching voter info', err);
+          this.loading = false;
+        }
       });
 
       this.messageService.getMessages().subscribe((msgs) => {
@@ -52,8 +56,11 @@ export class VoterHome{
 
         this.animateCount('totalOnGoingPolls', data.totalOnGoingPolls);
         this.animateCount('totalPollsVoted', data.totalPollsVoted);
+        this.loading = false;
+
       },
       error: (err) => console.error('Error fetching voter stats', err)
+      
     });
   }
 

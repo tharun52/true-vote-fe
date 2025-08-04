@@ -34,7 +34,7 @@ export class AddMessage {
   role: string = '';
 
   voters: VoterModel[] = [];
-  selectedVoter: VoterModel | null = null; // ✅ single voter
+  selectedVoter: VoterModel | null = null; 
   showVoterModal = false;
 
   moderators: ModeratorModel[] = [];

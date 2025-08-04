@@ -55,6 +55,11 @@
   <button class="btn btn-accent" (click)="ceratedPollsMode = true">
     <i class="bi bi-bar-chart me-1"></i> View Created Polls
   </button>
+  @if (actionLoading) {
+    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-white bg-opacity-75 z-3">
+      <div class="spinner-border text-primary" role="status"></div>
+    </div>
+  }
 </div>
 
 <!-- Modal for Created Polls -->

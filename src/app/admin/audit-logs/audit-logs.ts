@@ -17,6 +17,8 @@ export class AuditLogs implements OnInit {
   pageSize: number = 10;
   totalPages: number = 1;
   totalRecords: number = 0;
+  
+  loading: boolean = false;
 
   constructor(private adminService: AdminService) {}
 
@@ -31,8 +33,16 @@ export class AuditLogs implements OnInit {
         this.totalRecords = res.data.pagination.totalRecords;
         this.totalPages = res.data.pagination.totalPages;
         this.error = null;
+      },
+      error: (err) => {
+        this.logs = [];
+        this.error = 'Failed to load audit logs.';
+      },
+      complete: () => {
+        this.loading = false;
       }
     });
+
   }
 
   previousPage() {

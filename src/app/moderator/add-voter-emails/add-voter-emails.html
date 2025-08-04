@@ -7,7 +7,14 @@
     @if (email?.touched && email?.errors) {
       <div class="form-error">Invalid Email</div>
     }
-    <button class="btn btn-accent" type="submit" [disabled]="emailForm.invalid">Add Email</button>
+    <button class="btn btn-accent" type="submit" [disabled]="emailForm.invalid || loadingSingle">
+      @if (loadingSingle) {
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        Adding...
+      } @else {
+        Add Email
+      }
+    </button>
   </form>
 
   <hr class="my-4"/>
@@ -37,9 +44,15 @@
   }
 
   <!-- Submit Button -->
-  <button class="btn btn-success mt-2" (click)="addBulkEmails()" [disabled]="uploadedEmails.length === 0">
-    Add {{ uploadedEmails.length }} Emails
+  <button class="btn btn-success mt-2" (click)="addBulkEmails()" [disabled]="uploadedEmails.length === 0 || loadingBulk">
+    @if (loadingBulk) {
+      <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+      Uploading...
+    } @else {
+      Add {{ uploadedEmails.length }} Emails
+    }
   </button>
+
 
   @if (message) {
     <div class="alert alert-info mt-3">{{ message }}</div>

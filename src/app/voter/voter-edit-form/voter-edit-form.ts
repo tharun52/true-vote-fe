@@ -24,6 +24,8 @@ export class VoterEditForm {
 
   form!: FormGroup;
   changePasswordMode = false;
+  
+  loading = false;
 
   constructor(private toastService:ToastService, private authService:AuthService)
   {}
@@ -49,17 +51,21 @@ export class VoterEditForm {
   onUpdateOnly(): void {
     if (this.name?.invalid || this.age?.invalid) return;
 
+    this.loading = true;
     const { name, age } = this.form.value;
     this.update.emit({ name, age });
     this.toastService.show('Voter Update', 'Voter details have been updated successfully!', false);
+    this.loading = false;
   }
-
+  
   onUpdateWithPassword(): void {
     if (this.form.invalid) return;
 
+    this.loading = true;
     const { name, age, newPassword } = this.form.value;
     this.updateWithPassword.emit({ name, age, newPassword });
     this.toastService.show('Password Change', 'Password has been changed successfully!', false);
+    this.loading = false;
     // this.authService.logout();
   }
 

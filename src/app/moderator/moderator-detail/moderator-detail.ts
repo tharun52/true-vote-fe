@@ -26,13 +26,14 @@ export class ModeratorDetail {
   editMode = false;
   ceratedPollsMode = false;
   changePasswordMode = false;
-
+  
   editForm!: FormGroup;
 
   moderatorId: string = '';
 
   loading = true;
-
+  actionLoading = false;
+  
   constructor(
     private moderatorService: ModeratorService,
     private authService: AuthService
@@ -94,30 +95,51 @@ export class ModeratorDetail {
   submitEdit(data: any): void {
     if (!this.moderator) return;
 
-    if (this.isModerator) {
+    this.actionLoading = true;
+
+    if (this.isAdmin) {
       data.isDeleted = false;
-      this.moderatorService.updateAsAdmin(this.moderator.id, data).subscribe(() => this.refreshData());
+      this.moderatorService.updateAsAdmin(this.moderator.id, data).subscribe({
+        next: () => this.refreshData(),
+        error: () => this.actionLoading = false
+      });
     } else if (this.isModerator) {
       data.isDeleted = this.moderator.isDeleted;
-      this.moderatorService.updateAsModerator(data).subscribe(() => this.refreshData());
+      this.moderatorService.updateAsModerator(data).subscribe({
+        next: () => this.refreshData(),
+        error: () => this.actionLoading = false
+      });
     }
   }
+
 
   submitEditWithPassword(data: any): void {
     if (!this.moderator) return;
 
+    this.actionLoading = true;
     data.isDeleted = this.moderator.isDeleted;
-    this.moderatorService.updateAsModerator(data).subscribe(() => this.refreshData());
+
+    this.moderatorService.updateAsModerator(data).subscribe({
+      next: () => this.refreshData(),
+      error: () => this.actionLoading = false
+    });
   }
 
 
   refreshData(): void {
     this.editMode = false;
     this.changePasswordMode = false;
+
     if (this.email) {
-      this.moderatorService.getModeratorByEmail(this.email).subscribe(data => {
-        this.moderator = data;
-        this.initForm(data);
+      this.moderatorService.getModeratorByEmail(this.email).subscribe({
+        next: (data) => {
+          this.moderator = data;
+          this.initForm(data);
+          this.actionLoading = false;
+        },
+        error: () => {
+          this.actionLoading = false;
+        }
       });
     }
   }
@@ -132,6 +154,9 @@ export class ModeratorDetail {
 
     const confirmDelete = confirm("Are you sure you want to delete this moderator?");
     if (!confirmDelete) return;
+
+    this.actionLoading = true;
+
     this.moderatorService.deleteModerator(this.moderator.id).subscribe({
       next: () => {
         alert('Moderator account deleted successfully.');
@@ -140,12 +165,16 @@ export class ModeratorDetail {
       error: (err) => {
         console.error('Delete failed', err);
         alert('Failed to delete moderator account.');
+        this.actionLoading = false;
       }
     });
   }
 
+
   reAddModerator(): void {
     if (!this.moderator) return;
+
+    this.actionLoading = true;
 
     const updatedData = {
       name: this.moderator.name,
@@ -161,7 +190,9 @@ export class ModeratorDetail {
       error: (err) => {
         console.error('Failed to re-add moderator', err);
         alert('Failed to re-add moderator.');
+        this.actionLoading = false;
       }
     });
   }
+
 }

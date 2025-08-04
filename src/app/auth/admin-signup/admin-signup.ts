@@ -15,6 +15,7 @@ import { JsonPipe } from '@angular/common';
 })
 export class AdminSignup {
   error = '';
+  loading = false; 
 
   AdminSignUpForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -34,7 +35,9 @@ export class AdminSignup {
   public get seceretAdminKey() { return this.AdminSignUpForm.get('seceretAdminKey'); }
   handleAdminSignup() {
     if (this.AdminSignUpForm.invalid) return;
-
+    
+    this.loading = true;
+    
     const { name, email, password, seceretAdminKey } = this.AdminSignUpForm.value;
 
     if (!name || !email || !password || !seceretAdminKey) {
@@ -47,17 +50,20 @@ export class AdminSignup {
     this.authService.registerAdmin(adminData).subscribe({
       next: res => {
         this.authService.login(email, password).subscribe({
-          next: () => { },
+          next: () => {},
           error: () => this.error = 'Auto-login failed.'
         });
         this.router.navigateByUrl('admin');
       },
       error: err => {
         if (err.status === 401 && err.error?.message) {
-          this.error = err.error.message;  // ✅ Extract backend message
+          this.error = err.error.message;
         } else {
           this.error = 'Something went wrong. Please try again.';
         }
+      },
+      complete: () => {
+        this.loading = false;  
       }
     });
   }

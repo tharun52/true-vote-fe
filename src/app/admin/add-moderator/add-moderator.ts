@@ -15,6 +15,7 @@ import { passwordMatchValidator } from '../../auth/validators/password-match.val
 export class AddModerator {
   moderatorForm: FormGroup;
   responseMessage = '';
+  loading = false;
 
   constructor(private moderatorService: ModeratorService, private router:Router, private toastService:ToastService) {
     this.moderatorForm = new FormGroup({
@@ -38,15 +39,19 @@ export class AddModerator {
       return;
     }
 
+    this.loading = true;
     const moderatorData = this.moderatorForm.value;
 
     this.moderatorService.addModerator(moderatorData).subscribe({
       next: (res) => {
         this.toastService.show('Success', '✅ Moderator added successfully!', false);
-        this.router.navigate(['/admin']); 
+        this.router.navigate(['/admin']);
       },
       error: (err) => {
         this.toastService.show('Error', '❌ Failed to add moderator.', true);
+      },
+      complete: () => {
+        this.loading = false;
       }
     });
   }

@@ -26,6 +26,11 @@
   @if (error) {
     <div class="text-danger">{{ error }}</div>
   }
+  @if (loading) {
+    <div class="d-flex justify-content-center my-4">
+      <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
+    </div>
+  }
 
   <!-- Moderator Grid -->
   @if (moderators.length > 0) {
@@ -60,13 +65,13 @@
       <div class="pagination-controls mt-4 d-flex justify-content-center align-items-center gap-3">
         <button class="btn btn-outline-secondary btn-sm" 
                 (click)="previousPage()" 
-                [disabled]="page === 1">◀</button>
+                [disabled]="page === 1 || loading">◀</button>
 
         <span class="text-dark">Page {{ page }} of {{ totalPages }}</span>
 
         <button class="btn btn-outline-secondary btn-sm" 
                 (click)="nextPage()" 
-                [disabled]="page === totalPages">▶</button>
+                [disabled]="page === totalPages || loading">▶</button>
       </div>
     }
   } @else {

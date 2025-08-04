@@ -13,6 +13,9 @@ export class AddVoterEmails {
   uploadedEmails: string[] = [];
   message = '';
 
+  loadingSingle = false; 
+  loadingBulk = false; 
+
   constructor(private moderatorService: ModeratorService) {
     this.emailForm = new FormGroup({
       email: new FormControl('', Validators.email)
@@ -24,7 +27,9 @@ export class AddVoterEmails {
   addSingleEmail() {
     const email = this.emailForm.value.email;
     if (!email) return;
-
+    
+    this.loadingSingle = true;
+    
     this.moderatorService.addToWhitelist([email]).subscribe({
       next: () => {
         this.message = `✅ ${email} added successfully.`;
@@ -33,6 +38,9 @@ export class AddVoterEmails {
       error: (err) => {
         const apiMessage = err?.error?.message || `❌ Failed to add ${email}.`;
         this.message = `❌ ${apiMessage}`;
+      },
+      complete: () => {
+        this.loadingSingle = false;
       }
     });
   }
@@ -56,6 +64,7 @@ export class AddVoterEmails {
   addBulkEmails() {
     if (this.uploadedEmails.length === 0) return;
 
+    this.loadingBulk = true;
     this.moderatorService.addToWhitelist(this.uploadedEmails).subscribe({
       next: () => {
         this.message = `✅ ${this.uploadedEmails.length} emails added successfully.`;
@@ -63,6 +72,9 @@ export class AddVoterEmails {
       error: (err) => {
         const apiMessage = err?.error?.message || '❌ Failed to add emails.';
         this.message = `❌ ${apiMessage}`;
+      },
+      complete: () => {
+        this.loadingBulk = false;
       }
     });
   }

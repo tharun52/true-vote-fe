@@ -1,4 +1,10 @@
 <form [formGroup]="form">
+  @if (loading) {
+    <div class="d-flex justify-content-center my-3">
+      <div class="spinner-border text-primary" role="status"></div>
+    </div>
+  }
+
   <div class="mb-3">
     <label class="form-label">Name</label>
     <input formControlName="name" class="form-control" />
@@ -43,17 +49,29 @@
 
   <div class="d-flex gap-2">
     @if (!changePasswordMode) {
-      <button type="button" class="btn btn-primary" (click)="onUpdateOnly()" [disabled]="name?.invalid || age?.invalid">
+      <button type="button"
+              class="btn btn-primary"
+              (click)="onUpdateOnly()"
+              [disabled]="name?.invalid || age?.invalid || loading">
         Save
       </button>
     }
 
     @if (changePasswordMode && isVoter) {
-      <button type="button" class="btn btn-primary" (click)="onUpdateWithPassword()" [disabled]="form.invalid">
-        Save
-      </button>
+        <button type="button"
+                class="btn btn-primary"
+                (click)="onUpdateWithPassword()"
+                [disabled]="form.invalid || loading">
+          Save
+        </button>
     }
 
-    <button type="button" class="btn btn-secondary" (click)="cancel.emit()">Cancel</button>
+    <button type="button"
+            class="btn btn-secondary"
+            (click)="cancel.emit()"
+            [disabled]="loading">
+      Cancel
+    </button>
+    
   </div>
 </form>

@@ -52,8 +52,8 @@ export class MessageService {
 
   private startSignalRConnection(): void {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${this.baseUrl.replace('api/v1/', '')}messageHub`, {
-        accessTokenFactory: () => this.authService.getToken() || ''  // ✅ Ensure no null
+      .withUrl(`${this.baseUrl}messageHub`, {
+        accessTokenFactory: () => this.authService.getToken() || ''  
       })
       .withAutomaticReconnect()
       .build();
@@ -71,10 +71,10 @@ export class MessageService {
         this.newMessageSubject.next(msg);
       }
     });
-
+    
     this.hubConnection.on('DeleteMessage', (messageId: string) => {
       this.messageDeletedSubject.next(messageId);
     });
+    
   }
-
 }

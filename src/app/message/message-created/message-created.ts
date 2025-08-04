@@ -48,7 +48,6 @@ export class MessageCreated {
       }
     });
 
-    // SignalR: Handle deleted message
     this.messageService.messageDeleted$.subscribe((deletedId) => {
       this.messages = this.messages.filter(m => m.id !== deletedId);
     });

@@ -15,7 +15,7 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class ModeratorsList {
   @Input() isDeleted: boolean = false;
-  
+
   moderators: ModeratorModel[] = [];
   error: string | null = null;
 
@@ -26,12 +26,14 @@ export class ModeratorsList {
   pageSize: number = 9;
   totalPages: number = 1;
 
+  loading = false;
+
   selectedModeratorEmail: string | null = null;
   showModeratorPopup = false;
 
   private searchSubject = new Subject<void>();
 
-  constructor(private moderatorService: ModeratorService, private authService:AuthService) {}
+  constructor(private moderatorService: ModeratorService, private authService: AuthService) { }
 
   ngOnInit() {
     this.searchSubject.pipe(debounceTime(400)).subscribe(() => {
@@ -52,13 +54,14 @@ export class ModeratorsList {
   }
 
   fetchModerators() {
+    this.loading = true;
     const query = new ModeratorQueryDto(
       this.searchTerm,
       this.sortBy,
       this.sortDesc,
       this.page,
       this.pageSize,
-      this.isDeleted 
+      this.isDeleted
     );
 
     this.moderatorService.getModerators(query).subscribe({
@@ -66,10 +69,12 @@ export class ModeratorsList {
         this.moderators = response.data;
         this.totalPages = response.pagination.totalPages;
         this.error = null;
+        this.loading = false;
       },
       error: () => {
         this.error = 'Failed to load moderators.';
         this.moderators = [];
+        this.loading = false;
       }
     });
   }
@@ -96,11 +101,11 @@ export class ModeratorsList {
     this.selectedModeratorEmail = email;
     this.showModeratorPopup = true;
   }
-  isAdmin(){
+  isAdmin() {
     return this.authService.getRole() == 'Admin';
   }
   onModeratorDetailClosed(): void {
     this.showModeratorPopup = false;
-    this.fetchModerators(); 
+    this.fetchModerators();
   }
 }

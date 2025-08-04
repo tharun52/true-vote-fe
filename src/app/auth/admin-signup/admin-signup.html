@@ -46,9 +46,15 @@
       }
     </div>
 
-    <button type="submit" class="btn btn-accent w-100" [disabled]="AdminSignUpForm.invalid">
-      <i class="bi bi-shield-lock-fill me-1"></i> Sign Up as Admin
+    <button type="submit" class="btn btn-accent w-100" [disabled]="AdminSignUpForm.invalid || loading">
+      @if (loading) {
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        Signing up...
+      } @else {
+        <i class="bi bi-shield-lock-fill me-1"></i> Sign Up as Admin
+      }
     </button>
+
 
     @if(error) {
       @if(error === 'An unexpected error occurred : You are not authorized to sign up. Please contact your moderator.') {
