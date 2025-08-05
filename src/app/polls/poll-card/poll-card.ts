@@ -4,7 +4,6 @@ import { AuthService } from '../../auth/auth.service';
 import { EditPoll } from '../edit-poll/edit-poll';
 import { DatePipe, NgClass } from '@angular/common';
 import { ToastService } from '../../shared/ToastService';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-poll-card',
@@ -19,7 +18,7 @@ export class PollCard implements OnInit {
 
   
   loggedInEmail:string | undefined = undefined;
-
+  
   // selectedModeratorEmail: string | null = null;
   // showModeratorPopup = false;
 
@@ -29,12 +28,15 @@ export class PollCard implements OnInit {
 
   showEdit = false;
 
+  deleteLoading = false;
+  
+
   isCompleted: boolean = false;
 
   isImageFile: boolean = false;
   hasFileType: boolean = false;
 
-  constructor(private pollService: PollService, private authService:AuthService, private toastService:ToastService, private router:Router) {}
+  constructor(private pollService: PollService, private authService:AuthService, private toastService:ToastService) {}
 
   ngOnInit(): void {
     const user = this.authService.getCurrentUser();
@@ -77,18 +79,19 @@ export class PollCard implements OnInit {
     this.poll = updatedPoll;
     this.showEdit = false;
   }
+  
   submitVote(): void {
-  if (!this.selectedOptionId) return;
+    if (!this.selectedOptionId) return;
 
-  this.voting = true;
+    this.voting = true;
 
-  this.pollService.vote(this.selectedOptionId).subscribe({
+    this.pollService.vote(this.selectedOptionId).subscribe({
       next: () => {
         this.voted = true;
         this.voting = false;
         this.voteTime = new Date().toISOString();
         this.toastService.show("Voted", "Your Voter has been registered successfully", false);
-        this.router.navigateByUrl('/voter');
+        window.location.reload();
       },
       error: (err) => {
         this.voting = false;
@@ -100,6 +103,40 @@ export class PollCard implements OnInit {
 
   isModerator(){
     return this.authService.getRole() == 'Moderator';
+  }
+  
+  canEditPoll(): boolean {
+    if (!this.isModerator() || this.poll?.createdByEmail !== this.loggedInEmail || this.isCompleted) {
+      return false;
+    }
+
+    const options = this.poll?.pollOptions?.$values || [];
+    return options.every((opt: any) => opt.voteCount === 0);
+  }
+  
+  deletePoll() {
+    const confirmation = prompt(
+      'To confirm deletion, please type DELETE (in uppercase):'
+    );
+
+    if (confirmation !== 'DELETE') {
+      return;
+    }
+
+    this.deleteLoading = true;
+
+    this.pollService.deletePoll(this.poll.id).subscribe({
+      next: () => {
+        this.toastService.show('Poll Deleted', 'The poll was successfully deleted.', false);
+        window.location.reload();
+      },
+      error: (err) => {
+        this.deleteLoading = false;
+      },
+      complete: () => {
+        this.deleteLoading = false;
+      }
+    });
   }
 
   // openModeratorDetail(email: string): void {

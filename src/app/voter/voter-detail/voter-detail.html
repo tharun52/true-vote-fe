@@ -34,7 +34,7 @@
           <button class="btn btn-warning" (click)="editMode = true">Edit</button>
         }
         @if (isModerator && !voter.isDeleted) {
-          <button class="btn btn-danger" (click)="deleteAccount()">Delete</button>
+          <button class="btn btn-danger" (click)="deleteAccount()">Disable</button>
         }
         @if (isModerator && voter.isDeleted) {
           <button class="btn btn-success" (click)="reAddVoter()">Re-Add Voter</button>

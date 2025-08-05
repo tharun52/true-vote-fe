@@ -15,7 +15,7 @@
         @if(isAdmin){
           <strong>Deleted:</strong>
           <span [ngClass]="moderator.isDeleted ? 'text-danger' : 'text-success'">
-            {{ moderator.isDeleted ? '🗑️ Deleted' : '✅ Active' }}
+            {{ moderator.isDeleted ? '🗑️ Disabled' : '✅ Active' }}
           </span>
         }
       </p>
@@ -25,7 +25,7 @@
           <button class="btn btn-warning" (click)="editMode = true">Edit</button>
         }
         @if (isAdmin && moderator && !moderator.isDeleted) {
-          <button class="btn btn-danger" (click)="deleteAccount()">Delete</button>
+          <button class="btn btn-danger" (click)="deleteAccount()">Disable</button>
         }
         @if(isAdmin && moderator.isDeleted){
           <button class="btn btn-success" (click)="reAddModerator()">Re Add moderator</button>

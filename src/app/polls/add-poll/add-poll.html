@@ -51,7 +51,7 @@
             <div class="d-flex gap-2 align-items-center mb-2">
               <input [formControlName]="i" class="form-control" />
               @if (option.invalid && (option.touched || option.dirty)) {
-                <div class="invalid-feedback d-block">Option text is required.</div>
+                <div class="invalid-feedback text-danger d-block">Option text is required.</div>
               }
               @if (optionTexts.length > 2) {
                 <button type="button" (click)="removeOption(i)" class="btn btn-outline-danger btn-sm">❌</button>

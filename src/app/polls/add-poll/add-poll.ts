@@ -86,11 +86,10 @@ export class AddPoll {
         this.addOption();
         this.toastService.show('Poll Created', 'Poll created successfully!', false);
         this.router.navigateByUrl('moderator/polls');
+        this.loading = false; 
       },
       error: (err) => {
         this.responseMessage = 'Error: ' + (err?.error?.message ?? 'Something went wrong');
-      },
-      complete: () => {
         this.loading = false; 
       }
     });

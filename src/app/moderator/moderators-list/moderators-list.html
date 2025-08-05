@@ -51,7 +51,7 @@
               @if (isAdmin()) {
                 <span class="badge align-self-start mt-2"
                       [ngClass]="mod.isDeleted ? 'bg-danger' : 'bg-success'">
-                  {{ mod.isDeleted ? 'Deleted' : 'Active' }}
+                  {{ mod.isDeleted ? 'Disabled' : 'Active' }}
                 </span>
               }
             </div>

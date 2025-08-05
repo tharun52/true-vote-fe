@@ -80,7 +80,7 @@ export class MessageCreated {
     if (confirmed) {
       this.messageService.deleteCreatedMessage(id).subscribe(() => {
 
-        this.toastService.show("Message Deleted", "This message has been deleted successfully and it is no longer visible to voters", true);
+        this.toastService.show("Message Deleted", "This message has been deleted successfully and it is no longer visible to receiver", true);
       });
     }
   }

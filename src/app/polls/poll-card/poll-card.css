@@ -170,3 +170,8 @@
   background-color: var(--hover-bg);
   color: var(--hover-text);
 }
+
+.list-group-item.active {
+  background-color: #e6f7ff;
+  border-color: #91d5ff;
+}

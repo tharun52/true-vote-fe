@@ -8,13 +8,22 @@
         Voted at {{ voteTime | date: 'medium' }}
       </span>
     }
-    @if (isModerator() && poll.createdByEmail==loggedInEmail && !isCompleted) {
+    @if (canEditPoll()) {
       <div class="text-end mb-2">
         <button class="btn btn-accent-outline btn-sm" (click)="showEdit = !showEdit">
           <i class="bi bi-pencil-square me-1"></i> {{ showEdit ? 'Close Edit' : 'Edit' }}
         </button>
       </div>
     }
+    @else if (isModerator() && poll?.createdByEmail === loggedInEmail) {
+      <button type="button" class="btn btn-danger btn-sm" (click)="deletePoll()" [disabled]="deleteLoading">
+        @if (deleteLoading) {
+          <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        }
+        {{ deleteLoading ? 'Deleting...' : 'Delete Poll' }}
+      </button>
+    }
+
   </div>
   <div class="card-body">
     @if (showEdit) {
