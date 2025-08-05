@@ -19,12 +19,16 @@ import { AuditLogs } from './admin/audit-logs/audit-logs.js';
 import { NoAuthGuard } from './no-auth.guard.js';
 import { VoterMessage } from './voter/voter-message/voter-message.js';
 import { ModeratorMessage } from './moderator/moderator-message/moderator-message.js';
-
+import { SendMagicLink } from './auth/send-magic-link/send-magic-link.js';
+import { VerifyMagicLink } from './auth/verify-magic-link/verify-magic-link.js';
 
 export const routes: Routes = [
   { path: '', component: HomePage, canActivate: [NoAuthGuard] },
   { path: 'login', component: Login, canActivate: [NoAuthGuard] },
   { path: 'signup', component: Signup, canActivate: [NoAuthGuard] },
+  
+  { path: 'send-magic-link', component: SendMagicLink, canActivate: [NoAuthGuard] },
+  { path: 'verify-magic-link', component: VerifyMagicLink, canActivate: [NoAuthGuard] },
 
   { path: 'moderator', component: ModeratorDashboard, canActivate: [authGuard], data: { expectedRole: 'Moderator' } },
   { path: 'moderator/emails', component: ModeratorEmails, canActivate: [authGuard], data: { expectedRole: 'Moderator' } },

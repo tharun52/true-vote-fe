@@ -17,6 +17,38 @@ export class AuthService {
       this.tokenSubject.next(savedToken);
     }
   }
+
+  sendMagicLink(email: string, clientUri: string) {
+    return this.http.post(`${this.API}/send-magic-link`, {
+      email,
+      clientURI: clientUri
+    }, { responseType: 'text' });
+  }
+
+  verifyMagicLink(email: string, token: string) {
+    return this.http.post<UserModel>(`${this.API}/verify-magic-link`, {
+      email,
+      token
+    }).pipe(
+      tap((user) => {
+        localStorage.setItem('token', user.token);
+        localStorage.setItem('refreshToken', user.refreshToken);
+        this.tokenSubject.next(user.token);
+
+        // Optional redirect based on role
+        if (user.role === 'Moderator') {
+          this.router.navigate(['/moderator']);
+        } else if (user.role === 'Voter') {
+          this.router.navigate(['/voter']);
+        } else if (user.role === 'Admin') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/']);
+        }
+      })
+    );
+  }
+
   registerAdmin(adminData:any){
     return this.http.post(`${environment.apiBaseUrl}Admin/add`, adminData);
   }

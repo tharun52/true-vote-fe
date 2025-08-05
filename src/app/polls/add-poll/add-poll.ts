@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { PollService } from '../poll.service';
-import { start } from '@popperjs/core';
 import { Router } from '@angular/router';
 import { ToastService } from '../../shared/ToastService';
 import { endDateValidator } from '../../auth/validators/end-date-validator';
@@ -61,8 +60,7 @@ export class AddPoll {
       return;
     }
 
-    this.loading = true; // 👈 Start loading
-
+    this.loading = true;
     const formData = new FormData();
     formData.append('Title', this.pollForm.get('title')?.value);
     formData.append('Description', this.pollForm.get('description')?.value || '');

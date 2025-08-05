@@ -70,7 +70,7 @@
       <label class="form-label">Poll File (optional)</label>
       <input type="file" class="form-control" (change)="onFileChange($event)" />
     </div>
-
+    
     <button type="submit" class="btn btn-success w-100" [disabled]="loading">
       @if (loading) {
         <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>

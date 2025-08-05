@@ -1,9 +1,7 @@
-/* Container Styling */
 .polls-dashboard {
   animation: fadeIn 0.5s ease;
 }
 
-/* Section Headers */
 .section-header {
   text-align: left;
   animation: slideIn 0.4s ease-out;
@@ -16,7 +14,6 @@
   margin-bottom: 0.25rem;
 }
 
-/* Divider */
 hr {
   border-top: 2px dashed var(--hover-bg);
 }

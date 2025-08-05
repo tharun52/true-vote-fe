@@ -1,0 +1,37 @@
+<div class="container mt-5 login-form-container">
+  <div class="form-header mb-4">
+    <h3 class="fw-semibold">Magic Link Login</h3>
+    <p class="mb-0">Enter your email to receive a login link.</p>
+  </div>
+
+  <form [formGroup]="magicLinkForm" (ngSubmit)="sendLink()" class="login-form needs-validation" novalidate>
+
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" formControlName="email" class="form-control" placeholder="Enter your email" />
+
+      @if (email?.touched && email?.errors) {
+        @if (email?.errors?.['required']) {
+          <div class="form-error">Email cannot be empty</div>
+        } @else if (email?.errors?.['email']) {
+          <div class="form-error">Invalid email format</div>
+        }
+      }
+    </div>
+
+    <button type="submit" class="btn btn-accent w-100" [disabled]="magicLinkForm.invalid || isLoading">
+      <i class="bi bi-envelope-arrow-up me-1"></i> 
+      {{ isLoading ? 'Sending...' : 'Send Magic Link' }}
+    </button>
+  </form>
+
+  <div class="mt-4 text-center">
+    <p class="signup-text">Remembered your password? <a routerLink="/login">Go to Login</a></p>
+  </div>
+</div>
+
+@if (isLoading) {
+  <div class="loading-overlay">
+    <div class="spinner-border text-accent" role="status"></div>
+  </div>
+}

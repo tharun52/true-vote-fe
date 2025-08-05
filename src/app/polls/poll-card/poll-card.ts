@@ -2,13 +2,13 @@ import { Component, Input, OnInit } from '@angular/core';
 import { PollService } from '../poll.service';
 import { AuthService } from '../../auth/auth.service';
 import { EditPoll } from '../edit-poll/edit-poll';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { ToastService } from '../../shared/ToastService';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-poll-card',
-  imports: [DatePipe, EditPoll],
+  imports: [DatePipe, EditPoll, NgClass],
   templateUrl: './poll-card.html',
   styleUrl: './poll-card.css',
 })
@@ -28,6 +28,8 @@ export class PollCard implements OnInit {
   voted: boolean = false;
 
   showEdit = false;
+
+  isCompleted: boolean = false;
 
   isImageFile: boolean = false;
   hasFileType: boolean = false;
@@ -49,6 +51,11 @@ export class PollCard implements OnInit {
           this.isImageFile = false;
         }
       });
+    }
+    if (this.poll?.endDate) {
+      const now = new Date();
+      const end = new Date(this.poll.endDate);
+      this.isCompleted = end < now;
     }
   }
 

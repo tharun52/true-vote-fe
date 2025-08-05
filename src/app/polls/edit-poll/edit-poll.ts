@@ -72,7 +72,7 @@ export class EditPoll {
       return;
     }
 
-    this.loading = true; // Start loading
+    this.loading = true; 
 
     const formData = new FormData();
     const formValue = this.pollForm.value;
@@ -100,7 +100,7 @@ export class EditPoll {
         this.responseMessage = err?.error?.message || '❌ Failed to update poll.';
       },
       complete: () => {
-        this.loading = false; // Stop loading
+        this.loading = false; 
       }
     });
   }
@@ -119,7 +119,7 @@ export class EditPoll {
     );
 
     if (confirmation !== 'DELETE') {
-      return; // Abort deletion
+      return;
     }
 
     this.deleteLoading = true;
