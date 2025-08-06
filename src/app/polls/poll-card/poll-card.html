@@ -1,30 +1,33 @@
 <div class="poll-card card shadow-sm mb-4">
-  <div class="card-header d-flex justify-content-between align-items-center">
+  <div class="card-header d-flex flex-wrap justify-content-between align-items-start gap-2">
     <h5 class="mb-0 fw-semibold d-flex align-items-center">
       <i class="bi bi-bar-chart-fill me-1"></i> {{ poll?.title }}
     </h5>
+
     @if (voteTime) {
-      <span class="badge bg-success">
+      <span class="badge bg-success align-self-start">
         Voted at {{ voteTime | date: 'medium' }}
       </span>
     }
+
     @if (canEditPoll()) {
-      <div class="text-end mb-2">
+      <div>
         <button class="btn btn-accent-outline btn-sm" (click)="showEdit = !showEdit">
           <i class="bi bi-pencil-square me-1"></i> {{ showEdit ? 'Close Edit' : 'Edit' }}
         </button>
       </div>
+    } @else if (isModerator() && poll?.createdByEmail === loggedInEmail) {
+      <div>
+        <button type="button" class="btn btn-danger btn-sm" (click)="deletePoll()" [disabled]="deleteLoading">
+          @if (deleteLoading) {
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          }
+          {{ deleteLoading ? 'Deleting...' : 'Delete Poll' }}
+        </button>
+      </div>
     }
-    @else if (isModerator() && poll?.createdByEmail === loggedInEmail) {
-      <button type="button" class="btn btn-danger btn-sm" (click)="deletePoll()" [disabled]="deleteLoading">
-        @if (deleteLoading) {
-          <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-        }
-        {{ deleteLoading ? 'Deleting...' : 'Delete Poll' }}
-      </button>
-    }
-
   </div>
+
   <div class="card-body">
     @if (showEdit) {
       <!-- Edit View -->
